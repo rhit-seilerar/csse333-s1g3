@@ -2,7 +2,8 @@ use StardewHoes
 go
 
 create table Produce (
-	ItemID int
-	Primary key (ItemID),
-	Foreign key (ItemID) references Item(ID)
+	ID int
+	Primary key (ID),
+	Foreign key (ID) references Item(ID)
+	on delete cascade
 )
