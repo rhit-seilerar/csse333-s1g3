@@ -1,0 +1,7 @@
+USE [StardewHoes]
+GO
+CREATE TABLE Farmer(
+	VillagerID int NOT NULL PRIMARY KEY,
+	FarmID int NOT NULL,
+	FOREIGN KEY(FarmID) REFERENCES Farm(ID),
+	FOREIGN KEY(VillagerID) REFERENCES Villager(ID))
