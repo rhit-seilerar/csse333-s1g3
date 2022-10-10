@@ -159,30 +159,29 @@ create table Shopkeeper (
 )
 
 create table Shop (
-	Name varchar(20),
-	Address varchar(40),
-	Schedule varchar(100),
-	OwnerID int
-	Primary Key (Name),
+	OwnerID int,
+	Address varchar(40) not null,
+	Schedule varchar(100) not null,
+	Name varchar(20) not null unique,
+	Primary Key (OwnerID),
 	Foreign Key (OwnerID) references Shopkeeper(ID)
-	on delete set null
 )
 
 create table ShopBuys (
-	ShopName varchar(20),
+	ShopID int,
 	ItemID int
-	Primary Key (ShopName, ItemID),
-	Foreign Key (ShopName) references Shop(Name)
+	Primary Key (ShopID, ItemID),
+	Foreign Key (ShopID) references Shop(OwnerID)
 	on delete cascade,
 	Foreign Key (ItemID) references Item(ID)
 	on delete cascade
 )
 
 create table ShopSells (
-	ShopName varchar(20),
+	ShopID int,
 	ItemID int
-	Primary Key (ShopName, ItemID),
-	Foreign Key (ShopName) references Shop(Name)
+	Primary Key (ShopID, ItemID),
+	Foreign Key (ShopID) references Shop(OwnerID)
 	on delete cascade,
 	Foreign Key (ItemID) references Item(ID)
 	on delete cascade
