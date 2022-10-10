@@ -1,8 +1,15 @@
+import java.io.FileReader;
+import java.io.Reader;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Types;
+import java.util.Iterator;
 import java.util.Scanner;
+
+import org.json.JSONObject;
+import org.json.JSONString;
+
 
 public class StardewHoes {
    public static void main(String[] args) throws Exception
@@ -33,6 +40,15 @@ public class StardewHoes {
       
       url = url.replace("${dbServer}", defaultServer).replace("${dbName}", defaultDatabase).replace("${user}", username).replace("${pass}", password);
       Connection connection = DriverManager.getConnection(url);
+      
+      // Reader reader = new FileReader("data/Data/Crops.json");
+      // JSONObject root = new JSONObject(reader.read());
+      // JSONObject content = root.getJSONObject("content");
+      // Iterator<String> keys = content.keys();
+      // while(keys.hasNext()) {
+      //    String key = keys.next();
+      // }
+      // reader.close();
       
       String query = "{? = call insert_PlantProduct(?, ?, ?, ?)}";
       CallableStatement statement = connection.prepareCall(query);
