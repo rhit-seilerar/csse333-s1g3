@@ -7,9 +7,9 @@ drop table Item
 
 drop table Animal
 
-drop table AnimalProduct
-
 drop table Produce
+
+drop table AnimalProduct
 
 drop table PlantProduct
 
@@ -39,9 +39,9 @@ drop TABLE HasProfession
 
 drop TABLE FarmSells
 
-drop table Shop
-
 drop table Shopkeeper
+
+drop table Shop
 
 drop table ShopBuys
 

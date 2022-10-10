@@ -8,7 +8,7 @@ CREATE TABLE Villager(
 create table Item (
 	ID int identity(0,1),
 	Name varchar(20) not null,
-	Quality tinyint,
+	Quality tinyint not null,
 	BasePrice int not null
 	Primary key (ID),
 	Check(Quality <= 3),
@@ -22,13 +22,6 @@ create table Animal (
 	on delete cascade
 )
 
-create table AnimalProduct (
-	ID int
-	Primary Key (ID),
-	Foreign Key (ID) references Produce(ID)
-	on delete cascade
-)
-
 create table Produce (
 	ID int
 	Primary key (ID),
@@ -36,11 +29,18 @@ create table Produce (
 	on delete cascade
 )
 
+create table AnimalProduct (
+	ID int
+	Primary Key (ID),
+	Foreign Key (ID) references Produce(ID)
+	on delete cascade
+)
+
 create table PlantProduct (
-	ProduceID int,
-	Type varchar(20)
-	Primary key (ProduceID)
-	Foreign key (ProduceID) references Produce(ID)
+	ID int,
+	Type varchar(20) not null
+	Primary key (ID)
+	Foreign key (ID) references Produce(ID)
 	on delete cascade,
 	Check (Type in ('Vegetable', 'Fruit', 'Flower', 'Forage'))
 )
@@ -150,6 +150,14 @@ CREATE TABLE FarmSells(
 	FOREIGN KEY(FarmerID) REFERENCES Farmer(VillagerID),
 	FOREIGN KEY(ItemID) REFERENCES Item(ID))
 
+create table Shopkeeper (
+	ID int,
+	IsDeleted bit default 0
+	Primary Key (ID),
+	Foreign Key (ID) references Villager(ID)
+	on delete cascade
+)
+
 create table Shop (
 	Name varchar(20),
 	Address varchar(40),
@@ -158,14 +166,6 @@ create table Shop (
 	Primary Key (Name),
 	Foreign Key (OwnerID) references Shopkeeper(ID)
 	on delete set null
-)
-
-create table Shopkeeper (
-	ID int,
-	IsDeleted bit default 0
-	Primary Key (ID),
-	Foreign Key (ID) references Villager(ID)
-	on delete cascade
 )
 
 create table ShopBuys (
