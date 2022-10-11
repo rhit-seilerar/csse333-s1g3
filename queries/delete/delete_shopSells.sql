@@ -1,4 +1,4 @@
-USE StardewHoes
+USE StardewHoes10
 GO
 CREATE PROCEDURE delete_shopSells(
 	@ShopName varchar(20),

@@ -17,7 +17,7 @@ public class StardewHoes {
       String url = "jdbc:sqlserver://${dbServer};databaseName=${dbName};user=${user};password={${pass}}";
       
       String defaultServer   = (args.length >= 1) ? args[0] : "titan.csse.rose-hulman.edu";
-      String defaultDatabase = (args.length >= 2) ? args[1] : "StardewHoes";
+      String defaultDatabase = (args.length >= 2) ? args[1] : "StardewHoes10";
       
       String username, password;
       if(args.length >= 3) {
