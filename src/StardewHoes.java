@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Scanner;
 
-import org.json.JSONObject;
+//import org.json.JSONObject;
 
 public class StardewHoes {
    public static String nextLine(Scanner scanner)
@@ -33,7 +33,6 @@ public class StardewHoes {
       } else {
          System.out.print("What is your username?\n> ");
          username = nextLine(scanner);
-         scanner.close();
       }
       
       if(args.length >= 4) {
@@ -41,7 +40,6 @@ public class StardewHoes {
       } else {
          System.out.print("What is your password?\n> ");
          password = nextLine(scanner);
-         scanner.close();
       }
       
       url = url.replace("${dbServer}", defaultServer).replace("${dbName}", defaultDatabase).replace("${user}", username).replace("${pass}", password);
@@ -57,11 +55,12 @@ public class StardewHoes {
             case 'q':
             case 'x': {
                loop = false;
+               scanner.close();
             } break;
             
             // Populate
             case 'p': {
-               populateDatabase(connection);
+//               populateDatabase(connection);
             } break;
             
             // Get
@@ -108,6 +107,57 @@ public class StardewHoes {
             
             // Update
             case 'u': {
+            	System.out.print("Update selected\nPlease provide the item's id:\n> ");
+                String id = nextLine(scanner);
+                int ID = Integer.parseInt(id);
+                System.out.print("Please provide the item's new name:\n> ");
+                String name = nextLine(scanner);
+                System.out.print("Please provide the item's new quality (0 for normal, 3 for iridium):\n> ");
+                String qual = nextLine(scanner);
+                Object quality = null;
+                System.out.print("Please provide the item's new base price:\n> ");
+                String bp = nextLine(scanner);
+                Object basePrice = null;
+                String query = "{? = call update_Item(?, ?, ?, ?)}";
+                CallableStatement statement = connection.prepareCall(query);
+                statement.registerOutParameter(1, Types.INTEGER);
+                statement.setInt(2, ID);
+                
+                if(name == "null" || name == "") {
+                	name = null;
+                }
+                
+                if(qual == "null" || qual == "") {
+                	quality = null;
+                } else {
+                	quality = Integer.parseInt(qual);
+;                }
+                
+                if(bp == "null" || bp == "") {
+                	basePrice = null;
+                } else {
+                	basePrice = Integer.parseInt(bp);
+                }
+                if (name != null) {
+                	statement.setString(3, name);
+                } else {
+                	statement.setNull(3, Types.VARCHAR);
+                }
+                if (basePrice != null) {
+                	statement.setInt(5, (int) basePrice);
+                } else {
+                	statement.setNull(5, Types.INTEGER);
+                }
+                if(quality != null) {
+                	statement.setInt(4, (int) quality);
+                }
+                else {
+                	statement.setInt(4, Types.INTEGER);
+                }
+                
+                statement.execute();
+                System.out.println("statement executed with return value " + statement.getInt(1));
+                
             } break;
             
             // Delete
@@ -124,7 +174,7 @@ public class StardewHoes {
                statement.execute();
                int result = statement.getInt(1);
                if(result == 0)
-                  System.out.printf("Successfully deleted Item with ID %d\n", id);
+                  System.out.printf("Successfully deleted Item with ID: " + id + "\n");
                else
                   System.out.printf("ERROR in deleteItem: Failed with error code %d\n", result);
             } break;
