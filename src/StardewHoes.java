@@ -66,17 +66,36 @@ public class StardewHoes {
             
             // Get
             case 'g': {
-               System.out.print("Retrieval selected\nPlease provide the item's ID:\n> ");
+               System.out.println("Retieval selected");
+               
+               System.out.print("Please provide the item's ID (leave empty for null):\n> ");
                String idStr = nextLine(scanner);
-                  
-               int ID = Integer.parseInt(idStr);
+               
+               System.out.print("Please provide the item's name (leave empty for null):\n> ");
+               String nameStr = nextLine(scanner);
+               
+               System.out.print("Please provide the item's quality (leave empty for null):\n> ");
+               String qualityStr = nextLine(scanner);
+               
+               System.out.print("Please provide the item's price (leave empty for null):\n> ");
+               String priceStr = nextLine(scanner);
+               
                String query = "{? = call get_Item(?, ?, ?, ?)}";
                CallableStatement statement = connection.prepareCall(query);
                statement.registerOutParameter(1, Types.INTEGER);
-               statement.setInt(2, ID);
-               statement.setNull(3, Types.VARCHAR);
-               statement.setNull(4, Types.TINYINT);
-               statement.setNull(5, Types.INTEGER);
+               
+               if(idStr.length() > 0) statement.setInt(2, Integer.valueOf(idStr));
+               else statement.setNull(2, Types.INTEGER);
+               
+               if(nameStr.length() > 0) statement.setString(3, nameStr);
+               else statement.setNull(3, Types.VARCHAR);
+               
+               if(qualityStr.length() > 0) statement.setInt(4, Integer.valueOf(qualityStr));
+               else statement.setNull(4, Types.TINYINT);
+               
+               if(priceStr.length() > 0) statement.setInt(5, Integer.valueOf(priceStr));
+               else statement.setNull(5, Types.INTEGER);
+               
                ResultSet resultSet = statement.executeQuery();
                
                System.out.println("        | ID         | Name                                     | Quality | Price");
@@ -88,7 +107,7 @@ public class StardewHoes {
                
                int result = statement.getInt(1);
                if(result == 0) {
-                  System.out.printf("Successfully retrieved Item with ID %d\n", ID);
+                  System.out.printf("Successfully retrieved Item with ID %s\n", idStr);
                } else {
                   System.out.printf("ERROR in getItem: Failed with error code %d\n", result);
                }
