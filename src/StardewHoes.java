@@ -3,6 +3,7 @@ import java.io.Reader;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,6 +12,12 @@ import java.util.Scanner;
 import org.json.JSONObject;
 
 public class StardewHoes {
+   public static String nextLine(Scanner scanner)
+   {
+      while(!scanner.hasNextLine());
+      return scanner.nextLine();
+   }
+   
    public static void main(String[] args) throws Exception
    {
       String url = "jdbc:sqlserver://${dbServer};databaseName=${dbName};user=${user};password={${pass}}";
@@ -24,7 +31,7 @@ public class StardewHoes {
          username = args[2];
       } else {
          System.out.print("What is your username?\n> ");
-         username = scanner.nextLine();
+         username = nextLine(scanner);
          scanner.close();
       }
       
@@ -32,7 +39,7 @@ public class StardewHoes {
          password = args[3];
       } else {
          System.out.print("What is your password?\n> ");
-         password = scanner.nextLine();
+         password = nextLine(scanner);
          scanner.close();
       }
       
@@ -42,7 +49,7 @@ public class StardewHoes {
       boolean loop = true;
       while(loop) {
          System.out.print("What action would you like to perform? (type h for help)\n> ");
-         char mode = scanner.nextLine().strip().charAt(0);
+         char mode = nextLine(scanner).strip().charAt(0);
          
          switch(mode) {
             // Quit / Exit
@@ -58,28 +65,74 @@ public class StardewHoes {
             
             // Get
             case 'g': {
+               System.out.println("Retrieval selected\nPlease provide the item's ID:\n> ");
+               String id = nextLine(scanner);
+                  
+               int ID = Integer.parseInt(id);
+               String query = "{? = call get_Item(?)}";
+               CallableStatement statement = connection.prepareCall(query);
+               statement.registerOutParameter(1, Types.INTEGER);
+               statement.setInt(2, ID);
+               ResultSet resultSet = statement.executeQuery();
+               int result = statement.getInt(1);
                
+               if(result == 0) {
+                  System.out.printf("Successfully retrieved Item with ID %d\n", id);
+                  System.out.println(" \t| ID \t| Name \t| Quality \t| Price");
+                  
+                  while(resultSet.next()) {
+                     System.out.printf(" \t| %d \t| %s \t| %d \t| %d\n", resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3), resultSet.getInt(4));
+                  }
+               } else {
+                  System.out.printf("ERROR in getItem: Failed with error code %d\n", result);
+               }
             } break;
             
             // Insert
             case 'i': {
+               System.out.print("Insert selected\nPlease provide the item's name:\n> ");
+               String name = nextLine(scanner);
                
+               System.out.print("Please provide the item's quality (0 for normal, 3 for iridium):\n> ");
+               String quality = nextLine(scanner);
+               
+               System.out.print("Please provide the item's base price:\n> ");
+               String baseprice = nextLine(scanner);
+               
+               int basePrice = Integer.parseInt(baseprice);
+               int qual = Integer.parseInt(quality);
+               
+               insertItem(connection, name, qual, basePrice);
             } break;
             
             // Update
             case 'u': {
-               
             } break;
             
             // Delete
             case 'd': {
+               System.out.println("Delete selected\nPlease provide the item ID:\n>");
+               String id = nextLine(scanner);
                
+               int ID = Integer.parseInt(id);
+               
+               String query = "{? = call delete_Item(?)}";
+               CallableStatement statement = connection.prepareCall(query);
+               statement.registerOutParameter(1, Types.INTEGER);
+               statement.setInt(2, ID);
+               statement.execute();
+               int result = statement.getInt(1);
+               if(result == 0)
+                  System.out.printf("Successfully deleted Item with ID %d\n", id);
+               else
+                  System.out.printf("ERROR in deleteItem: Failed with error code %d\n", result);
             } break;
             
             // Help
+            default:
+               System.out.println("Unknown option. Here are the recognized options:");
             case 'h':
-            case '?':
-            default: {
+            case '?': {
                System.out.println("q or x: Exit");
                System.out.println("p: Populate the database");
                System.out.println("g: Retrieve data from the database");
@@ -87,7 +140,7 @@ public class StardewHoes {
                System.out.println("u: Update data in the database");
                System.out.println("d: Delete data from the database");
                System.out.println("h or ?: Show this help menu");
-            }
+            } break;
          }
       }
       
@@ -106,11 +159,6 @@ public class StardewHoes {
       JSONObject objsRoot = new JSONObject(reader.read());
       reader.close();
       JSONObject objsContent = objsRoot.getJSONObject("content");
-      
-      reader = new FileReader("data/Data/FarmAnimals.json");
-      JSONObject animalsRoot = new JSONObject(reader.read());
-      reader.close();
-      JSONObject animalsContent = animalsRoot.getJSONObject("content");
       
       HashMap<String, Integer> IdMap = new HashMap<>();
       
@@ -177,6 +225,11 @@ public class StardewHoes {
          IdMap.put(itemId, itemDBId);
       }
       
+      reader = new FileReader("data/Data/FarmAnimals.json");
+      JSONObject animalsRoot = new JSONObject(reader.read());
+      reader.close();
+      JSONObject animalsContent = animalsRoot.getJSONObject("content");
+      
       keys = animalsContent.keys();
       while(keys.hasNext()) {
          String name = keys.next();
@@ -193,6 +246,209 @@ public class StardewHoes {
          if(produceDBId1 != null) insertProduces(connection, animalDBId, produceDBId1);
          if(produceDBId2 != null) insertProduces(connection, animalDBId, produceDBId2);
       }
+      
+      reader = new FileReader("data/Data/CookingRecipes.json");
+      JSONObject cookingRoot = new JSONObject(reader.read());
+      reader.close();
+      JSONObject cookingContent = cookingRoot.getJSONObject("content");
+      
+      keys = cookingContent.keys();
+      while(keys.hasNext()) {
+         String name = keys.next();
+         String[] values = cookingContent.getString(name).split("/");
+         String[] inputs = values[0].split(" ");
+         String[] outputs = values[2].split(" ");
+         
+         if(outputs.length > 2) {
+            System.out.println("Error! Recipe has more than one yield type");
+            break;
+         }
+         
+         Integer resultId = IdMap.get(outputs[0]);
+         
+         for(int i = 0; i < inputs.length; i += 2) {
+            Integer ingredientId = IdMap.get(inputs[i]);
+            insertHasIngredient(connection, ingredientId, resultId);
+         }
+      }
+      
+      int mrQiId1 = insertShopkeeper(connection, "MisterQi1");
+      int mrQiId2 = insertShopkeeper(connection, "MisterQi2");
+      IdMap.put("MisterQi1", mrQiId1);
+      IdMap.put("MisterQi2", mrQiId2);
+      insertShop(connection, "WalnutRoom", "Ginger Island 1", "Always", mrQiId1);
+      insertShop(connection, "Casino", "Calico Desert 2, in the back of the Oasis", "9a-11:50p", mrQiId2);
+      
+      String name = "TravelingMerchant";
+      int id = insertShopkeeper(connection, name);
+      IdMap.put(name, id);
+      insertShop(connection, "TravelingCart", "Cindersap Forest, north of the upper pond", "6am to 8pm on Fridays and Saturdays, and 5pm to 2am during the Night Market.", id);
+      
+      name = "DesertTrader";
+      id = insertShopkeeper(connection, name);
+      IdMap.put(name, id);
+      insertShop(connection, "TradingHut", "Next to the road through the Calico Desert", "6am to 2am every day, except during the Night Market.", id);
+      
+      name = "Morris";
+      id = insertShopkeeper(connection, name);
+      IdMap.put(name, id);
+      insertShop(connection, "JojaMart", "Pelican Town 3", "Permanently closed.", id);
+      
+      name = "VolcanicDwarf";
+      id = insertShopkeeper(connection, name);
+      IdMap.put(name, id);
+      insertShop(connection, "VolcanoShop", "In level 5 of the Ginger Island Volcano", "Always open.", id);
+      
+      name = "IslandTrader";
+      id = insertShopkeeper(connection, name);
+      IdMap.put(name, id);
+      insertShop(connection, "IslandTradingStand", "On the way to the Ginger Island Volcano", "Always open.", id);
+      
+      name = "HatMouse";
+      id = insertShopkeeper(connection, name);
+      IdMap.put(name, id);
+      insertShop(connection, "HatShop", "Abandoned house in the Cindersap Forest", "Always open.", id);
+      
+      name = "Bear";
+      IdMap.put(name, insertVillager(connection, name));
+      
+      name = "Birdie";
+      IdMap.put(name, insertVillager(connection, name));
+      
+      name = "Gil";
+      IdMap.put(name, insertVillager(connection, name));
+      
+      name = "Gunther";
+      IdMap.put(name, insertVillager(connection, name));
+      
+      reader = new FileReader("data/Data/NPCDispositions.json");
+      JSONObject npcRoot = new JSONObject(reader.read());
+      reader.close();
+      JSONObject npcContent = npcRoot.getJSONObject("content");
+      
+      keys = npcContent.keys();
+      while(keys.hasNext()) {
+         name = keys.next();
+         
+         if(name.equals("Marlon")) {
+            id = insertShopkeeper(connection, name);
+            insertShop(connection, "AdventurerGuild", "Mountain 1", "2pm to 10pm each day, except for festivals.", id);
+         } else if(name.equals("Flint")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "Blacksmith", "Mountain 1", "9am to 4pm each day, except for Winter 16, Fridays, and festivals.", id);
+         } else if(name.equals("Robin")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "CarpentersShop", "24 Mountain Road", "9am to 5pm each day, except for Summer 18, Tuesdays, and festivals", id);
+         } else if(name.equals("Willy")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "FishShop", "Beach 1", "8am to 5pm each day, except for non-rainy Saturdays, 10am to 2am on Spring 9, and festivals.", id);
+         } else if(name.equals("Harvey")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "Clinic", "Pelican Town 1", "9am to 2pm on Tuesdays and Thursdays, and 9am to 12pm on Sundays, Mondays, Wednesdays, and Fridays. Closed for festivals.", id);
+         } else if(name.equals("Alex")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "IceCreamStand", "Near the museum", "1pm to 5pm in the summer, except for Wednesdays, Summer 16, and rainy days.", id);
+         } else if(name.equals("Marnie")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "AnimalRanch", "Cindersap Forest 1", "9am to 4pm, except for Mondays, Tuesdays, Fall 18, Winter 18, and festivals.", id);
+         } else if(name.equals("Sandy")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "Oasis", "Calico Desert 2", "9am to 11:50pm, except for festivals.", id);
+         } else if(name.equals("Pierre")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "GeneralShop", "Pelican Town 2", "9am to 5pm, except for festivals.", id);
+         } else if(name.equals("Gus")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "Saloon", "Pelican Town 3", "12pm to 12am, except for festivals and until 4:30pm on Fall 4.", id);
+         } else if(name.equals("Wizard")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "WizardTower", "Cindersap Forest 2", "6am to 11pm, except for Spring 24 and Winter 8.", id);
+         } else if(name.equals("Lewis")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "MovieTheater", "Pelican Town 3", "9am to 9pm every day.", id);
+         } else if(name.equals("Dwarf")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "MinesShop", "In the Mountain mines", "Always open.", id);
+         } else if(name.equals("Krobus")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "SewerShop", "In the Pelican Town sewers", "Always open.", id);
+         } else {
+            id = insertVillager(connection, name);
+         }
+         
+         IdMap.put(name, id);
+      }
+      
+      //TODO: Profession, Generates, multiplier
+   }
+   
+   public static void insertShop(Connection connection, String name, String address, String schedule, int shopkeeperId) throws Exception
+   {
+      String query = "{? = call insert_Shop(?, ?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setString(2, name);
+      statement.setString(3, address);
+      statement.setString(4, schedule);
+      statement.setInt(5, shopkeeperId);
+      statement.execute();
+      int result = statement.getInt(1);
+      
+      if(result == 0)
+         System.out.printf("Successfully inserted Shop with name %s, address %s, schedule %s, and shopkeeper %d.\n", name, address, schedule, shopkeeperId);
+      else
+         System.out.printf("ERROR in insertShopkeeper: Failed with error code %d.\n", result);
+   }
+   
+   public static int insertShopkeeper(Connection connection, String name) throws Exception
+   {
+      String query = "{? = call insert_Shopkeeper(?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setString(2, name);
+      statement.registerOutParameter(3, Types.INTEGER);
+      statement.execute();
+      int result = statement.getInt(1);
+      int id = statement.getInt(3);
+      
+      if(result == 0)
+         System.out.printf("Successfully inserted Shopkeeper with name %s.\n", name);
+      else
+         System.out.printf("ERROR in insertShopkeeper: Failed with error code %d.\n", result);
+      
+      return id;
+   }
+   
+   public static int insertVillager(Connection connection, String name) throws Exception
+   {
+      String query = "{? = call insert_Villager(?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setString(2, name);
+      statement.registerOutParameter(3, Types.INTEGER);
+      statement.execute();
+      int result = statement.getInt(1);
+      int id = statement.getInt(3);
+      
+      if(result == 0)
+         System.out.printf("Successfully inserted Villager with name %s.\n", name);
+      else
+         System.out.printf("ERROR in insertVillager: Failed with error code %d.\n", result);
+      
+      return id;
    }
    
    public static void insertProduces(Connection connection, int animalID, int produceID) throws Exception
@@ -204,6 +460,27 @@ public class StardewHoes {
       statement.setInt(3, produceID);
       statement.execute();
       int result = statement.getInt(1);
+      
+      if(result == 0)
+         System.out.printf("Successfully inserted Produces relation for animal %d and animal product %d.\n", animalID, produceID);
+      else
+         System.out.printf("ERROR in insertProduces: Failed with error code %d.\n", result);
+   }
+   
+   public static void insertHasIngredient(Connection connection, int ingredientId, int foodId) throws Exception
+   {
+      String query = "{? = call insert_HasIngredient(?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setInt(2, ingredientId);
+      statement.setInt(3, foodId);
+      statement.execute();
+      int result = statement.getInt(1);
+      
+      if(result == 0)
+         System.out.printf("Successfully inserted HasIngredient relation for ingredient %d and food %d.\n", ingredientId, foodId);
+      else
+         System.out.printf("ERROR in insertHasIngredient: Failed with error code %d.\n", result);
    }
    
    public static int insertSeed(Connection connection, String name, int quality, int basePrice, String season) throws Exception
@@ -219,6 +496,11 @@ public class StardewHoes {
       statement.execute();
       int result = statement.getInt(1);
       int id = statement.getInt(6);
+      
+      if(result == 0)
+         System.out.printf("Successfully inserted Seed with name %s, quality %d, price %d, and season %s.\n", name, quality, basePrice, season);
+      else
+         System.out.printf("ERROR in insertSeed: Failed with error code %d.\n", result);
       
       return id;
    }
@@ -237,6 +519,11 @@ public class StardewHoes {
       int result = statement.getInt(1);
       int id = statement.getInt(6);
       
+      if(result == 0)
+         System.out.printf("Successfully inserted ArtisanGood with name %s, quality %d, price %d, and multiplier %f.\n", name, quality, basePrice, multiplier);
+      else
+         System.out.printf("ERROR in insertArtisanGood: Failed with error code %d.\n", result);
+      
       return id;
    }
    
@@ -254,6 +541,11 @@ public class StardewHoes {
       int result = statement.getInt(1);
       int id = statement.getInt(6);
       
+      if(result == 0)
+         System.out.printf("Successfully inserted PlantProduct with name %s (%s), quality %d, and price %d.\n", name, type, quality, basePrice);
+      else
+         System.out.printf("ERROR in insertPlantProduct: Failed with error code %d.\n", result);
+      
       return id;
    }
    
@@ -268,6 +560,11 @@ public class StardewHoes {
       statement.execute();
       int result = statement.getInt(1);
       int id = statement.getInt(4);
+      
+      if(result == 0)
+         System.out.printf("Successfully inserted Animal with name %s and price %d.\n", name, basePrice);
+      else
+         System.out.printf("ERROR in insertAnimal: Failed with error code %d.\n", result);
       
       return id;
    }
@@ -285,6 +582,11 @@ public class StardewHoes {
       int result = statement.getInt(1);
       int id = statement.getInt(5);
       
+      if(result == 0)
+         System.out.printf("Successfully inserted AnimalProduct with name %s, qualiy %d, and price %d.\n", name, quality, basePrice);
+      else
+         System.out.printf("ERROR in insertAnimalProduct: Failed with error code %d.\n", result);
+      
       return id;
    }
    
@@ -300,6 +602,11 @@ public class StardewHoes {
       statement.execute();
       int result = statement.getInt(1);
       int id = statement.getInt(5);
+      
+      if(result == 0)
+         System.out.printf("Successfully inserted Produce with name %s, qualiy %d, and price %d.\n", name, quality, basePrice);
+      else
+         System.out.printf("ERROR in insertProduce: Failed with error code %d.\n", result);
       
       return id;
    }
@@ -317,6 +624,11 @@ public class StardewHoes {
       int result = statement.getInt(1);
       int id = statement.getInt(5);
       
+      if(result == 0)
+         System.out.printf("Successfully inserted Fish with name %s, qualiy %d, and price %d.\n", name, quality, basePrice);
+      else
+         System.out.printf("ERROR in insertFish: Failed with error code %d.\n", result);
+      
       return id;
    }
    
@@ -333,6 +645,11 @@ public class StardewHoes {
       int result = statement.getInt(1);
       int id = statement.getInt(5);
       
+      if(result == 0)
+         System.out.printf("Successfully inserted Food with name %s, qualiy %d, and price %d.\n", name, quality, basePrice);
+      else
+         System.out.printf("ERROR in insertFood: Failed with error code %d.\n", result);
+      
       return id;
    }
    
@@ -348,6 +665,11 @@ public class StardewHoes {
       statement.execute();
       int result = statement.getInt(1);
       int id = statement.getInt(5);
+      
+      if(result == 0)
+         System.out.printf("Successfully inserted Item with name %s, qualiy %d, and price %d.\n", name, quality, basePrice);
+      else
+         System.out.printf("ERROR in insertItem: Failed with error code %d.\n", result);
       
       return id;
    }
