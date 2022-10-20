@@ -13,7 +13,7 @@ create or alter procedure insert_ArtisanGood (
 		return 1
 	end
 	if @Multiplier is null begin
-		raiserror('ERROR in insert_ArtisanGood: Multiplier cannot be null.', 14, 1, @ID)
+		raiserror('ERROR in insert_ArtisanGood: Multiplier cannot be null.', 14, 2, @ID)
 		return 2
 	end
 	
@@ -32,5 +32,5 @@ create or alter procedure insert_ArtisanGood (
 		return @Status
 	end
 
-	print 'insert_Produce: Successfully inserted the Artisan Good ' + @Name + ' with quality ' + convert(varchar(2), @Quality) + ' and price ' + convert(varchar(40), @BasePrice) + ' into the ArtisanGood table.'
+	print 'insert_ArtisanGood: Successfully inserted the Artisan Good ' + @Name + ' with quality ' + convert(varchar(2), @Quality) + ' and price ' + convert(varchar(40), @BasePrice) + ' into the ArtisanGood table.'
 go
