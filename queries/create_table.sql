@@ -115,20 +115,24 @@ CREATE TABLE Farm(
 	ID int IDENTITY(1,1) NOT NULL PRIMARY KEY,
 	Season varchar(6) NULL,
 	[Name] varchar(30) NULL,
-	CHECK  (Season IN ('Spring', 'Winter', 'Fall', 'Summer')))
+	CHECK  (Season IN ('Spring', 'Summer', 'Fall', 'Winter')))
 
 CREATE TABLE Farmer(
 	VillagerID int NOT NULL PRIMARY KEY,
 	FarmID int NOT NULL,
-	FOREIGN KEY(FarmID) REFERENCES Farm(ID),
-	FOREIGN KEY(VillagerID) REFERENCES Villager(ID))
+	FOREIGN KEY(FarmID) REFERENCES Farm(ID)
+	on delete cascade,
+	FOREIGN KEY(VillagerID) REFERENCES Villager(ID)
+	on delete cascade)
 
 CREATE TABLE HasIngredient(
 	IngredientID int NOT NULL,
 	FoodID int NOT NULL,
 	PRIMARY KEY(IngredientID, FoodID),
-	FOREIGN KEY(IngredientID) REFERENCES Item(ID),
-	FOREIGN KEY(FoodID) REFERENCES Food(ID))
+	FOREIGN KEY(IngredientID) REFERENCES Item(ID)
+	on delete cascade,
+	FOREIGN KEY(FoodID) REFERENCES Food(ID)
+	on delete cascade)
 
 CREATE TABLE Profession(
 	ID int IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -139,16 +143,20 @@ CREATE TABLE HasProfession(
 	ProfessionID int NOT NULL,
 	FarmerID int NOT NULL,
 	PRIMARY KEY (ProfessionID, FarmerID),
-	FOREIGN KEY(FarmerID) REFERENCES Farmer(VillagerID),
-	FOREIGN KEY(ProfessionID) REFERENCES Profession(ID))
+	FOREIGN KEY(FarmerID) REFERENCES Farmer(VillagerID)
+	on delete cascade,
+	FOREIGN KEY(ProfessionID) REFERENCES Profession(ID)
+	on delete cascade)
 
 CREATE TABLE FarmSells(
 	FarmerID int NOT NULL,
 	ItemID int NOT NULL,
 	Price money NULL,
 	PRIMARY KEY (FarmerID, ItemID),
-	FOREIGN KEY(FarmerID) REFERENCES Farmer(VillagerID),
-	FOREIGN KEY(ItemID) REFERENCES Item(ID))
+	FOREIGN KEY(FarmerID) REFERENCES Farmer(VillagerID)
+	on delete cascade,
+	FOREIGN KEY(ItemID) REFERENCES Item(ID)
+	on delete cascade)
 
 create table Shopkeeper (
 	ID int,
