@@ -3,6 +3,7 @@ import java.io.Reader;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,6 +12,12 @@ import java.util.Scanner;
 import org.json.JSONObject;
 
 public class StardewHoes {
+   public static String nextLine(Scanner scanner)
+   {
+      while(!scanner.hasNextLine());
+      return scanner.nextLine();
+   }
+   
    public static void main(String[] args) throws Exception
    {
       String url = "jdbc:sqlserver://${dbServer};databaseName=${dbName};user=${user};password={${pass}}";
@@ -24,7 +31,7 @@ public class StardewHoes {
          username = args[2];
       } else {
          System.out.print("What is your username?\n> ");
-         username = scanner.nextLine();
+         username = nextLine(scanner);
          scanner.close();
       }
       
@@ -32,7 +39,7 @@ public class StardewHoes {
          password = args[3];
       } else {
          System.out.print("What is your password?\n> ");
-         password = scanner.nextLine();
+         password = nextLine(scanner);
          scanner.close();
       }
       
@@ -42,7 +49,7 @@ public class StardewHoes {
       boolean loop = true;
       while(loop) {
          System.out.print("What action would you like to perform? (type h for help)\n> ");
-         char mode = scanner.nextLine().strip().charAt(0);
+         char mode = nextLine(scanner).strip().charAt(0);
          
          switch(mode) {
             // Quit / Exit
@@ -58,28 +65,74 @@ public class StardewHoes {
             
             // Get
             case 'g': {
+               System.out.println("Retrieval selected\nPlease provide the item's ID:\n> ");
+               String id = nextLine(scanner);
+                  
+               int ID = Integer.parseInt(id);
+               String query = "{? = call get_Item(?)}";
+               CallableStatement statement = connection.prepareCall(query);
+               statement.registerOutParameter(1, Types.INTEGER);
+               statement.setInt(2, ID);
+               ResultSet resultSet = statement.executeQuery();
+               int result = statement.getInt(1);
                
+               if(result == 0) {
+                  System.out.printf("Successfully retrieved Item with ID %d\n", id);
+                  System.out.println(" \t| ID \t| Name \t| Quality \t| Price");
+                  
+                  while(resultSet.next()) {
+                     System.out.printf(" \t| %d \t| %s \t| %d \t| %d\n", resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3), resultSet.getInt(4));
+                  }
+               } else {
+                  System.out.printf("ERROR in getItem: Failed with error code %d\n", result);
+               }
             } break;
             
             // Insert
             case 'i': {
+               System.out.print("Insert selected\nPlease provide the item's name:\n> ");
+               String name = nextLine(scanner);
                
+               System.out.print("Please provide the item's quality (0 for normal, 3 for iridium):\n> ");
+               String quality = nextLine(scanner);
+               
+               System.out.print("Please provide the item's base price:\n> ");
+               String baseprice = nextLine(scanner);
+               
+               int basePrice = Integer.parseInt(baseprice);
+               int qual = Integer.parseInt(quality);
+               
+               insertItem(connection, name, qual, basePrice);
             } break;
             
             // Update
             case 'u': {
-               
             } break;
             
             // Delete
             case 'd': {
+               System.out.println("Delete selected\nPlease provide the item ID:\n>");
+               String id = nextLine(scanner);
                
+               int ID = Integer.parseInt(id);
+               
+               String query = "{? = call delete_Item(?)}";
+               CallableStatement statement = connection.prepareCall(query);
+               statement.registerOutParameter(1, Types.INTEGER);
+               statement.setInt(2, ID);
+               statement.execute();
+               int result = statement.getInt(1);
+               if(result == 0)
+                  System.out.printf("Successfully deleted Item with ID %d\n", id);
+               else
+                  System.out.printf("ERROR in deleteItem: Failed with error code %d\n", result);
             } break;
             
             // Help
+            default:
+               System.out.println("Unknown option. Here are the recognized options:");
             case 'h':
-            case '?':
-            default: {
+            case '?': {
                System.out.println("q or x: Exit");
                System.out.println("p: Populate the database");
                System.out.println("g: Retrieve data from the database");
@@ -87,7 +140,7 @@ public class StardewHoes {
                System.out.println("u: Update data in the database");
                System.out.println("d: Delete data from the database");
                System.out.println("h or ?: Show this help menu");
-            }
+            } break;
          }
       }
       
@@ -547,6 +600,11 @@ public class StardewHoes {
       statement.execute();
       int result = statement.getInt(1);
       int id = statement.getInt(5);
+      
+      if(result == 0)
+         System.out.printf("Successfully inserted Item with name %s, qualiy %d, and price %d.\n", name, quality, basePrice);
+      else
+         System.out.printf("ERROR in insertItem: Failed with error code %d.\n", result);
       
       return id;
    }
