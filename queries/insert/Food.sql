@@ -22,7 +22,7 @@ create or alter procedure insert_Food (
 	values (@ID)
 	set @Status = @@ERROR
 	if @Status != 0 begin
-		raiserror('ERROR in insert_Food: Failed to insert the food %s with quality %d and price %d into the Food table.', 14, 1, @Name, @Quality, @BasePrice)
+		raiserror('ERROR in insert_Food: Failed to insert the food %s with price %d into the Food table.', 14, 1, @Name, @BasePrice)
 		return @Status
 	end
 
