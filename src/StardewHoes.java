@@ -1,9 +1,10 @@
-import java.io.FileReader;
-import java.io.Reader;
+import java.io.File;
+import java.nio.file.Files;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -150,14 +151,13 @@ public class StardewHoes {
    @SuppressWarnings("unchecked")
    public static void populateDatabase(Connection connection) throws Exception
    {
-      Reader reader = new FileReader("data/Data/Crops.json");
-      JSONObject cropsRoot = new JSONObject(reader.read());
-      reader.close();
+      String fileData = Files.readString((new File("data/Data/Crops.json")).toPath());
+      System.out.println(fileData);
+      JSONObject cropsRoot = new JSONObject(fileData);
       JSONObject cropsContent = cropsRoot.getJSONObject("content");
       
-      reader = new FileReader("data/Data/ObjectInformation.json");
-      JSONObject objsRoot = new JSONObject(reader.read());
-      reader.close();
+      fileData = Files.readString((new File("data/Data/ObjectInformation.json")).toPath());
+      JSONObject objsRoot = new JSONObject(fileData);
       JSONObject objsContent = objsRoot.getJSONObject("content");
       
       HashMap<String, Integer> IdMap = new HashMap<>();
@@ -179,11 +179,11 @@ public class StardewHoes {
             if(season.equals("Spring/Summer/Fall")) season = "All";
             if(!season.contains("Spring") && !season.contains("Summer") && !season.contains("Fall")) season = "None";
             
-            itemDBId = insertSeed(connection, name, 0, price, season);
+            itemDBId = insertSeed(connection, name, null, price, season);
          } else if(types[0].equals("Fish")) {
-            itemDBId = insertFish(connection, name, 0, price);
+            itemDBId = insertFish(connection, name, null, price);
          } else if(types[0].equals("Cooking")) {
-            itemDBId = insertFood(connection, name, 0, price);
+            itemDBId = insertFood(connection, name, null, price);
          } else if(types[0].equals("Basic")) {
             if(types.length > 1) {
                int category = Integer.valueOf(types[1]);
@@ -192,42 +192,40 @@ public class StardewHoes {
                   case -6:
                   case -14:
                   case -18: {
-                     itemDBId = insertAnimalProduct(connection, name, 0, price);
+                     itemDBId = insertAnimalProduct(connection, name, null, price);
                   } break;
                   
                   case 17: {
-                     if(itemId.equals("417")) itemDBId = insertPlantProduct(connection, name, 0, price, "Fruit");
-                     else if(itemId.equals("430")) itemDBId = insertAnimalProduct(connection, name, 0, price);
-                     else itemDBId = insertItem(connection, name, 0, price);
+                     if(itemId.equals("417")) itemDBId = insertProduce(connection, name, null, price);
+                     else if(itemId.equals("430")) itemDBId = insertAnimalProduct(connection, name, null, price);
+                     else itemDBId = insertItem(connection, name, null, price);
                   } break;
                   
                   case -26:
                   case -27: {
-                     double multiplier = 0; // TODO: Handle this
-                     itemDBId = insertArtisanGood(connection, name, 0, price, multiplier);
+                     itemDBId = insertArtisanGood(connection, name, null, price, 0.0);
                   } break;
                   
-                  case -74: itemDBId = insertPlantProduct(connection, name, 0, price, "Vegetable"); break;
-                  case -79: itemDBId = insertPlantProduct(connection, name, 0, price, "Fruit"); break;
-                  case -80: itemDBId = insertPlantProduct(connection, name, 0, price, "Flower"); break;
-                  case -81: itemDBId = insertPlantProduct(connection, name, 0, price, "Forage"); break;
+                  case -74: itemDBId = insertPlantProduct(connection, name, null, price, "Vegetable"); break;
+                  case -79: itemDBId = insertPlantProduct(connection, name, null, price, "Fruit"); break;
+                  case -80: itemDBId = insertPlantProduct(connection, name, null, price, "Flower"); break;
+                  case -81: itemDBId = insertPlantProduct(connection, name, null, price, "Forage"); break;
                   
-                  default: itemDBId = insertItem(connection, name, 0, price);
+                  default: itemDBId = insertItem(connection, name, null, price);
                }
             } else {
-               itemDBId = insertProduce(connection, name, 0, price);
+               itemDBId = insertProduce(connection, name, null, price);
             }
          } else {
             // Minerals, Quest, asdf, Crafting, Arch, Ring
-            itemDBId = insertItem(connection, name, 0, price);
+            itemDBId = insertItem(connection, name, null, price);
          }
          
-         IdMap.put(itemId, itemDBId);
+         IdMap.put(name, itemDBId);
       }
       
-      reader = new FileReader("data/Data/FarmAnimals.json");
-      JSONObject animalsRoot = new JSONObject(reader.read());
-      reader.close();
+      fileData = Files.readString((new File("data/Data/FarmAnimals.json")).toPath());
+      JSONObject animalsRoot = new JSONObject(fileData);
       JSONObject animalsContent = animalsRoot.getJSONObject("content");
       
       keys = animalsContent.keys();
@@ -238,7 +236,14 @@ public class StardewHoes {
          Integer produceDBId1 = IdMap.get(values[2]);
          Integer produceDBId2 = IdMap.get(values[3]);
          
-         int price = 0; // TODO: Get price working
+         Integer price = null;
+         if(name.contains("Chicken")) price = 800;
+         else if(name.contains("Duck")) price = 1200;
+         else if(name.contains("Rabbit")) price = 8000;
+         else if(name.contains("Cow")) price = 1500;
+         else if(name.contains("Goat")) price = 4000;
+         else if(name.contains("Sheep")) price = 8000;
+         else if(name.contains("Pig")) price = 16000;
          
          int animalDBId = insertAnimal(connection, name, price);
          IdMap.put(name, animalDBId);
@@ -247,9 +252,8 @@ public class StardewHoes {
          if(produceDBId2 != null) insertProduces(connection, animalDBId, produceDBId2);
       }
       
-      reader = new FileReader("data/Data/CookingRecipes.json");
-      JSONObject cookingRoot = new JSONObject(reader.read());
-      reader.close();
+      fileData = Files.readString((new File("data/Data/CookingRecipes.json")).toPath());
+      JSONObject cookingRoot = new JSONObject(fileData);
       JSONObject cookingContent = cookingRoot.getJSONObject("content");
       
       keys = cookingContent.keys();
@@ -321,9 +325,8 @@ public class StardewHoes {
       name = "Gunther";
       IdMap.put(name, insertVillager(connection, name));
       
-      reader = new FileReader("data/Data/NPCDispositions.json");
-      JSONObject npcRoot = new JSONObject(reader.read());
-      reader.close();
+      fileData = Files.readString((new File("data/Data/NPCDispositions.json")).toPath());
+      JSONObject npcRoot = new JSONObject(fileData);
       JSONObject npcContent = npcRoot.getJSONObject("content");
       
       keys = npcContent.keys();
@@ -392,27 +395,194 @@ public class StardewHoes {
          IdMap.put(name, id);
       }
       
-      //TODO: Profession, Generates, multiplier
+      insertProfession(connection, "AnimalProduct Price", 1.2);
+      insertProfession(connection, "PlantProduct Price", 1.1);
+      insertProfession(connection, "ArtisanGood Price", 1.4);
+      insertProfession(connection, "MetalBar Price", 1.5);
+      insertProfession(connection, "Gem Price", 1.3);
+      insertProfession(connection, "Wood Price", 1.25);
+      insertProfession(connection, "Syrup Price", 1.25);
+      insertProfession(connection, "Fish Price", 1.25);
+      insertProfession(connection, "Fish Price", 1.5);
+      
+      insertGenerates(connection, IdMap.get("Tea Leaves"), IdMap.get("Green Tea"));
+      insertGenerates(connection, IdMap.get("Coffee Bean"), IdMap.get("Coffee"));
+      insertGenerates(connection, IdMap.get("Wool"), IdMap.get("Cloth"));
+      
+      updateArtisanGood(connection, IdMap.get("Juice"), null, null, 0, 2.25);
+      Statement statement = connection.createStatement();
+      ResultSet resultSet = statement.executeQuery("select id from PlantProduct where Type = 'Vegetable'");
+      while(resultSet.next()) {
+         id = resultSet.getInt("ID");
+         insertGenerates(connection, id, IdMap.get("Juice"));
+      }
+      
+      updateArtisanGood(connection, IdMap.get("Honey"), null, null, null, 2.0);
+      statement = connection.createStatement();
+      resultSet = statement.executeQuery("select id from PlantProduct where Type = 'Flower'");
+      while(resultSet.next()) {
+         id = resultSet.getInt("ID");
+         insertGenerates(connection, id, IdMap.get("Honey"));
+      }
+      
+      int id0 = insertArtisanGood(connection, "Wine", 0, 0, 3.0*1.00);
+      int id1 = insertArtisanGood(connection, "Wine", 1, 0, 3.0*1.25);
+      int id2 = insertArtisanGood(connection, "Wine", 2, 0, 3.0*1.50);
+      int id3 = insertArtisanGood(connection, "Wine", 3, 0, 3.0*2.00);
+      statement = connection.createStatement();
+      resultSet = statement.executeQuery("select id from PlantProduct where Type = 'Fruit'");
+      while(resultSet.next()) {
+         id = resultSet.getInt("ID");
+         insertGenerates(connection, id, id0);
+         insertGenerates(connection, id, id1);
+         insertGenerates(connection, id, id2);
+         insertGenerates(connection, id, id3);
+      }
+      
+      id0 = insertArtisanGood(connection, "Pale Ale", 0, 300, 0);
+      id1 = insertArtisanGood(connection, "Pale Ale", 1, 375, 0);
+      id2 = insertArtisanGood(connection, "Pale Ale", 2, 450, 0);
+      id3 = insertArtisanGood(connection, "Pale Ale", 3, 600, 0);
+      insertGenerates(connection, IdMap.get("Hops"), id0);
+      insertGenerates(connection, IdMap.get("Hops"), id1);
+      insertGenerates(connection, IdMap.get("Hops"), id2);
+      insertGenerates(connection, IdMap.get("Hops"), id3);
+      
+      id0 = insertArtisanGood(connection, "Beer", 0, 200, 0);
+      id1 = insertArtisanGood(connection, "Beer", 1, 250, 0);
+      id2 = insertArtisanGood(connection, "Beer", 2, 300, 0);
+      id3 = insertArtisanGood(connection, "Beer", 3, 400, 0);
+      insertGenerates(connection, IdMap.get("Wheat"), id0);
+      insertGenerates(connection, IdMap.get("Wheat"), id1);
+      insertGenerates(connection, IdMap.get("Wheat"), id2);
+      insertGenerates(connection, IdMap.get("Wheat"), id3);
+      
+      id0 = insertArtisanGood(connection, "Mead", 0, 200, 0);
+      id1 = insertArtisanGood(connection, "Mead", 1, 250, 0);
+      id2 = insertArtisanGood(connection, "Mead", 2, 300, 0);
+      id3 = insertArtisanGood(connection, "Mead", 3, 400, 0);
+      insertGenerates(connection, IdMap.get("Honey"), id0);
+      insertGenerates(connection, IdMap.get("Honey"), id1);
+      insertGenerates(connection, IdMap.get("Honey"), id2);
+      insertGenerates(connection, IdMap.get("Honey"), id3);
+      
+      id0 = insertArtisanGood(connection, "Cheese", 0, 230, 0);
+      id1 = insertArtisanGood(connection, "Cheese", 1, 287, 0);
+      id2 = insertArtisanGood(connection, "Cheese", 2, 345, 0);
+      id3 = insertArtisanGood(connection, "Cheese", 3, 460, 0);
+      insertGenerates(connection, IdMap.get("Milk"), id0);
+      insertGenerates(connection, IdMap.get("Milk"), id1);
+      insertGenerates(connection, IdMap.get("Milk"), id2);
+      insertGenerates(connection, IdMap.get("Milk"), id3);
+      insertGenerates(connection, IdMap.get("Large Milk"), id0);
+      insertGenerates(connection, IdMap.get("Large Milk"), id1);
+      insertGenerates(connection, IdMap.get("Large Milk"), id2);
+      insertGenerates(connection, IdMap.get("Large Milk"), id3);
+      
+      id0 = insertArtisanGood(connection, "Goat Cheese", 0, 400, 0);
+      id1 = insertArtisanGood(connection, "Goat Cheese", 1, 500, 0);
+      id2 = insertArtisanGood(connection, "Goat Cheese", 2, 600, 0);
+      id3 = insertArtisanGood(connection, "Goat Cheese", 3, 800, 0);
+      insertGenerates(connection, IdMap.get("Goat Milk"), id0);
+      insertGenerates(connection, IdMap.get("Goat Milk"), id1);
+      insertGenerates(connection, IdMap.get("Goat Milk"), id2);
+      insertGenerates(connection, IdMap.get("Goat Milk"), id3);
+      insertGenerates(connection, IdMap.get("L. Goat Milk"), id0);
+      insertGenerates(connection, IdMap.get("L. Goat Milk"), id1);
+      insertGenerates(connection, IdMap.get("L. Goat Milk"), id2);
+      insertGenerates(connection, IdMap.get("L. Goat Milk"), id3);
+      
+      id0 = insertArtisanGood(connection, "Mayonnaise", 0, 190, 0);
+      id1 = insertArtisanGood(connection, "Mayonnaise", 1, 237, 0);
+      id2 = insertArtisanGood(connection, "Mayonnaise", 2, 285, 0);
+      id3 = insertArtisanGood(connection, "Mayonnaise", 3, 380, 0);
+      insertGenerates(connection, IdMap.get("Egg"), id0);
+      insertGenerates(connection, IdMap.get("Egg"), id1);
+      insertGenerates(connection, IdMap.get("Egg"), id2);
+      insertGenerates(connection, IdMap.get("Egg"), id3);
+      insertGenerates(connection, IdMap.get("Large Egg"), id0);
+      insertGenerates(connection, IdMap.get("Large Egg"), id1);
+      insertGenerates(connection, IdMap.get("Large Egg"), id2);
+      insertGenerates(connection, IdMap.get("Large Egg"), id3);
+      insertGenerates(connection, IdMap.get("Ostrich Egg"), id0);
+      insertGenerates(connection, IdMap.get("Ostrich Egg"), id1);
+      insertGenerates(connection, IdMap.get("Ostrich Egg"), id2);
+      insertGenerates(connection, IdMap.get("Ostrich Egg"), id3);
+      insertGenerates(connection, IdMap.get("Golden Egg"), id0);
+      insertGenerates(connection, IdMap.get("Golden Egg"), id1);
+      insertGenerates(connection, IdMap.get("Golden Egg"), id2);
+      insertGenerates(connection, IdMap.get("Golden Egg"), id3);
+      
+      insertGenerates(connection, IdMap.get("Duck Egg"), IdMap.get("Duck Mayonnaise"));
+      insertGenerates(connection, IdMap.get("Void Egg"), IdMap.get("Void Mayonnaise"));
+      insertGenerates(connection, IdMap.get("Dinosaur Egg"), IdMap.get("Dinosaur Mayonnaise"));
+      
+      insertGenerates(connection, IdMap.get("Truffle"), IdMap.get("Truffle Oil"));
+      insertGenerates(connection, IdMap.get("Corn"), IdMap.get("Oil"));
+      insertGenerates(connection, IdMap.get("Sunflower Seeds"), IdMap.get("Oil"));
+      insertGenerates(connection, IdMap.get("Sunflower"), IdMap.get("Oil"));
+      
+      updateArtisanGood(connection, IdMap.get("Pickles"), null, null, 50, 2.0);
+      statement = connection.createStatement();
+      resultSet = statement.executeQuery("select id from PlantProduct where Type = 'Vegetable'");
+      insertGenerates(connection, IdMap.get("Ginger"), IdMap.get("Pickles"));
+      while(resultSet.next()) {
+         id = resultSet.getInt("ID");
+         insertGenerates(connection, id, IdMap.get("Pickles"));
+      }
+      
+      updateArtisanGood(connection, IdMap.get("Jelly"), null, null, 50, 2.0);
+      statement = connection.createStatement();
+      resultSet = statement.executeQuery("select id from PlantProduct where Type = 'Fruit'");
+      while(resultSet.next()) {
+         id = resultSet.getInt("ID");
+         insertGenerates(connection, id, IdMap.get("Jelly"));
+      }
+      
+      insertGenerates(connection, IdMap.get("Sturgeon Roe"), IdMap.get("Caviar"));
+      
+      updateArtisanGood(connection, IdMap.get("Aged Roe"), null, null, 0, 2.0);
+      insertGenerates(connection, IdMap.get("Roe"), IdMap.get("Aged Roe"));
    }
    
-   public static void insertShop(Connection connection, String name, String address, String schedule, int shopkeeperId) throws Exception
+   public static int insertProfession(Connection connection, String category, double multiplier) throws Exception
    {
-      String query = "{? = call insert_Shop(?, ?, ?, ?)}";
+      String query = "{? = call insert_Profession(?, ?, ?)}";
       CallableStatement statement = connection.prepareCall(query);
       statement.registerOutParameter(1, Types.INTEGER);
-      statement.setString(2, name);
-      statement.setString(3, address);
-      statement.setString(4, schedule);
-      statement.setInt(5, shopkeeperId);
+      statement.setString(2, category);
+      statement.setDouble(3, multiplier);
+      statement.registerOutParameter(4, Types.INTEGER);
       statement.execute();
       int result = statement.getInt(1);
+      int id = statement.getInt(4);
       
       if(result == 0)
+         System.out.printf("Successfully inserted Profession for category %s with boost %f.\n", category, multiplier);
+         else
+         System.out.printf("ERROR in insertProfesison: Failed with error code %d.\n", result);
+         
+         return id;
+      }
+      
+      public static void insertShop(Connection connection, String name, String address, String schedule, int shopkeeperId) throws Exception
+      {
+         String query = "{? = call insert_Shop(?, ?, ?, ?)}";
+         CallableStatement statement = connection.prepareCall(query);
+         statement.registerOutParameter(1, Types.INTEGER);
+         statement.setString(2, name);
+         statement.setString(3, address);
+         statement.setString(4, schedule);
+         statement.setInt(5, shopkeeperId);
+         statement.execute();
+         int result = statement.getInt(1);
+         
+         if(result == 0)
          System.out.printf("Successfully inserted Shop with name %s, address %s, schedule %s, and shopkeeper %d.\n", name, address, schedule, shopkeeperId);
-      else
+         else
          System.out.printf("ERROR in insertShopkeeper: Failed with error code %d.\n", result);
-   }
-   
+      }
+      
    public static int insertShopkeeper(Connection connection, String name) throws Exception
    {
       String query = "{? = call insert_Shopkeeper(?, ?)}";
@@ -425,9 +595,9 @@ public class StardewHoes {
       int id = statement.getInt(3);
       
       if(result == 0)
-         System.out.printf("Successfully inserted Shopkeeper with name %s.\n", name);
+      System.out.printf("Successfully inserted Shopkeeper with name %s.\n", name);
       else
-         System.out.printf("ERROR in insertShopkeeper: Failed with error code %d.\n", result);
+      System.out.printf("ERROR in insertShopkeeper: Failed with error code %d.\n", result);
       
       return id;
    }
@@ -449,6 +619,22 @@ public class StardewHoes {
          System.out.printf("ERROR in insertVillager: Failed with error code %d.\n", result);
       
       return id;
+   }
+   
+   public static void insertGenerates(Connection connection, int produceID, int productID) throws Exception
+   {
+      String query = "{? = call insert_Generates(?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setInt(2, produceID);
+      statement.setInt(3, productID);
+      statement.execute();
+      int result = statement.getInt(1);
+      
+      if(result == 0)
+         System.out.printf("Successfully inserted Generates relation for produce %d and product %d.\n", produceID, productID);
+      else
+         System.out.printf("ERROR in insertGenerates: Failed with error code %d.\n", result);
    }
    
    public static void insertProduces(Connection connection, int animalID, int produceID) throws Exception
@@ -483,13 +669,14 @@ public class StardewHoes {
          System.out.printf("ERROR in insertHasIngredient: Failed with error code %d.\n", result);
    }
    
-   public static int insertSeed(Connection connection, String name, int quality, int basePrice, String season) throws Exception
+   public static int insertSeed(Connection connection, String name, Integer quality, int basePrice, String season) throws Exception
    {
       String query = "{? = call insert_Seed(?, ?, ?, ?, ?)}";
       CallableStatement statement = connection.prepareCall(query);
       statement.registerOutParameter(1, Types.INTEGER);
       statement.setString(2, name);
-      statement.setInt(3, quality);
+      if(quality == null) statement.setNull(3, Types.INTEGER);
+      else statement.setInt(3, quality);
       statement.setInt(4, basePrice);
       statement.setString(5, season);
       statement.registerOutParameter(6, Types.INTEGER);
@@ -505,13 +692,14 @@ public class StardewHoes {
       return id;
    }
    
-   public static int insertArtisanGood(Connection connection, String name, int quality, int basePrice, double multiplier) throws Exception
+   public static int insertArtisanGood(Connection connection, String name, Integer quality, int basePrice, double multiplier) throws Exception
    {
       String query = "{? = call insert_ArtisanGood(?, ?, ?, ?, ?)}";
       CallableStatement statement = connection.prepareCall(query);
       statement.registerOutParameter(1, Types.INTEGER);
       statement.setString(2, name);
-      statement.setInt(3, quality);
+      if(quality == null) statement.setNull(3, Types.INTEGER);
+      else statement.setInt(3, quality);
       statement.setInt(4, basePrice);
       statement.setDouble(5, multiplier);
       statement.registerOutParameter(6, Types.INTEGER);
@@ -527,13 +715,34 @@ public class StardewHoes {
       return id;
    }
    
-   public static int insertPlantProduct(Connection connection, String name, int quality, int basePrice, String type) throws Exception
+   public static void updateArtisanGood(Connection connection, int id, String name, Integer quality, Integer basePrice, Double multiplier) throws Exception
+   {
+      String query = "{? = call update_ArtisanGood(?, ?, ?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setInt(2, id);
+      statement.setString(3, name);
+      if(quality == null) statement.setNull(4, Types.INTEGER);
+      else statement.setInt(4, quality);
+      statement.setInt(5, basePrice);
+      statement.setDouble(6, multiplier);
+      statement.execute();
+      int result = statement.getInt(1);
+      
+      if(result == 0)
+         System.out.printf("Successfully updated ArtisanGood with ID %d.\n", id);
+      else
+         System.out.printf("ERROR in updateArtisanGood: Failed with error code %d.\n", result);
+   }
+   
+   public static int insertPlantProduct(Connection connection, String name, Integer quality, int basePrice, String type) throws Exception
    {
       String query = "{? = call insert_PlantProduct(?, ?, ?, ?, ?)}";
       CallableStatement statement = connection.prepareCall(query);
       statement.registerOutParameter(1, Types.INTEGER);
       statement.setString(2, name);
-      statement.setInt(3, quality);
+      if(quality == null) statement.setNull(3, Types.INTEGER);
+      else statement.setInt(3, quality);
       statement.setInt(4, basePrice);
       statement.setString(5, type);
       statement.registerOutParameter(6, Types.INTEGER);
@@ -549,7 +758,7 @@ public class StardewHoes {
       return id;
    }
    
-   public static int insertAnimal(Connection connection, String name, int basePrice) throws Exception
+   public static int insertAnimal(Connection connection, String name, Integer basePrice) throws Exception
    {
       String query = "{? = call insert_Animal(?, ?, ?)}";
       CallableStatement statement = connection.prepareCall(query);
@@ -569,13 +778,14 @@ public class StardewHoes {
       return id;
    }
    
-   public static int insertAnimalProduct(Connection connection, String name, int quality, int basePrice) throws Exception
+   public static int insertAnimalProduct(Connection connection, String name, Integer quality, int basePrice) throws Exception
    {
       String query = "{? = call insert_AnimalProduct(?, ?, ?, ?)}";
       CallableStatement statement = connection.prepareCall(query);
       statement.registerOutParameter(1, Types.INTEGER);
       statement.setString(2, name);
-      statement.setInt(3, quality);
+      if(quality == null) statement.setNull(3, Types.INTEGER);
+      else statement.setInt(3, quality);
       statement.setInt(4, basePrice);
       statement.registerOutParameter(5, Types.INTEGER);
       statement.execute();
@@ -590,13 +800,14 @@ public class StardewHoes {
       return id;
    }
    
-   public static int insertProduce(Connection connection, String name, int quality, int basePrice) throws Exception
+   public static int insertProduce(Connection connection, String name, Integer quality, int basePrice) throws Exception
    {
       String query = "{? = call insert_Produce(?, ?, ?, ?)}";
       CallableStatement statement = connection.prepareCall(query);
       statement.registerOutParameter(1, Types.INTEGER);
       statement.setString(2, name);
-      statement.setInt(3, quality);
+      if(quality == null) statement.setNull(3, Types.INTEGER);
+      else statement.setInt(3, quality);
       statement.setInt(4, basePrice);
       statement.registerOutParameter(5, Types.INTEGER);
       statement.execute();
@@ -611,13 +822,14 @@ public class StardewHoes {
       return id;
    }
    
-   public static int insertFish(Connection connection, String name, int quality, int basePrice) throws Exception
+   public static int insertFish(Connection connection, String name, Integer quality, int basePrice) throws Exception
    {
       String query = "{? = call insert_Fish(?, ?, ?, ?)}";
       CallableStatement statement = connection.prepareCall(query);
       statement.registerOutParameter(1, Types.INTEGER);
       statement.setString(2, name);
-      statement.setInt(3, quality);
+      if(quality == null) statement.setNull(3, Types.INTEGER);
+      else statement.setInt(3, quality);
       statement.setInt(4, basePrice);
       statement.registerOutParameter(5, Types.INTEGER);
       statement.execute();
@@ -632,13 +844,16 @@ public class StardewHoes {
       return id;
    }
    
-   public static int insertFood(Connection connection, String name, int quality, int basePrice) throws Exception
+   public static int insertFood(Connection connection, String name, Integer quality, int basePrice) throws Exception
    {
       String query = "{? = call insert_Food(?, ?, ?, ?)}";
       CallableStatement statement = connection.prepareCall(query);
       statement.registerOutParameter(1, Types.INTEGER);
       statement.setString(2, name);
-      statement.setInt(3, quality);
+      
+      if(quality == null) statement.setNull(3, Types.INTEGER);
+      else statement.setInt(3, quality);
+      
       statement.setInt(4, basePrice);
       statement.registerOutParameter(5, Types.INTEGER);
       statement.execute();
@@ -653,13 +868,14 @@ public class StardewHoes {
       return id;
    }
    
-   public static int insertItem(Connection connection, String name, int quality, int basePrice) throws Exception
+   public static int insertItem(Connection connection, String name, Integer quality, int basePrice) throws Exception
    {
       String query = "{? = call insert_Item(?, ?, ?, ?)}";
       CallableStatement statement = connection.prepareCall(query);
       statement.registerOutParameter(1, Types.INTEGER);
       statement.setString(2, name);
-      statement.setInt(3, quality);
+      if(quality == null) statement.setNull(3, Types.INTEGER);
+      else statement.setInt(3, quality);
       statement.setInt(4, basePrice);
       statement.registerOutParameter(5, Types.INTEGER);
       statement.execute();
