@@ -152,7 +152,6 @@ public class StardewHoes {
    public static void populateDatabase(Connection connection) throws Exception
    {
       String fileData = Files.readString((new File("data/Data/Crops.json")).toPath());
-      System.out.println(fileData);
       JSONObject cropsRoot = new JSONObject(fileData);
       JSONObject cropsContent = cropsRoot.getJSONObject("content");
       
@@ -167,6 +166,14 @@ public class StardewHoes {
          String itemId = keys.next();
          String[] values = objsContent.getString(itemId).split("/");
          
+         if(itemId.equals("770")) {
+            continue;
+         }
+         
+         if(itemId.equals("906")) {
+            System.out.println("hi");
+         }
+         
          String name = values[0];
          int price = Integer.valueOf(values[1]);
          
@@ -179,11 +186,11 @@ public class StardewHoes {
             if(season.equals("Spring/Summer/Fall")) season = "All";
             if(!season.contains("Spring") && !season.contains("Summer") && !season.contains("Fall")) season = "None";
             
-            itemDBId = insertSeed(connection, name, null, price, season);
+            itemDBId = insertSeed(connection, name, price, season);
          } else if(types[0].equals("Fish")) {
             itemDBId = insertFish(connection, name, null, price);
          } else if(types[0].equals("Cooking")) {
-            itemDBId = insertFood(connection, name, null, price);
+            itemDBId = insertFood(connection, name, price);
          } else if(types[0].equals("Basic")) {
             if(types.length > 1) {
                int category = Integer.valueOf(types[1]);
@@ -228,6 +235,8 @@ public class StardewHoes {
       JSONObject animalsRoot = new JSONObject(fileData);
       JSONObject animalsContent = animalsRoot.getJSONObject("content");
       
+      return;
+      /*
       keys = animalsContent.keys();
       while(keys.hasNext()) {
          String name = keys.next();
@@ -543,6 +552,7 @@ public class StardewHoes {
       
       updateArtisanGood(connection, IdMap.get("Aged Roe"), null, null, 0, 2.0);
       insertGenerates(connection, IdMap.get("Roe"), IdMap.get("Aged Roe"));
+      */
    }
    
    public static int insertProfession(Connection connection, String category, double multiplier) throws Exception
@@ -669,23 +679,21 @@ public class StardewHoes {
          System.out.printf("ERROR in insertHasIngredient: Failed with error code %d.\n", result);
    }
    
-   public static int insertSeed(Connection connection, String name, Integer quality, int basePrice, String season) throws Exception
+   public static int insertSeed(Connection connection, String name, int basePrice, String season) throws Exception
    {
-      String query = "{? = call insert_Seed(?, ?, ?, ?, ?)}";
+      String query = "{? = call insert_Seed(?, ?, ?, ?)}";
       CallableStatement statement = connection.prepareCall(query);
       statement.registerOutParameter(1, Types.INTEGER);
       statement.setString(2, name);
-      if(quality == null) statement.setNull(3, Types.INTEGER);
-      else statement.setInt(3, quality);
-      statement.setInt(4, basePrice);
-      statement.setString(5, season);
-      statement.registerOutParameter(6, Types.INTEGER);
+      statement.setInt(3, basePrice);
+      statement.setString(4, season);
+      statement.registerOutParameter(5, Types.INTEGER);
       statement.execute();
       int result = statement.getInt(1);
-      int id = statement.getInt(6);
+      int id = statement.getInt(5);
       
       if(result == 0)
-         System.out.printf("Successfully inserted Seed with name %s, quality %d, price %d, and season %s.\n", name, quality, basePrice, season);
+         System.out.printf("Successfully inserted Seed with name %s, price %d, and season %s.\n", name, basePrice, season);
       else
          System.out.printf("ERROR in insertSeed: Failed with error code %d.\n", result);
       
@@ -844,24 +852,20 @@ public class StardewHoes {
       return id;
    }
    
-   public static int insertFood(Connection connection, String name, Integer quality, int basePrice) throws Exception
+   public static int insertFood(Connection connection, String name, int basePrice) throws Exception
    {
-      String query = "{? = call insert_Food(?, ?, ?, ?)}";
+      String query = "{? = call insert_Food(?, ?, ?)}";
       CallableStatement statement = connection.prepareCall(query);
       statement.registerOutParameter(1, Types.INTEGER);
       statement.setString(2, name);
-      
-      if(quality == null) statement.setNull(3, Types.INTEGER);
-      else statement.setInt(3, quality);
-      
-      statement.setInt(4, basePrice);
-      statement.registerOutParameter(5, Types.INTEGER);
+      statement.setInt(3, basePrice);
+      statement.registerOutParameter(4, Types.INTEGER);
       statement.execute();
       int result = statement.getInt(1);
-      int id = statement.getInt(5);
+      int id = statement.getInt(4);
       
       if(result == 0)
-         System.out.printf("Successfully inserted Food with name %s, qualiy %d, and price %d.\n", name, quality, basePrice);
+         System.out.printf("Successfully inserted Food with name %s and price %d.\n", name, basePrice);
       else
          System.out.printf("ERROR in insertFood: Failed with error code %d.\n", result);
       

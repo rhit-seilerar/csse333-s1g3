@@ -3,13 +3,13 @@ go
 
 create or alter procedure insert_Item (
 	@Name varchar(20),
-	@Quality tinyint,
+	@Quality tinyint = null,
 	@BasePrice int,
 	@ID int = null output
 ) as
 	declare @Status int
 
-	if @Name is null or @Quality is null or @BasePrice is null begin
+	if @Name is null or @BasePrice is null begin
 		raiserror('ERROR in insert_Item: Name, Quality, and BasePrice cannot be null.', 14, 1)
 		return 1
 	end
