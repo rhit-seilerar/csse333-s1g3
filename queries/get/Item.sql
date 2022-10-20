@@ -1,34 +1,22 @@
 use StardewHoes10
 go
 
-create procedure get_Item (
-	@ID int,
-	@Name varchar(20) = null output,
-	@Quality tinyint = null output,
-	@BasePrice int = null output
+create or alter procedure get_Item (
+	@ID int = null,
+	@Name varchar(20) = null,
+	@Quality tinyint = null,
+	@BasePrice int = null
 ) as
+	declare @Status int
 
-declare @Status int
+	select ID, Name, Quality, BasePrice
+	from Item
+	where (@ID is null or ID = @ID) and (@Name is null or Name = @Name) and (@Quality is null or Quality = @Quality) and (@BasePrice is null or BasePrice = @BasePrice)
+	set @Status = @@ERROR
+	if @Status != 0 begin
+		raiserror('ERROR in get_Item: Failed to retrieve the data for item %s with quality %d and price %d.', 14, 1, @Name, @Quality, @BasePrice)
+		return @Status
+	end
 
-if @ID is null begin
-	print 'ERROR in get_Item: ID cannot be null.'
-	return 1
-end
-
-select @Name = Name, @Quality = Quality, @BasePrice = BasePrice
-from Item
-where ID = @ID
-set @Status = @@ERROR
-if @Status != 0 begin
-	print 'ERROR in get_Item: Failed to retrieve the data for the record with ID ' + convert(varchar(20), @ID) + '.'
-	return @Status
-end
-
-if @Name is null begin
-	print 'ERROR in get_Item: The data for the record with ID ' + convert(varchar(20), @ID) + ' does not exist.'
-	return 1
-end
-
-print 'get_Item: Successfully retrieved the data for the record with ID ' + convert(varchar(20), @ID) + '.'
-return 0
+	print 'get_Item: Successfully retrieved the data for the record with ID ' + convert(varchar(20), @ID) + '.'
 go

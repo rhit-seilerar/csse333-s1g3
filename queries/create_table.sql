@@ -7,7 +7,7 @@ CREATE TABLE Villager(
 
 create table Item (
 	ID int identity(0,1),
-	Name varchar(20) not null,
+	Name varchar(40) not null,
 	Quality tinyint,
 	BasePrice int not null
 	Primary key (ID),

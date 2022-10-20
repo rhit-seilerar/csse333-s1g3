@@ -4,11 +4,12 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Scanner;
+
+import org.json.JSONObject;
 
 //import org.json.JSONObject;
 
@@ -60,29 +61,34 @@ public class StardewHoes {
             
             // Populate
             case 'p': {
-//               populateDatabase(connection);
+               populateDatabase(connection);
             } break;
             
             // Get
             case 'g': {
-               System.out.println("Retrieval selected\nPlease provide the item's ID:\n> ");
-               String id = nextLine(scanner);
+               System.out.print("Retrieval selected\nPlease provide the item's ID:\n> ");
+               String idStr = nextLine(scanner);
                   
-               int ID = Integer.parseInt(id);
-               String query = "{? = call get_Item(?)}";
+               int ID = Integer.parseInt(idStr);
+               String query = "{? = call get_Item(?, ?, ?, ?)}";
                CallableStatement statement = connection.prepareCall(query);
                statement.registerOutParameter(1, Types.INTEGER);
                statement.setInt(2, ID);
+               statement.setNull(3, Types.VARCHAR);
+               statement.setNull(4, Types.TINYINT);
+               statement.setNull(5, Types.INTEGER);
                ResultSet resultSet = statement.executeQuery();
-               int result = statement.getInt(1);
                
+               System.out.println("        | ID         | Name                                     | Quality | Price");
+               int i = 0;
+               while(!resultSet.isClosed() && resultSet.next()) {
+                  System.out.printf(" %-6d | %-10d | %-40s | %d       | %d\n", i, resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3), resultSet.getInt(4));
+                  i++;
+               }
+               
+               int result = statement.getInt(1);
                if(result == 0) {
-                  System.out.printf("Successfully retrieved Item with ID %d\n", id);
-                  System.out.println(" \t| ID \t| Name \t| Quality \t| Price");
-                  
-                  while(resultSet.next()) {
-                     System.out.printf(" \t| %d \t| %s \t| %d \t| %d\n", resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3), resultSet.getInt(4));
-                  }
+                  System.out.printf("Successfully retrieved Item with ID %d\n", ID);
                } else {
                   System.out.printf("ERROR in getItem: Failed with error code %d\n", result);
                }
@@ -162,7 +168,7 @@ public class StardewHoes {
             
             // Delete
             case 'd': {
-               System.out.println("Delete selected\nPlease provide the item ID:\n>");
+               System.out.print("Delete selected\nPlease provide the item ID:\n>");
                String id = nextLine(scanner);
                
                int ID = Integer.parseInt(id);
