@@ -406,6 +406,11 @@ public class StardewHoes {
       statement.setInt(5, shopkeeperId);
       statement.execute();
       int result = statement.getInt(1);
+      
+      if(result == 0)
+         System.out.printf("Successfully inserted Shop with name %s, address %s, schedule %s, and shopkeeper %d.\n", name, address, schedule, shopkeeperId);
+      else
+         System.out.printf("ERROR in insertShopkeeper: Failed with error code %d.\n", result);
    }
    
    public static int insertShopkeeper(Connection connection, String name) throws Exception
@@ -418,6 +423,11 @@ public class StardewHoes {
       statement.execute();
       int result = statement.getInt(1);
       int id = statement.getInt(3);
+      
+      if(result == 0)
+         System.out.printf("Successfully inserted Shopkeeper with name %s.\n", name);
+      else
+         System.out.printf("ERROR in insertShopkeeper: Failed with error code %d.\n", result);
       
       return id;
    }
@@ -433,6 +443,11 @@ public class StardewHoes {
       int result = statement.getInt(1);
       int id = statement.getInt(3);
       
+      if(result == 0)
+         System.out.printf("Successfully inserted Villager with name %s.\n", name);
+      else
+         System.out.printf("ERROR in insertVillager: Failed with error code %d.\n", result);
+      
       return id;
    }
    
@@ -445,6 +460,11 @@ public class StardewHoes {
       statement.setInt(3, produceID);
       statement.execute();
       int result = statement.getInt(1);
+      
+      if(result == 0)
+         System.out.printf("Successfully inserted Produces relation for animal %d and animal product %d.\n", animalID, produceID);
+      else
+         System.out.printf("ERROR in insertProduces: Failed with error code %d.\n", result);
    }
    
    public static void insertHasIngredient(Connection connection, int ingredientId, int foodId) throws Exception
@@ -456,6 +476,11 @@ public class StardewHoes {
       statement.setInt(3, foodId);
       statement.execute();
       int result = statement.getInt(1);
+      
+      if(result == 0)
+         System.out.printf("Successfully inserted HasIngredient relation for ingredient %d and food %d.\n", ingredientId, foodId);
+      else
+         System.out.printf("ERROR in insertHasIngredient: Failed with error code %d.\n", result);
    }
    
    public static int insertSeed(Connection connection, String name, int quality, int basePrice, String season) throws Exception
@@ -471,6 +496,11 @@ public class StardewHoes {
       statement.execute();
       int result = statement.getInt(1);
       int id = statement.getInt(6);
+      
+      if(result == 0)
+         System.out.printf("Successfully inserted Seed with name %s, quality %d, price %d, and season %s.\n", name, quality, basePrice, season);
+      else
+         System.out.printf("ERROR in insertSeed: Failed with error code %d.\n", result);
       
       return id;
    }
@@ -489,6 +519,11 @@ public class StardewHoes {
       int result = statement.getInt(1);
       int id = statement.getInt(6);
       
+      if(result == 0)
+         System.out.printf("Successfully inserted ArtisanGood with name %s, quality %d, price %d, and multiplier %f.\n", name, quality, basePrice, multiplier);
+      else
+         System.out.printf("ERROR in insertArtisanGood: Failed with error code %d.\n", result);
+      
       return id;
    }
    
@@ -506,6 +541,11 @@ public class StardewHoes {
       int result = statement.getInt(1);
       int id = statement.getInt(6);
       
+      if(result == 0)
+         System.out.printf("Successfully inserted PlantProduct with name %s (%s), quality %d, and price %d.\n", name, type, quality, basePrice);
+      else
+         System.out.printf("ERROR in insertPlantProduct: Failed with error code %d.\n", result);
+      
       return id;
    }
    
@@ -520,6 +560,11 @@ public class StardewHoes {
       statement.execute();
       int result = statement.getInt(1);
       int id = statement.getInt(4);
+      
+      if(result == 0)
+         System.out.printf("Successfully inserted Animal with name %s and price %d.\n", name, basePrice);
+      else
+         System.out.printf("ERROR in insertAnimal: Failed with error code %d.\n", result);
       
       return id;
    }
@@ -537,6 +582,11 @@ public class StardewHoes {
       int result = statement.getInt(1);
       int id = statement.getInt(5);
       
+      if(result == 0)
+         System.out.printf("Successfully inserted AnimalProduct with name %s, qualiy %d, and price %d.\n", name, quality, basePrice);
+      else
+         System.out.printf("ERROR in insertAnimalProduct: Failed with error code %d.\n", result);
+      
       return id;
    }
    
@@ -552,6 +602,11 @@ public class StardewHoes {
       statement.execute();
       int result = statement.getInt(1);
       int id = statement.getInt(5);
+      
+      if(result == 0)
+         System.out.printf("Successfully inserted Produce with name %s, qualiy %d, and price %d.\n", name, quality, basePrice);
+      else
+         System.out.printf("ERROR in insertProduce: Failed with error code %d.\n", result);
       
       return id;
    }
@@ -569,6 +624,11 @@ public class StardewHoes {
       int result = statement.getInt(1);
       int id = statement.getInt(5);
       
+      if(result == 0)
+         System.out.printf("Successfully inserted Fish with name %s, qualiy %d, and price %d.\n", name, quality, basePrice);
+      else
+         System.out.printf("ERROR in insertFish: Failed with error code %d.\n", result);
+      
       return id;
    }
    
@@ -584,6 +644,11 @@ public class StardewHoes {
       statement.execute();
       int result = statement.getInt(1);
       int id = statement.getInt(5);
+      
+      if(result == 0)
+         System.out.printf("Successfully inserted Food with name %s, qualiy %d, and price %d.\n", name, quality, basePrice);
+      else
+         System.out.printf("ERROR in insertFood: Failed with error code %d.\n", result);
       
       return id;
    }
