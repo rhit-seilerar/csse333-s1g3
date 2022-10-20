@@ -107,11 +107,6 @@ public class StardewHoes {
       reader.close();
       JSONObject objsContent = objsRoot.getJSONObject("content");
       
-      reader = new FileReader("data/Data/FarmAnimals.json");
-      JSONObject animalsRoot = new JSONObject(reader.read());
-      reader.close();
-      JSONObject animalsContent = animalsRoot.getJSONObject("content");
-      
       HashMap<String, Integer> IdMap = new HashMap<>();
       
       Iterator<String> keys = objsContent.keys();
@@ -177,6 +172,11 @@ public class StardewHoes {
          IdMap.put(itemId, itemDBId);
       }
       
+      reader = new FileReader("data/Data/FarmAnimals.json");
+      JSONObject animalsRoot = new JSONObject(reader.read());
+      reader.close();
+      JSONObject animalsContent = animalsRoot.getJSONObject("content");
+      
       keys = animalsContent.keys();
       while(keys.hasNext()) {
          String name = keys.next();
@@ -193,6 +193,194 @@ public class StardewHoes {
          if(produceDBId1 != null) insertProduces(connection, animalDBId, produceDBId1);
          if(produceDBId2 != null) insertProduces(connection, animalDBId, produceDBId2);
       }
+      
+      reader = new FileReader("data/Data/CookingRecipes.json");
+      JSONObject cookingRoot = new JSONObject(reader.read());
+      reader.close();
+      JSONObject cookingContent = cookingRoot.getJSONObject("content");
+      
+      keys = cookingContent.keys();
+      while(keys.hasNext()) {
+         String name = keys.next();
+         String[] values = cookingContent.getString(name).split("/");
+         String[] inputs = values[0].split(" ");
+         String[] outputs = values[2].split(" ");
+         
+         if(outputs.length > 2) {
+            System.out.println("Error! Recipe has more than one yield type");
+            break;
+         }
+         
+         Integer resultId = IdMap.get(outputs[0]);
+         
+         for(int i = 0; i < inputs.length; i += 2) {
+            Integer ingredientId = IdMap.get(inputs[i]);
+            insertHasIngredient(connection, ingredientId, resultId);
+         }
+      }
+      
+      int mrQiId1 = insertShopkeeper(connection, "MisterQi1");
+      int mrQiId2 = insertShopkeeper(connection, "MisterQi2");
+      IdMap.put("MisterQi1", mrQiId1);
+      IdMap.put("MisterQi2", mrQiId2);
+      insertShop(connection, "WalnutRoom", "Ginger Island 1", "Always", mrQiId1);
+      insertShop(connection, "Casino", "Calico Desert 2, in the back of the Oasis", "9a-11:50p", mrQiId2);
+      
+      String name = "TravelingMerchant";
+      int id = insertShopkeeper(connection, name);
+      IdMap.put(name, id);
+      insertShop(connection, "TravelingCart", "Cindersap Forest, north of the upper pond", "6am to 8pm on Fridays and Saturdays, and 5pm to 2am during the Night Market.", id);
+      
+      name = "DesertTrader";
+      id = insertShopkeeper(connection, name);
+      IdMap.put(name, id);
+      insertShop(connection, "TradingHut", "Next to the road through the Calico Desert", "6am to 2am every day, except during the Night Market.", id);
+      
+      name = "Morris";
+      id = insertShopkeeper(connection, name);
+      IdMap.put(name, id);
+      insertShop(connection, "JojaMart", "Pelican Town 3", "Permanently closed.", id);
+      
+      name = "VolcanicDwarf";
+      id = insertShopkeeper(connection, name);
+      IdMap.put(name, id);
+      insertShop(connection, "VolcanoShop", "In level 5 of the Ginger Island Volcano", "Always open.", id);
+      
+      name = "IslandTrader";
+      id = insertShopkeeper(connection, name);
+      IdMap.put(name, id);
+      insertShop(connection, "IslandTradingStand", "On the way to the Ginger Island Volcano", "Always open.", id);
+      
+      name = "HatMouse";
+      id = insertShopkeeper(connection, name);
+      IdMap.put(name, id);
+      insertShop(connection, "HatShop", "Abandoned house in the Cindersap Forest", "Always open.", id);
+      
+      name = "Bear";
+      IdMap.put(name, insertVillager(connection, name));
+      
+      name = "Birdie";
+      IdMap.put(name, insertVillager(connection, name));
+      
+      name = "Gil";
+      IdMap.put(name, insertVillager(connection, name));
+      
+      name = "Gunther";
+      IdMap.put(name, insertVillager(connection, name));
+      
+      reader = new FileReader("data/Data/NPCDispositions.json");
+      JSONObject npcRoot = new JSONObject(reader.read());
+      reader.close();
+      JSONObject npcContent = npcRoot.getJSONObject("content");
+      
+      keys = npcContent.keys();
+      while(keys.hasNext()) {
+         name = keys.next();
+         
+         if(name.equals("Marlon")) {
+            id = insertShopkeeper(connection, name);
+            insertShop(connection, "AdventurerGuild", "Mountain 1", "2pm to 10pm each day, except for festivals.", id);
+         } else if(name.equals("Flint")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "Blacksmith", "Mountain 1", "9am to 4pm each day, except for Winter 16, Fridays, and festivals.", id);
+         } else if(name.equals("Robin")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "CarpentersShop", "24 Mountain Road", "9am to 5pm each day, except for Summer 18, Tuesdays, and festivals", id);
+         } else if(name.equals("Willy")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "FishShop", "Beach 1", "8am to 5pm each day, except for non-rainy Saturdays, 10am to 2am on Spring 9, and festivals.", id);
+         } else if(name.equals("Harvey")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "Clinic", "Pelican Town 1", "9am to 2pm on Tuesdays and Thursdays, and 9am to 12pm on Sundays, Mondays, Wednesdays, and Fridays. Closed for festivals.", id);
+         } else if(name.equals("Alex")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "IceCreamStand", "Near the museum", "1pm to 5pm in the summer, except for Wednesdays, Summer 16, and rainy days.", id);
+         } else if(name.equals("Marnie")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "AnimalRanch", "Cindersap Forest 1", "9am to 4pm, except for Mondays, Tuesdays, Fall 18, Winter 18, and festivals.", id);
+         } else if(name.equals("Sandy")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "Oasis", "Calico Desert 2", "9am to 11:50pm, except for festivals.", id);
+         } else if(name.equals("Pierre")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "GeneralShop", "Pelican Town 2", "9am to 5pm, except for festivals.", id);
+         } else if(name.equals("Gus")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "Saloon", "Pelican Town 3", "12pm to 12am, except for festivals and until 4:30pm on Fall 4.", id);
+         } else if(name.equals("Wizard")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "WizardTower", "Cindersap Forest 2", "6am to 11pm, except for Spring 24 and Winter 8.", id);
+         } else if(name.equals("Lewis")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "MovieTheater", "Pelican Town 3", "9am to 9pm every day.", id);
+         } else if(name.equals("Dwarf")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "MinesShop", "In the Mountain mines", "Always open.", id);
+         } else if(name.equals("Krobus")) {
+            id = insertShopkeeper(connection, name);
+            IdMap.put(name, id);
+            insertShop(connection, "SewerShop", "In the Pelican Town sewers", "Always open.", id);
+         } else {
+            id = insertVillager(connection, name);
+         }
+         
+         IdMap.put(name, id);
+      }
+      
+      //TODO: Profession, Generates, multiplier
+   }
+   
+   public static void insertShop(Connection connection, String name, String address, String schedule, int shopkeeperId) throws Exception
+   {
+      String query = "{? = call insert_Shop(?, ?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setString(2, name);
+      statement.setString(3, address);
+      statement.setString(4, schedule);
+      statement.setInt(5, shopkeeperId);
+      statement.execute();
+      int result = statement.getInt(1);
+   }
+   
+   public static int insertShopkeeper(Connection connection, String name) throws Exception
+   {
+      String query = "{? = call insert_Shopkeeper(?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setString(2, name);
+      statement.registerOutParameter(3, Types.INTEGER);
+      statement.execute();
+      int result = statement.getInt(1);
+      int id = statement.getInt(3);
+      
+      return id;
+   }
+   
+   public static int insertVillager(Connection connection, String name) throws Exception
+   {
+      String query = "{? = call insert_Villager(?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setString(2, name);
+      statement.registerOutParameter(3, Types.INTEGER);
+      statement.execute();
+      int result = statement.getInt(1);
+      int id = statement.getInt(3);
+      
+      return id;
    }
    
    public static void insertProduces(Connection connection, int animalID, int produceID) throws Exception
@@ -202,6 +390,17 @@ public class StardewHoes {
       statement.registerOutParameter(1, Types.INTEGER);
       statement.setInt(2, animalID);
       statement.setInt(3, produceID);
+      statement.execute();
+      int result = statement.getInt(1);
+   }
+   
+   public static void insertHasIngredient(Connection connection, int ingredientId, int foodId) throws Exception
+   {
+      String query = "{? = call insert_HasIngredient(?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setInt(2, ingredientId);
+      statement.setInt(3, foodId);
       statement.execute();
       int result = statement.getInt(1);
    }
