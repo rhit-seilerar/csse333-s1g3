@@ -19,7 +19,7 @@ create or alter procedure insert_Seed (
 	declare @Status int
 
 	if @ID is null or not exists (select * from Item where ID = @ID) begin
-		execute @Status = insert_Item @Name, 0, @BasePrice, @ID output
+		execute @Status = insert_Item @Name, null, @BasePrice, @ID output
 		if @Status != 0 begin return @Status end
 	end
 
