@@ -1,5 +1,3 @@
-package databasesConnectivity;
-
 import java.io.File;
 import java.nio.file.Files;
 import java.security.SecureRandom;
@@ -21,7 +19,7 @@ import javax.crypto.spec.PBEKeySpec;
 //import org.json.JSONObject;
 
 public class StardewHoes {
-	public static boolean skipLogin = true;
+	public static boolean skipLogin = false;
 
 	public static String nextLine(Scanner scanner) {
 		while (!scanner.hasNextLine())
@@ -162,7 +160,7 @@ public class StardewHoes {
             
             // Get
             case 'g': {
-            	System.out.print("Get selected\nWhat would you like to retrieve? (type h for help)\n>");
+            	System.out.print("Get selected\nWhat would you like to retrieve? (type h for help)\n> ");
                 String item = nextLine(scanner);
                 
                 switch(item) {
@@ -345,7 +343,7 @@ public class StardewHoes {
             
             // Insert
             case 'i': {
-            	System.out.print("Insert selected\nWhat would you like to insert? (type h for help)\n>");
+            	System.out.print("Insert selected\nWhat would you like to insert? (type h for help)\n> ");
                 String item = nextLine(scanner);
                 
                 switch(item) {
@@ -482,13 +480,13 @@ public class StardewHoes {
                 		insertHasProfession(connection, pId, fId);
                 	} break;
                 	case "item": {
-                		System.out.print("Please provide the item's name:\n>");
+                		System.out.print("Please provide the item's name:\n> ");
                 		String name = nextLine(scanner);
                     
-                		System.out.print("Please provide the item's quality (0 for normal, 3 for iridium):\n>");
+                		System.out.print("Please provide the item's quality (0 for normal, 3 for iridium):\n> ");
                 		String quality = nextLine(scanner);
                     
-                		System.out.print("Please provide the item's base price:\n>");
+                		System.out.print("Please provide the item's base price:\n> ");
                 		String baseprice = nextLine(scanner);
                     
                 		int basePrice = Integer.parseInt(baseprice);
@@ -497,16 +495,16 @@ public class StardewHoes {
                 		insertItem(connection, name, qual, basePrice);
                 	} break;
                 	case "needs": {
-                		System.out.print("Please provide the villagerId:\n>");
+                		System.out.print("Please provide the villagerId:\n> ");
                 		String villagerId = nextLine(scanner);
                 		
-                		System.out.print("Please provide the itemId:\n>");
+                		System.out.print("Please provide the itemId:\n> ");
                 		String itemId = nextLine(scanner);
                     
-                		System.out.print("Please provide the reward:\n>");
+                		System.out.print("Please provide the reward:\n> ");
                 		String reward = nextLine(scanner);
                 		
-                		System.out.print("Please provide the quantity:\n>");
+                		System.out.print("Please provide the quantity:\n> ");
                 		String quantity = nextLine(scanner);
                 		
                 		int vId = Integer.parseInt(villagerId);
@@ -517,16 +515,16 @@ public class StardewHoes {
                 		insertNeeds(connection, vId, iId, r, quant);
                 	} break;
                 	case "plantProduct": {
-                		System.out.print("Please provide the plantProduct's name:\n>");
+                		System.out.print("Please provide the plantProduct's name:\n> ");
                 		String name = nextLine(scanner);
                 		
-                		System.out.print("Please provide the plantProduct's quality (0 for normal, 3 for iridium):\n>");
+                		System.out.print("Please provide the plantProduct's quality (0 for normal, 3 for iridium):\n> ");
                 		String quality = nextLine(scanner);
                     
-                		System.out.print("Please provide the plantProduct's base price:\n>");
+                		System.out.print("Please provide the plantProduct's base price:\n> ");
                 		String basePrice = nextLine(scanner);
                 		
-                		System.out.print("Please provide the plantProduct's type (Fruit, Vegetable, Forage, or Flower):\n>");
+                		System.out.print("Please provide the plantProduct's type (Fruit, Vegetable, Forage, or Flower):\n> ");
                 		String type = nextLine(scanner);
                 		
                 		int qual = Integer.parseInt(quality);
@@ -535,13 +533,13 @@ public class StardewHoes {
                 		insertPlantProduct(connection, name, qual, price, type);
                 	} break;
                 	case "produce": {
-                		System.out.print("Please provide the Produce's name:\n>");
+                		System.out.print("Please provide the Produce's name:\n> ");
                 		String name = nextLine(scanner);
                 		
-                		System.out.print("Please provide the Produce's quality (0 for normal, 3 for iridium):\n>");
+                		System.out.print("Please provide the Produce's quality (0 for normal, 3 for iridium):\n> ");
                 		String quality = nextLine(scanner);
                     
-                		System.out.print("Please provide the Produce's base price:\n>");
+                		System.out.print("Please provide the Produce's base price:\n> ");
                 		String basePrice = nextLine(scanner);
                 		
                 		int qual = Integer.parseInt(quality);
@@ -674,7 +672,7 @@ public class StardewHoes {
             
             // Update
             case 'u': {
-            	System.out.print("Update selected\nWhat would you like to update? (type h for help)\n>");
+            	System.out.print("Update selected\nWhat would you like to update? (type h for help)\n> ");
                 String item = nextLine(scanner);
                 
                 switch(item) {
@@ -696,9 +694,25 @@ public class StardewHoes {
                 		System.out.print("Please provide the animal's base price (leave empty for null):\n> ");
                 		String baseprice = nextLine(scanner);
                     
+                		Integer qual;
+                		Integer basePrice;
                 		int aId = Integer.parseInt(animalId);
-                		int qual = Integer.parseInt(quality);
-                		int basePrice = Integer.parseInt(baseprice);
+                		if(name.length() == 0) {
+                			name = null;
+                		} else {
+                			name = name;
+                		}
+                		if(quality.length() == 0) {
+                			qual = null;
+                		}
+                		else {
+                			qual = Integer.valueOf(quality);
+                		}
+                		if(baseprice.length() == 0) {
+                			basePrice = null;
+                		} else {
+                			basePrice = Integer.valueOf(baseprice);
+                		}
                     
                 		updateAnimal(connection, aId, name, qual, basePrice);
                 	} break;
@@ -715,9 +729,25 @@ public class StardewHoes {
                 		System.out.print("Please provide the animal produt's base price (leave empty for null):\n> ");
                 		String baseprice = nextLine(scanner);
                     
+                		Integer qual;
+                		Integer basePrice;
                 		int aId = Integer.parseInt(animalId);
-                		int qual = Integer.parseInt(quality);
-                		int basePrice = Integer.parseInt(baseprice);
+                		if(name.length() == 0) {
+                			name = null;
+                		} else {
+                			name = name;
+                		}
+                		if(quality.length() == 0) {
+                			qual = null;
+                		}
+                		else {
+                			qual = Integer.valueOf(quality);
+                		}
+                		if(baseprice.length() == 0) {
+                			basePrice = null;
+                		} else {
+                			basePrice = Integer.valueOf(baseprice);
+                		}
                     
                 		updateAnimalProduct(connection, aId, name, qual, basePrice);
                 	} break;
@@ -737,10 +767,31 @@ public class StardewHoes {
                 		System.out.print("Please provide the artisan good's multiplier (leave empty for null):\n> ");
                 		String multiplier = nextLine(scanner);
                     
+                		Integer qual;
+                		Integer basePrice;
+                		Double multi;
                 		int aId = Integer.parseInt(artisanId);
-                		int qual = Integer.parseInt(quality);
-                		int basePrice = Integer.parseInt(baseprice);
-                		double multi = Double.parseDouble(multiplier);
+                		if(name.length() == 0) {
+                			name = null;
+                		} else {
+                			name = name;
+                		}
+                		if(quality.length() == 0) {
+                			qual = null;
+                		}
+                		else {
+                			qual = Integer.valueOf(quality);
+                		}
+                		if(baseprice.length() == 0) {
+                			basePrice = null;
+                		} else {
+                			basePrice = Integer.valueOf(baseprice);
+                		}
+                		if(multiplier.length() == 0) {
+                			multi = null;
+                		} else {
+                			multi = Double.valueOf(multiplier);
+                		}
                     
                 		updateArtisanGood(connection, aId, name, qual, basePrice, multi);
                 	} break;
@@ -757,9 +808,25 @@ public class StardewHoes {
                 		System.out.print("Please provide the fish's base price (leave empty for null):\n> ");
                 		String baseprice = nextLine(scanner);
                     
+                		Integer qual;
+                		Integer basePrice;
                 		int fId = Integer.parseInt(fishId);
-                		int qual = Integer.parseInt(quality);
-                		int basePrice = Integer.parseInt(baseprice);
+                		if(name.length() == 0) {
+                			name = null;
+                		} else {
+                			name = name;
+                		}
+                		if(quality.length() == 0) {
+                			qual = null;
+                		}
+                		else {
+                			qual = Integer.valueOf(quality);
+                		}
+                		if(baseprice.length() == 0) {
+                			basePrice = null;
+                		} else {
+                			basePrice = Integer.valueOf(baseprice);
+                		}
                     
                 		updateFish(connection, fId, name, qual, basePrice);
                 	} break;
@@ -776,10 +843,26 @@ public class StardewHoes {
                 		System.out.print("Please provide the food's base price (leave empty for null):\n> ");
                 		String baseprice = nextLine(scanner);
                     
+                		Integer qual;
+                		Integer basePrice;
                 		int fId = Integer.parseInt(foodId);
-                		int qual = Integer.parseInt(quality);
-                		int basePrice = Integer.parseInt(baseprice);
-                    
+                		if(name.length() == 0) {
+                			name = null;
+                		} else {
+                			name = name;
+                		}
+                		if(quality.length() == 0) {
+                			qual = null;
+                		}
+                		else {
+                			qual = Integer.valueOf(quality);
+                		}
+                		if(baseprice.length() == 0) {
+                			basePrice = null;
+                		} else {
+                			basePrice = Integer.valueOf(baseprice);
+                		}
+                		
                 		updateFood(connection, fId, name, qual, basePrice);
                 	} break;
                 	case "item": {
@@ -795,10 +878,26 @@ public class StardewHoes {
                 		System.out.print("Please provide the item's base price (leave empty for null):\n> ");
                 		String baseprice = nextLine(scanner);
                     
+                		Integer qual;
+                		Integer basePrice;
                 		int iId = Integer.parseInt(itemId);
-                		int qual = Integer.parseInt(quality);
-                		int basePrice = Integer.parseInt(baseprice);
-                    
+                		if(name.length() == 0) {
+                			name = null;
+                		} else {
+                			name = name;
+                		}
+                		if(quality.length() == 0) {
+                			qual = null;
+                		}
+                		else {
+                			qual = Integer.valueOf(quality);
+                		}
+                		if(baseprice.length() == 0) {
+                			basePrice = null;
+                		} else {
+                			basePrice = Integer.valueOf(baseprice);
+                		}
+                		
                 		updateItem(connection, iId, name, qual, basePrice);
                 	} break;
                 	case "plantProduct": {
@@ -814,12 +913,28 @@ public class StardewHoes {
                 		System.out.print("Please provide the plant product's base price (leave empty for null):\n> ");
                 		String baseprice = nextLine(scanner);
                 		
-                		System.out.print("Please provide the plant product's type (Fruit, Vegetable, Forage, or Flower) (leave empty for null):\n>");
+                		System.out.print("Please provide the plant product's type (Fruit, Vegetable, Forage, or Flower) (leave empty for null):\n> ");
                 		String type = nextLine(scanner);
                     
+                		Integer qual;
+                		Integer basePrice;
                 		int ppId = Integer.parseInt(plantprodId);
-                		int qual = Integer.parseInt(quality);
-                		int basePrice = Integer.parseInt(baseprice);
+                		if(name.length() == 0) {
+                			name = null;
+                		} else {
+                			name = name;
+                		}
+                		if(quality.length() == 0) {
+                			qual = null;
+                		}
+                		else {
+                			qual = Integer.valueOf(quality);
+                		}
+                		if(baseprice.length() == 0) {
+                			basePrice = null;
+                		} else {
+                			basePrice = Integer.valueOf(baseprice);
+                		}
                     
                 		updatePlantProduct(connection, ppId, name, qual, basePrice, type);
                 	} break;
@@ -836,9 +951,25 @@ public class StardewHoes {
                 		System.out.print("Please provide the produce's base price (leave empty for null):\n> ");
                 		String baseprice = nextLine(scanner);
                     
+                		Integer qual;
+                		Integer basePrice;
                 		int pId = Integer.parseInt(produceId);
-                		int qual = Integer.parseInt(quality);
-                		int basePrice = Integer.parseInt(baseprice);
+                		if(name.length() == 0) {
+                			name = null;
+                		} else {
+                			name = name;
+                		}
+                		if(quality.length() == 0) {
+                			qual = null;
+                		}
+                		else {
+                			qual = Integer.valueOf(quality);
+                		}
+                		if(baseprice.length() == 0) {
+                			basePrice = null;
+                		} else {
+                			basePrice = Integer.valueOf(baseprice);
+                		}
                     
                 		updateProduce(connection, pId, name, qual, basePrice);
                 	} break;
@@ -855,12 +986,28 @@ public class StardewHoes {
                 		System.out.print("Please provide the seed's base price (leave empty for null):\n> ");
                 		String baseprice = nextLine(scanner);
                 		
-                		System.out.print("Please provide the seed's season (Spring, Summer, Fall, Spring/Summer, Spring/Fall, Summer/Fall, All, or None) (leave empty for null):\n>");
+                		System.out.print("Please provide the seed's season (Spring, Summer, Fall, Spring/Summer, Spring/Fall, Summer/Fall, All, or None) (leave empty for null):\n> ");
                 		String type = nextLine(scanner);
                     
+                		Integer qual;
+                		Integer basePrice;
                 		int sId = Integer.parseInt(seedId);
-                		int qual = Integer.parseInt(quality);
-                		int basePrice = Integer.parseInt(baseprice);
+                		if(name.length() == 0) {
+                			name = null;
+                		} else {
+                			name = name;
+                		}
+                		if(quality.length() == 0) {
+                			qual = null;
+                		}
+                		else {
+                			qual = Integer.valueOf(quality);
+                		}
+                		if(baseprice.length() == 0) {
+                			basePrice = null;
+                		} else {
+                			basePrice = Integer.valueOf(baseprice);
+                		}
                     
                 		updateSeed(connection, sId, name, qual, basePrice, type);
                 	}
@@ -885,7 +1032,7 @@ public class StardewHoes {
             
             // Delete
             case 'd': {
-            	System.out.print("Delete selected\nWhat would you like to delete? (type h for help)\n>");
+            	System.out.print("Delete selected\nWhat would you like to delete? (type h for help)\n> ");
                 String item = nextLine(scanner);
             	
                 switch(item) {
@@ -1095,433 +1242,433 @@ public class StardewHoes {
 
 	@SuppressWarnings("unchecked")
 	public static void populateDatabase(Connection connection) throws Exception {
-//      String fileData = Files.readString((new File("data/Data/Crops.json")).toPath());
-//      JSONObject cropsRoot = new JSONObject(fileData);
-//      JSONObject cropsContent = cropsRoot.getJSONObject("content");
-//      
-//      fileData = Files.readString((new File("data/Data/ObjectInformation.json")).toPath());
-//      JSONObject objsRoot = new JSONObject(fileData);
-//      JSONObject objsContent = objsRoot.getJSONObject("content");
-//      
-//      HashMap<String, Integer> idMap = new HashMap<>();
-//      HashMap<String, Integer> nameMap = new HashMap<>();
-//      HashMap<String, ArrayList<String>> categoryMap = new HashMap<>();
-//      
-//      Iterator<String> keys = objsContent.keys();
-//      while(keys.hasNext()) {
-//         String itemId = keys.next();
-//         String[] values = objsContent.getString(itemId).split("/");
-//         
-//         String name = values[0];
-//         int price = Integer.valueOf(values[1]);
-//         
-//         //TODO: Handle quality
-//         String[] types = values[3].split(" ");
-//         Integer itemDBId = null;
-//         
-//         if(types.length > 1) {
-//            ArrayList<String> categoryList = categoryMap.get(types[1]);
-//            if(categoryList == null) {
-//               categoryList = new ArrayList<>();
-//               categoryMap.put(types[1], categoryList);
-//            }
-//            categoryList.add(itemId);
-//         }
-//         
-//         if(types[0].equals("Seeds")) {
-//            String season = "All";
-//            if(cropsContent.has(itemId)) {
-//               season = cropsContent.getString(itemId).split("/")[1];
-//               season = season.replace("spring", "Spring").replace("summer", "Summer").replace("fall", "Fall").replace(" ", "/");
-//               if(season.equals("Spring/Summer/Fall")) season = "All";
-//               if(!season.contains("Spring") && !season.contains("Summer") && !season.contains("Fall")) season = "None";
-//            }
-//            
-//            itemDBId = insertSeed(connection, name, price, season);
-//         } else if(types[0].equals("Fish")) {
-//            itemDBId = insertFish(connection, name, null, price);
-//         } else if(types[0].equals("Cooking")) {
-//            itemDBId = insertFood(connection, name, price);
-//         } else if(types[0].equals("Basic")) {
-//            if(types.length > 1) {
-//               int category = Integer.valueOf(types[1]);
-//               switch(category) {
-//                  case -5:
-//                  case -6:
-//                  case -14:
-//                  case -18: {
-//                     itemDBId = insertAnimalProduct(connection, name, null, price);
-//                  } break;
-//                  
-//                  case -17: {
-//                     if(itemId.equals("417")) itemDBId = insertProduce(connection, name, null, price);
-//                     else if(itemId.equals("430")) itemDBId = insertAnimalProduct(connection, name, null, price);
-//                     else itemDBId = insertItem(connection, name, null, price);
-//                  } break;
-//                  
-//                  case -26:
-//                  case -27: {
-//                     itemDBId = insertArtisanGood(connection, name, null, price, 0.0);
-//                  } break;
-//                  
-//                  case -74: {
-//                     if(name.equals("Banana Sapling"))           itemDBId = insertSeed(connection, name, price, "Summer");
-//                     else if(name.equals("Tea Sapling"))         itemDBId = insertSeed(connection, name, price, "All");
-//                     else if(name.equals("Cherry Sapling"))      itemDBId = insertSeed(connection, name, price, "Spring");
-//                     else if(name.equals("Apricot Sapling"))     itemDBId = insertSeed(connection, name, price, "Spring");
-//                     else if(name.equals("Orange Sapling"))      itemDBId = insertSeed(connection, name, price, "Summer");
-//                     else if(name.equals("Peach Sapling"))       itemDBId = insertSeed(connection, name, price, "Summer");
-//                     else if(name.equals("Pomegranite Sapling")) itemDBId = insertSeed(connection, name, price, "Fall");
-//                     else if(name.equals("Apple Sapling"))       itemDBId = insertSeed(connection, name, price, "Fall");
-//                     else if(name.equals("Mango Sapling"))       itemDBId = insertSeed(connection, name, price, "Summer");
-//                  } break;
-//                  
-//                  case -75: itemDBId = insertPlantProduct(connection, name, null, price, "Vegetable"); break;
-//                  case -79: itemDBId = insertPlantProduct(connection, name, null, price, "Fruit"); break;
-//                  case -80: itemDBId = insertPlantProduct(connection, name, null, price, "Flower"); break;
-//                  case -81: itemDBId = insertPlantProduct(connection, name, null, price, "Forage"); break;
-//                  
-//                  default: itemDBId = insertItem(connection, name, null, price);
-//               }
-//            } else {
-//               itemDBId = insertItem(connection, name, null, price);
-//            }
-//         } else if(types[0].equals("Arch")) {
-//            if(name.equals("Dinosaur Egg")) {
-//               itemDBId = insertAnimalProduct(connection, name, null, price);
-//            } else {
-//               itemDBId = insertItem(connection, name, null, price);
-//            }
-//         } else if(types[0].equals("Crafting")) {
-//            if(name.equals("Coffee")) {
-//               itemDBId = insertArtisanGood(connection, name, null, price, 0.0);
-//            } else {
-//               itemDBId = insertItem(connection, name, null, price);
-//            }
-//         } else {
-//            // Minerals, Quest, asdf, Ring
-//            itemDBId = insertItem(connection, name, null, price);
-//         }
-//         
-//         idMap.put(itemId, itemDBId);
-//         nameMap.put(name, itemDBId);
-//      }
-//      
-//      fileData = Files.readString((new File("data/Data/FarmAnimals.json")).toPath());
-//      JSONObject animalsRoot = new JSONObject(fileData);
-//      JSONObject animalsContent = animalsRoot.getJSONObject("content");
-//      keys = animalsContent.keys();
-//      while(keys.hasNext()) {
-//         String name = keys.next();
-//         if(name.equals("Hog")) continue;
-//         
-//         String[] values = animalsContent.getString(name).split("/");
-//         
-//         Integer produceDBId1 = idMap.get(values[2]);
-//         Integer produceDBId2 = idMap.get(values[3]);
-//         
-//         Integer price = 0;
-//         if(name.contains("Chicken")) price = 800;
-//         else if(name.contains("Duck")) price = 1200;
-//         else if(name.contains("Rabbit")) price = 8000;
-//         else if(name.contains("Cow")) price = 1500;
-//         else if(name.contains("Goat")) price = 4000;
-//         else if(name.contains("Sheep")) price = 8000;
-//         else if(name.contains("Pig")) price = 16000;
-//         
-//         int animalDBId = insertAnimal(connection, name, price);
-//         idMap.put(name, animalDBId);
-//         
-//         if(produceDBId1 != null)
-//            insertProduces(connection, animalDBId, produceDBId1);
-//         if(produceDBId2 != null && produceDBId1 != produceDBId2)
-//            insertProduces(connection, animalDBId, produceDBId2);
-//      }
-//      
-//      fileData = Files.readString((new File("data/Data/CookingRecipes.json")).toPath());
-//      JSONObject cookingRoot = new JSONObject(fileData);
-//      JSONObject cookingContent = cookingRoot.getJSONObject("content");
-//      
-//      keys = cookingContent.keys();
-//      while(keys.hasNext()) {
-//         String name = keys.next();
-//         String[] values = cookingContent.getString(name).split("/");
-//         String[] inputs = values[0].split(" ");
-//         String[] outputs = values[2].split(" ");
-//         
-//         if(outputs.length > 2) {
-//            System.out.println("Error! Recipe has more than one yield type");
-//            break;
-//         }
-//         
-//         Integer resultId = idMap.get(outputs[0]);
-//         
-//         for(int i = 0; i < inputs.length; i += 2) {
-//            ArrayList<String> categoryList = categoryMap.get(inputs[i]);
-//            
-//            if(categoryList != null) {
-//               for(String item : categoryList) {
-//                  insertHasIngredient(connection, idMap.get(item), resultId);
-//               }
-//            } else {
-//               insertHasIngredient(connection, idMap.get(inputs[i]), resultId);
-//            }
-//         }
-//      }
-//      
-//      int mrQiId1 = insertShopkeeper(connection, "MisterQi1");
-//      int mrQiId2 = insertShopkeeper(connection, "MisterQi2");
-//      idMap.put("MisterQi1", mrQiId1);
-//      idMap.put("MisterQi2", mrQiId2);
-//      insertShop(connection, "WalnutRoom", "Ginger Island 1", "Always", mrQiId1);
-//      insertShop(connection, "Casino", "Calico Desert 2, in the back of the Oasis", "9a-11:50p", mrQiId2);
-//      
-//      String name = "TravelingMerchant";
-//      int id = insertShopkeeper(connection, name);
-//      idMap.put(name, id);
-//      insertShop(connection, "TravelingCart", "Cindersap Forest, north of the upper pond", "6am to 8pm on Fridays and Saturdays, and 5pm to 2am during the Night Market.", id);
-//      
-//      name = "DesertTrader";
-//      id = insertShopkeeper(connection, name);
-//      idMap.put(name, id);
-//      insertShop(connection, "TradingHut", "Next to the road through the Calico Desert", "6am to 2am every day, except during the Night Market.", id);
-//      
-//      name = "Morris";
-//      id = insertShopkeeper(connection, name);
-//      idMap.put(name, id);
-//      insertShop(connection, "JojaMart", "Pelican Town 3", "Permanently closed.", id);
-//      
-//      name = "VolcanicDwarf";
-//      id = insertShopkeeper(connection, name);
-//      idMap.put(name, id);
-//      insertShop(connection, "VolcanoShop", "In level 5 of the Ginger Island Volcano", "Always open.", id);
-//      
-//      name = "IslandTrader";
-//      id = insertShopkeeper(connection, name);
-//      idMap.put(name, id);
-//      insertShop(connection, "IslandTradingStand", "On the way to the Ginger Island Volcano", "Always open.", id);
-//      
-//      name = "HatMouse";
-//      id = insertShopkeeper(connection, name);
-//      idMap.put(name, id);
-//      insertShop(connection, "HatShop", "Abandoned house in the Cindersap Forest", "Always open.", id);
-//      
-//      name = "Bear";
-//      idMap.put(name, insertVillager(connection, name));
-//      
-//      name = "Birdie";
-//      idMap.put(name, insertVillager(connection, name));
-//      
-//      name = "Gil";
-//      idMap.put(name, insertVillager(connection, name));
-//      
-//      name = "Gunther";
-//      idMap.put(name, insertVillager(connection, name));
-//      
-//      fileData = Files.readString((new File("data/Data/NPCDispositions.json")).toPath());
-//      JSONObject npcRoot = new JSONObject(fileData);
-//      JSONObject npcContent = npcRoot.getJSONObject("content");
-//      
-//      keys = npcContent.keys();
-//      while(keys.hasNext()) {
-//         name = keys.next();
-//         
-//         if(name.equals("Marlon")) {
-//            id = insertShopkeeper(connection, name);
-//            insertShop(connection, "AdventurerGuild", "Mountain 1", "2pm to 10pm each day, except for festivals.", id);
-//         } else if(name.equals("Flint")) {
-//            id = insertShopkeeper(connection, name);
-//            idMap.put(name, id);
-//            insertShop(connection, "Blacksmith", "Mountain 1", "9am to 4pm each day, except for Winter 16, Fridays, and festivals.", id);
-//         } else if(name.equals("Robin")) {
-//            id = insertShopkeeper(connection, name);
-//            idMap.put(name, id);
-//            insertShop(connection, "CarpentersShop", "24 Mountain Road", "9am to 5pm each day, except for Summer 18, Tuesdays, and festivals", id);
-//         } else if(name.equals("Willy")) {
-//            id = insertShopkeeper(connection, name);
-//            idMap.put(name, id);
-//            insertShop(connection, "FishShop", "Beach 1", "8am to 5pm each day, except for non-rainy Saturdays, 10am to 2am on Spring 9, and festivals.", id);
-//         } else if(name.equals("Harvey")) {
-//            id = insertShopkeeper(connection, name);
-//            idMap.put(name, id);
-//            insertShop(connection, "Clinic", "Pelican Town 1", "9am to 2pm on Tuesdays and Thursdays, and 9am to 12pm on Sundays, Mondays, Wednesdays, and Fridays. Closed for festivals.", id);
-//         } else if(name.equals("Alex")) {
-//            id = insertShopkeeper(connection, name);
-//            idMap.put(name, id);
-//            insertShop(connection, "IceCreamStand", "Near the museum", "1pm to 5pm in the summer, except for Wednesdays, Summer 16, and rainy days.", id);
-//         } else if(name.equals("Marnie")) {
-//            id = insertShopkeeper(connection, name);
-//            idMap.put(name, id);
-//            insertShop(connection, "AnimalRanch", "Cindersap Forest 1", "9am to 4pm, except for Mondays, Tuesdays, Fall 18, Winter 18, and festivals.", id);
-//         } else if(name.equals("Sandy")) {
-//            id = insertShopkeeper(connection, name);
-//            idMap.put(name, id);
-//            insertShop(connection, "Oasis", "Calico Desert 2", "9am to 11:50pm, except for festivals.", id);
-//         } else if(name.equals("Pierre")) {
-//            id = insertShopkeeper(connection, name);
-//            idMap.put(name, id);
-//            insertShop(connection, "GeneralShop", "Pelican Town 2", "9am to 5pm, except for festivals.", id);
-//         } else if(name.equals("Gus")) {
-//            id = insertShopkeeper(connection, name);
-//            idMap.put(name, id);
-//            insertShop(connection, "Saloon", "Pelican Town 3", "12pm to 12am, except for festivals and until 4:30pm on Fall 4.", id);
-//         } else if(name.equals("Wizard")) {
-//            id = insertShopkeeper(connection, name);
-//            idMap.put(name, id);
-//            insertShop(connection, "WizardTower", "Cindersap Forest 2", "6am to 11pm, except for Spring 24 and Winter 8.", id);
-//         } else if(name.equals("Lewis")) {
-//            id = insertShopkeeper(connection, name);
-//            idMap.put(name, id);
-//            insertShop(connection, "MovieTheater", "Pelican Town 3", "9am to 9pm every day.", id);
-//         } else if(name.equals("Dwarf")) {
-//            id = insertShopkeeper(connection, name);
-//            idMap.put(name, id);
-//            insertShop(connection, "MinesShop", "In the Mountain mines", "Always open.", id);
-//         } else if(name.equals("Krobus")) {
-//            id = insertShopkeeper(connection, name);
-//            idMap.put(name, id);
-//            insertShop(connection, "SewerShop", "In the Pelican Town sewers", "Always open.", id);
-//         } else {
-//            id = insertVillager(connection, name);
-//         }
-//         
-//         idMap.put(name, id);
-//      }
-//      
-//      insertProfession(connection, "AnimalProduct Price", 1.2);
-//      insertProfession(connection, "PlantProduct Price", 1.1);
-//      insertProfession(connection, "ArtisanGood Price", 1.4);
-//      insertProfession(connection, "MetalBar Price", 1.5);
-//      insertProfession(connection, "Gem Price", 1.3);
-//      insertProfession(connection, "Wood Price", 1.25);
-//      insertProfession(connection, "Syrup Price", 1.25);
-//      insertProfession(connection, "Fish Price", 1.25);
-//      insertProfession(connection, "Fish Price", 1.5);
-//      
-//      
-//      insertGenerates(connection, nameMap.get("Tea Leaves"), nameMap.get("Green Tea"));
-//      insertGenerates(connection, nameMap.get("Coffee Bean"), nameMap.get("Coffee"));
-//      insertGenerates(connection, nameMap.get("Wool"), nameMap.get("Cloth"));
-//      
-//      updateArtisanGood(connection, nameMap.get("Juice"), null, null, 0, 2.25);
-//      for(String idStr : categoryMap.get("-75")) {
-//         insertGenerates(connection, idMap.get(idStr), nameMap.get("Juice"));
-//      }
-//      
-//      updateArtisanGood(connection, nameMap.get("Honey"), null, null, null, 2.0);
-//      for(String idStr : categoryMap.get("-80")) {
-//         insertGenerates(connection, idMap.get(idStr), nameMap.get("Honey"));
-//      }
-//      
-//      int id0 = insertArtisanGood(connection, "Wine", 0, 0, 3.0*1.00);
-//      int id1 = insertArtisanGood(connection, "Wine", 1, 0, 3.0*1.25);
-//      int id2 = insertArtisanGood(connection, "Wine", 2, 0, 3.0*1.50);
-//      int id3 = insertArtisanGood(connection, "Wine", 3, 0, 3.0*2.00);
-//      for(String idStr : categoryMap.get("-79")) {
-//         insertGenerates(connection, idMap.get(idStr), id0);
-//         insertGenerates(connection, idMap.get(idStr), id1);
-//         insertGenerates(connection, idMap.get(idStr), id2);
-//         insertGenerates(connection, idMap.get(idStr), id3);
-//      }
-//      
-//      id0 = insertArtisanGood(connection, "Pale Ale", 0, 300, 0);
-//      id1 = insertArtisanGood(connection, "Pale Ale", 1, 375, 0);
-//      id2 = insertArtisanGood(connection, "Pale Ale", 2, 450, 0);
-//      id3 = insertArtisanGood(connection, "Pale Ale", 3, 600, 0);
-//      insertGenerates(connection, nameMap.get("Hops"), id0);
-//      insertGenerates(connection, nameMap.get("Hops"), id1);
-//      insertGenerates(connection, nameMap.get("Hops"), id2);
-//      insertGenerates(connection, nameMap.get("Hops"), id3);
-//      
-//      id0 = insertArtisanGood(connection, "Beer", 0, 200, 0);
-//      id1 = insertArtisanGood(connection, "Beer", 1, 250, 0);
-//      id2 = insertArtisanGood(connection, "Beer", 2, 300, 0);
-//      id3 = insertArtisanGood(connection, "Beer", 3, 400, 0);
-//      insertGenerates(connection, nameMap.get("Wheat"), id0);
-//      insertGenerates(connection, nameMap.get("Wheat"), id1);
-//      insertGenerates(connection, nameMap.get("Wheat"), id2);
-//      insertGenerates(connection, nameMap.get("Wheat"), id3);
-//      
-//      id0 = insertArtisanGood(connection, "Mead", 0, 200, 0);
-//      id1 = insertArtisanGood(connection, "Mead", 1, 250, 0);
-//      id2 = insertArtisanGood(connection, "Mead", 2, 300, 0);
-//      id3 = insertArtisanGood(connection, "Mead", 3, 400, 0);
-//      insertGenerates(connection, nameMap.get("Honey"), id0);
-//      insertGenerates(connection, nameMap.get("Honey"), id1);
-//      insertGenerates(connection, nameMap.get("Honey"), id2);
-//      insertGenerates(connection, nameMap.get("Honey"), id3);
-//      
-//      id0 = insertArtisanGood(connection, "Cheese", 0, 230, 0);
-//      id1 = insertArtisanGood(connection, "Cheese", 1, 287, 0);
-//      id2 = insertArtisanGood(connection, "Cheese", 2, 345, 0);
-//      id3 = insertArtisanGood(connection, "Cheese", 3, 460, 0);
-//      insertGenerates(connection, nameMap.get("Milk"), id0);
-//      insertGenerates(connection, nameMap.get("Milk"), id1);
-//      insertGenerates(connection, nameMap.get("Milk"), id2);
-//      insertGenerates(connection, nameMap.get("Milk"), id3);
-//      insertGenerates(connection, nameMap.get("Large Milk"), id0);
-//      insertGenerates(connection, nameMap.get("Large Milk"), id1);
-//      insertGenerates(connection, nameMap.get("Large Milk"), id2);
-//      insertGenerates(connection, nameMap.get("Large Milk"), id3);
-//      
-//      id0 = insertArtisanGood(connection, "Goat Cheese", 0, 400, 0);
-//      id1 = insertArtisanGood(connection, "Goat Cheese", 1, 500, 0);
-//      id2 = insertArtisanGood(connection, "Goat Cheese", 2, 600, 0);
-//      id3 = insertArtisanGood(connection, "Goat Cheese", 3, 800, 0);
-//      insertGenerates(connection, nameMap.get("Goat Milk"), id0);
-//      insertGenerates(connection, nameMap.get("Goat Milk"), id1);
-//      insertGenerates(connection, nameMap.get("Goat Milk"), id2);
-//      insertGenerates(connection, nameMap.get("Goat Milk"), id3);
-//      insertGenerates(connection, nameMap.get("L. Goat Milk"), id0);
-//      insertGenerates(connection, nameMap.get("L. Goat Milk"), id1);
-//      insertGenerates(connection, nameMap.get("L. Goat Milk"), id2);
-//      insertGenerates(connection, nameMap.get("L. Goat Milk"), id3);
-//      
-//      id0 = insertArtisanGood(connection, "Mayonnaise", 0, 190, 0);
-//      id1 = insertArtisanGood(connection, "Mayonnaise", 1, 237, 0);
-//      id2 = insertArtisanGood(connection, "Mayonnaise", 2, 285, 0);
-//      id3 = insertArtisanGood(connection, "Mayonnaise", 3, 380, 0);
-//      insertGenerates(connection, nameMap.get("Egg"), id0);
-//      insertGenerates(connection, nameMap.get("Egg"), id1);
-//      insertGenerates(connection, nameMap.get("Egg"), id2);
-//      insertGenerates(connection, nameMap.get("Egg"), id3);
-//      insertGenerates(connection, nameMap.get("Large Egg"), id0);
-//      insertGenerates(connection, nameMap.get("Large Egg"), id1);
-//      insertGenerates(connection, nameMap.get("Large Egg"), id2);
-//      insertGenerates(connection, nameMap.get("Large Egg"), id3);
-//      insertGenerates(connection, nameMap.get("Ostrich Egg"), id0);
-//      insertGenerates(connection, nameMap.get("Ostrich Egg"), id1);
-//      insertGenerates(connection, nameMap.get("Ostrich Egg"), id2);
-//      insertGenerates(connection, nameMap.get("Ostrich Egg"), id3);
-//      insertGenerates(connection, nameMap.get("Golden Egg"), id0);
-//      insertGenerates(connection, nameMap.get("Golden Egg"), id1);
-//      insertGenerates(connection, nameMap.get("Golden Egg"), id2);
-//      insertGenerates(connection, nameMap.get("Golden Egg"), id3);
-//      
-//      insertGenerates(connection, nameMap.get("Duck Egg"), nameMap.get("Duck Mayonnaise"));
-//      insertGenerates(connection, nameMap.get("Void Egg"), nameMap.get("Void Mayonnaise"));
-//      insertGenerates(connection, nameMap.get("Dinosaur Egg"), nameMap.get("Dinosaur Mayonnaise"));
-//      
-//      insertGenerates(connection, nameMap.get("Truffle"), nameMap.get("Truffle Oil"));
-//      insertGenerates(connection, nameMap.get("Corn"), nameMap.get("Oil"));
-//      insertGenerates(connection, nameMap.get("Sunflower Seeds"), nameMap.get("Oil"));
-//      insertGenerates(connection, nameMap.get("Sunflower"), nameMap.get("Oil"));
-//      
-//      updateArtisanGood(connection, nameMap.get("Pickles"), null, null, 50, 2.0);
-//      insertGenerates(connection, nameMap.get("Ginger"), nameMap.get("Pickles"));
-//      for(String idStr : categoryMap.get("-75")) {
-//         insertGenerates(connection, idMap.get(idStr), nameMap.get("Pickles"));
-//      }
-//      
-//      updateArtisanGood(connection, nameMap.get("Jelly"), null, null, 50, 2.0);
-//      for(String idStr : categoryMap.get("-79")) {
-//         insertGenerates(connection, idMap.get(idStr), nameMap.get("Jelly"));
-//      }
-//      
-//      insertGenerates(connection, nameMap.get("Roe"), nameMap.get("Caviar"));
-//      
-//      updateArtisanGood(connection, nameMap.get("Aged Roe"), null, null, 0, 2.0);
-//      insertGenerates(connection, nameMap.get("Roe"), nameMap.get("Aged Roe"));
+      String fileData = Files.readString((new File("data/Data/Crops.json")).toPath());
+      JSONObject cropsRoot = new JSONObject(fileData);
+      JSONObject cropsContent = cropsRoot.getJSONObject("content");
+      
+      fileData = Files.readString((new File("data/Data/ObjectInformation.json")).toPath());
+      JSONObject objsRoot = new JSONObject(fileData);
+      JSONObject objsContent = objsRoot.getJSONObject("content");
+      
+      HashMap<String, Integer> idMap = new HashMap<>();
+      HashMap<String, Integer> nameMap = new HashMap<>();
+      HashMap<String, ArrayList<String>> categoryMap = new HashMap<>();
+      
+      Iterator<String> keys = objsContent.keys();
+      while(keys.hasNext()) {
+         String itemId = keys.next();
+         String[] values = objsContent.getString(itemId).split("/");
+         
+         String name = values[0];
+         int price = Integer.valueOf(values[1]);
+         
+         //TODO: Handle quality
+         String[] types = values[3].split(" ");
+         Integer itemDBId = null;
+         
+         if(types.length > 1) {
+            ArrayList<String> categoryList = categoryMap.get(types[1]);
+            if(categoryList == null) {
+               categoryList = new ArrayList<>();
+               categoryMap.put(types[1], categoryList);
+            }
+            categoryList.add(itemId);
+         }
+         
+         if(types[0].equals("Seeds")) {
+            String season = "All";
+            if(cropsContent.has(itemId)) {
+               season = cropsContent.getString(itemId).split("/")[1];
+               season = season.replace("spring", "Spring").replace("summer", "Summer").replace("fall", "Fall").replace(" ", "/");
+               if(season.equals("Spring/Summer/Fall")) season = "All";
+               if(!season.contains("Spring") && !season.contains("Summer") && !season.contains("Fall")) season = "None";
+            }
+            
+            itemDBId = insertSeed(connection, name, price, season);
+         } else if(types[0].equals("Fish")) {
+            itemDBId = insertFish(connection, name, null, price);
+         } else if(types[0].equals("Cooking")) {
+            itemDBId = insertFood(connection, name, price);
+         } else if(types[0].equals("Basic")) {
+            if(types.length > 1) {
+               int category = Integer.valueOf(types[1]);
+               switch(category) {
+                  case -5:
+                  case -6:
+                  case -14:
+                  case -18: {
+                     itemDBId = insertAnimalProduct(connection, name, null, price);
+                  } break;
+                  
+                  case -17: {
+                     if(itemId.equals("417")) itemDBId = insertProduce(connection, name, null, price);
+                     else if(itemId.equals("430")) itemDBId = insertAnimalProduct(connection, name, null, price);
+                     else itemDBId = insertItem(connection, name, null, price);
+                  } break;
+                  
+                  case -26:
+                  case -27: {
+                     itemDBId = insertArtisanGood(connection, name, null, price, 0.0);
+                  } break;
+                  
+                  case -74: {
+                     if(name.equals("Banana Sapling"))           itemDBId = insertSeed(connection, name, price, "Summer");
+                     else if(name.equals("Tea Sapling"))         itemDBId = insertSeed(connection, name, price, "All");
+                     else if(name.equals("Cherry Sapling"))      itemDBId = insertSeed(connection, name, price, "Spring");
+                     else if(name.equals("Apricot Sapling"))     itemDBId = insertSeed(connection, name, price, "Spring");
+                     else if(name.equals("Orange Sapling"))      itemDBId = insertSeed(connection, name, price, "Summer");
+                     else if(name.equals("Peach Sapling"))       itemDBId = insertSeed(connection, name, price, "Summer");
+                     else if(name.equals("Pomegranite Sapling")) itemDBId = insertSeed(connection, name, price, "Fall");
+                     else if(name.equals("Apple Sapling"))       itemDBId = insertSeed(connection, name, price, "Fall");
+                     else if(name.equals("Mango Sapling"))       itemDBId = insertSeed(connection, name, price, "Summer");
+                  } break;
+                  
+                  case -75: itemDBId = insertPlantProduct(connection, name, null, price, "Vegetable"); break;
+                  case -79: itemDBId = insertPlantProduct(connection, name, null, price, "Fruit"); break;
+                  case -80: itemDBId = insertPlantProduct(connection, name, null, price, "Flower"); break;
+                  case -81: itemDBId = insertPlantProduct(connection, name, null, price, "Forage"); break;
+                  
+                  default: itemDBId = insertItem(connection, name, null, price);
+               }
+            } else {
+               itemDBId = insertItem(connection, name, null, price);
+            }
+         } else if(types[0].equals("Arch")) {
+            if(name.equals("Dinosaur Egg")) {
+               itemDBId = insertAnimalProduct(connection, name, null, price);
+            } else {
+               itemDBId = insertItem(connection, name, null, price);
+            }
+         } else if(types[0].equals("Crafting")) {
+            if(name.equals("Coffee")) {
+               itemDBId = insertArtisanGood(connection, name, null, price, 0.0);
+            } else {
+               itemDBId = insertItem(connection, name, null, price);
+            }
+         } else {
+            // Minerals, Quest, asdf, Ring
+            itemDBId = insertItem(connection, name, null, price);
+         }
+         
+         idMap.put(itemId, itemDBId);
+         nameMap.put(name, itemDBId);
+      }
+      
+      fileData = Files.readString((new File("data/Data/FarmAnimals.json")).toPath());
+      JSONObject animalsRoot = new JSONObject(fileData);
+      JSONObject animalsContent = animalsRoot.getJSONObject("content");
+      keys = animalsContent.keys();
+      while(keys.hasNext()) {
+         String name = keys.next();
+         if(name.equals("Hog")) continue;
+         
+         String[] values = animalsContent.getString(name).split("/");
+         
+         Integer produceDBId1 = idMap.get(values[2]);
+         Integer produceDBId2 = idMap.get(values[3]);
+         
+         Integer price = 0;
+         if(name.contains("Chicken")) price = 800;
+         else if(name.contains("Duck")) price = 1200;
+         else if(name.contains("Rabbit")) price = 8000;
+         else if(name.contains("Cow")) price = 1500;
+         else if(name.contains("Goat")) price = 4000;
+         else if(name.contains("Sheep")) price = 8000;
+         else if(name.contains("Pig")) price = 16000;
+         
+         int animalDBId = insertAnimal(connection, name, price);
+         idMap.put(name, animalDBId);
+         
+         if(produceDBId1 != null)
+            insertProduces(connection, animalDBId, produceDBId1);
+         if(produceDBId2 != null && produceDBId1 != produceDBId2)
+            insertProduces(connection, animalDBId, produceDBId2);
+      }
+      
+      fileData = Files.readString((new File("data/Data/CookingRecipes.json")).toPath());
+      JSONObject cookingRoot = new JSONObject(fileData);
+      JSONObject cookingContent = cookingRoot.getJSONObject("content");
+      
+      keys = cookingContent.keys();
+      while(keys.hasNext()) {
+         String name = keys.next();
+         String[] values = cookingContent.getString(name).split("/");
+         String[] inputs = values[0].split(" ");
+         String[] outputs = values[2].split(" ");
+         
+         if(outputs.length > 2) {
+            System.out.println("Error! Recipe has more than one yield type");
+            break;
+         }
+         
+         Integer resultId = idMap.get(outputs[0]);
+         
+         for(int i = 0; i < inputs.length; i += 2) {
+            ArrayList<String> categoryList = categoryMap.get(inputs[i]);
+            
+            if(categoryList != null) {
+               for(String item : categoryList) {
+                  insertHasIngredient(connection, idMap.get(item), resultId);
+               }
+            } else {
+               insertHasIngredient(connection, idMap.get(inputs[i]), resultId);
+            }
+         }
+      }
+      
+      int mrQiId1 = insertShopkeeper(connection, "MisterQi1");
+      int mrQiId2 = insertShopkeeper(connection, "MisterQi2");
+      idMap.put("MisterQi1", mrQiId1);
+      idMap.put("MisterQi2", mrQiId2);
+      insertShop(connection, "WalnutRoom", "Ginger Island 1", "Always", mrQiId1);
+      insertShop(connection, "Casino", "Calico Desert 2, in the back of the Oasis", "9a-11:50p", mrQiId2);
+      
+      String name = "TravelingMerchant";
+      int id = insertShopkeeper(connection, name);
+      idMap.put(name, id);
+      insertShop(connection, "TravelingCart", "Cindersap Forest, north of the upper pond", "6am to 8pm on Fridays and Saturdays, and 5pm to 2am during the Night Market.", id);
+      
+      name = "DesertTrader";
+      id = insertShopkeeper(connection, name);
+      idMap.put(name, id);
+      insertShop(connection, "TradingHut", "Next to the road through the Calico Desert", "6am to 2am every day, except during the Night Market.", id);
+      
+      name = "Morris";
+      id = insertShopkeeper(connection, name);
+      idMap.put(name, id);
+      insertShop(connection, "JojaMart", "Pelican Town 3", "Permanently closed.", id);
+      
+      name = "VolcanicDwarf";
+      id = insertShopkeeper(connection, name);
+      idMap.put(name, id);
+      insertShop(connection, "VolcanoShop", "In level 5 of the Ginger Island Volcano", "Always open.", id);
+      
+      name = "IslandTrader";
+      id = insertShopkeeper(connection, name);
+      idMap.put(name, id);
+      insertShop(connection, "IslandTradingStand", "On the way to the Ginger Island Volcano", "Always open.", id);
+      
+      name = "HatMouse";
+      id = insertShopkeeper(connection, name);
+      idMap.put(name, id);
+      insertShop(connection, "HatShop", "Abandoned house in the Cindersap Forest", "Always open.", id);
+      
+      name = "Bear";
+      idMap.put(name, insertVillager(connection, name));
+      
+      name = "Birdie";
+      idMap.put(name, insertVillager(connection, name));
+      
+      name = "Gil";
+      idMap.put(name, insertVillager(connection, name));
+      
+      name = "Gunther";
+      idMap.put(name, insertVillager(connection, name));
+      
+      fileData = Files.readString((new File("data/Data/NPCDispositions.json")).toPath());
+      JSONObject npcRoot = new JSONObject(fileData);
+      JSONObject npcContent = npcRoot.getJSONObject("content");
+      
+      keys = npcContent.keys();
+      while(keys.hasNext()) {
+         name = keys.next();
+         
+         if(name.equals("Marlon")) {
+            id = insertShopkeeper(connection, name);
+            insertShop(connection, "AdventurerGuild", "Mountain 1", "2pm to 10pm each day, except for festivals.", id);
+         } else if(name.equals("Flint")) {
+            id = insertShopkeeper(connection, name);
+            idMap.put(name, id);
+            insertShop(connection, "Blacksmith", "Mountain 1", "9am to 4pm each day, except for Winter 16, Fridays, and festivals.", id);
+         } else if(name.equals("Robin")) {
+            id = insertShopkeeper(connection, name);
+            idMap.put(name, id);
+            insertShop(connection, "CarpentersShop", "24 Mountain Road", "9am to 5pm each day, except for Summer 18, Tuesdays, and festivals", id);
+         } else if(name.equals("Willy")) {
+            id = insertShopkeeper(connection, name);
+            idMap.put(name, id);
+            insertShop(connection, "FishShop", "Beach 1", "8am to 5pm each day, except for non-rainy Saturdays, 10am to 2am on Spring 9, and festivals.", id);
+         } else if(name.equals("Harvey")) {
+            id = insertShopkeeper(connection, name);
+            idMap.put(name, id);
+            insertShop(connection, "Clinic", "Pelican Town 1", "9am to 2pm on Tuesdays and Thursdays, and 9am to 12pm on Sundays, Mondays, Wednesdays, and Fridays. Closed for festivals.", id);
+         } else if(name.equals("Alex")) {
+            id = insertShopkeeper(connection, name);
+            idMap.put(name, id);
+            insertShop(connection, "IceCreamStand", "Near the museum", "1pm to 5pm in the summer, except for Wednesdays, Summer 16, and rainy days.", id);
+         } else if(name.equals("Marnie")) {
+            id = insertShopkeeper(connection, name);
+            idMap.put(name, id);
+            insertShop(connection, "AnimalRanch", "Cindersap Forest 1", "9am to 4pm, except for Mondays, Tuesdays, Fall 18, Winter 18, and festivals.", id);
+         } else if(name.equals("Sandy")) {
+            id = insertShopkeeper(connection, name);
+            idMap.put(name, id);
+            insertShop(connection, "Oasis", "Calico Desert 2", "9am to 11:50pm, except for festivals.", id);
+         } else if(name.equals("Pierre")) {
+            id = insertShopkeeper(connection, name);
+            idMap.put(name, id);
+            insertShop(connection, "GeneralShop", "Pelican Town 2", "9am to 5pm, except for festivals.", id);
+         } else if(name.equals("Gus")) {
+            id = insertShopkeeper(connection, name);
+            idMap.put(name, id);
+            insertShop(connection, "Saloon", "Pelican Town 3", "12pm to 12am, except for festivals and until 4:30pm on Fall 4.", id);
+         } else if(name.equals("Wizard")) {
+            id = insertShopkeeper(connection, name);
+            idMap.put(name, id);
+            insertShop(connection, "WizardTower", "Cindersap Forest 2", "6am to 11pm, except for Spring 24 and Winter 8.", id);
+         } else if(name.equals("Lewis")) {
+            id = insertShopkeeper(connection, name);
+            idMap.put(name, id);
+            insertShop(connection, "MovieTheater", "Pelican Town 3", "9am to 9pm every day.", id);
+         } else if(name.equals("Dwarf")) {
+            id = insertShopkeeper(connection, name);
+            idMap.put(name, id);
+            insertShop(connection, "MinesShop", "In the Mountain mines", "Always open.", id);
+         } else if(name.equals("Krobus")) {
+            id = insertShopkeeper(connection, name);
+            idMap.put(name, id);
+            insertShop(connection, "SewerShop", "In the Pelican Town sewers", "Always open.", id);
+         } else {
+            id = insertVillager(connection, name);
+         }
+         
+         idMap.put(name, id);
+      }
+      
+      insertProfession(connection, "AnimalProduct Price", 1.2);
+      insertProfession(connection, "PlantProduct Price", 1.1);
+      insertProfession(connection, "ArtisanGood Price", 1.4);
+      insertProfession(connection, "MetalBar Price", 1.5);
+      insertProfession(connection, "Gem Price", 1.3);
+      insertProfession(connection, "Wood Price", 1.25);
+      insertProfession(connection, "Syrup Price", 1.25);
+      insertProfession(connection, "Fish Price", 1.25);
+      insertProfession(connection, "Fish Price", 1.5);
+      
+      
+      insertGenerates(connection, nameMap.get("Tea Leaves"), nameMap.get("Green Tea"));
+      insertGenerates(connection, nameMap.get("Coffee Bean"), nameMap.get("Coffee"));
+      insertGenerates(connection, nameMap.get("Wool"), nameMap.get("Cloth"));
+      
+      updateArtisanGood(connection, nameMap.get("Juice"), null, null, 0, 2.25);
+      for(String idStr : categoryMap.get("-75")) {
+         insertGenerates(connection, idMap.get(idStr), nameMap.get("Juice"));
+      }
+      
+      updateArtisanGood(connection, nameMap.get("Honey"), null, null, null, 2.0);
+      for(String idStr : categoryMap.get("-80")) {
+         insertGenerates(connection, idMap.get(idStr), nameMap.get("Honey"));
+      }
+      
+      int id0 = insertArtisanGood(connection, "Wine", 0, 0, 3.0*1.00);
+      int id1 = insertArtisanGood(connection, "Wine", 1, 0, 3.0*1.25);
+      int id2 = insertArtisanGood(connection, "Wine", 2, 0, 3.0*1.50);
+      int id3 = insertArtisanGood(connection, "Wine", 3, 0, 3.0*2.00);
+      for(String idStr : categoryMap.get("-79")) {
+         insertGenerates(connection, idMap.get(idStr), id0);
+         insertGenerates(connection, idMap.get(idStr), id1);
+         insertGenerates(connection, idMap.get(idStr), id2);
+         insertGenerates(connection, idMap.get(idStr), id3);
+      }
+      
+      id0 = insertArtisanGood(connection, "Pale Ale", 0, 300, 0);
+      id1 = insertArtisanGood(connection, "Pale Ale", 1, 375, 0);
+      id2 = insertArtisanGood(connection, "Pale Ale", 2, 450, 0);
+      id3 = insertArtisanGood(connection, "Pale Ale", 3, 600, 0);
+      insertGenerates(connection, nameMap.get("Hops"), id0);
+      insertGenerates(connection, nameMap.get("Hops"), id1);
+      insertGenerates(connection, nameMap.get("Hops"), id2);
+      insertGenerates(connection, nameMap.get("Hops"), id3);
+      
+      id0 = insertArtisanGood(connection, "Beer", 0, 200, 0);
+      id1 = insertArtisanGood(connection, "Beer", 1, 250, 0);
+      id2 = insertArtisanGood(connection, "Beer", 2, 300, 0);
+      id3 = insertArtisanGood(connection, "Beer", 3, 400, 0);
+      insertGenerates(connection, nameMap.get("Wheat"), id0);
+      insertGenerates(connection, nameMap.get("Wheat"), id1);
+      insertGenerates(connection, nameMap.get("Wheat"), id2);
+      insertGenerates(connection, nameMap.get("Wheat"), id3);
+      
+      id0 = insertArtisanGood(connection, "Mead", 0, 200, 0);
+      id1 = insertArtisanGood(connection, "Mead", 1, 250, 0);
+      id2 = insertArtisanGood(connection, "Mead", 2, 300, 0);
+      id3 = insertArtisanGood(connection, "Mead", 3, 400, 0);
+      insertGenerates(connection, nameMap.get("Honey"), id0);
+      insertGenerates(connection, nameMap.get("Honey"), id1);
+      insertGenerates(connection, nameMap.get("Honey"), id2);
+      insertGenerates(connection, nameMap.get("Honey"), id3);
+      
+      id0 = insertArtisanGood(connection, "Cheese", 0, 230, 0);
+      id1 = insertArtisanGood(connection, "Cheese", 1, 287, 0);
+      id2 = insertArtisanGood(connection, "Cheese", 2, 345, 0);
+      id3 = insertArtisanGood(connection, "Cheese", 3, 460, 0);
+      insertGenerates(connection, nameMap.get("Milk"), id0);
+      insertGenerates(connection, nameMap.get("Milk"), id1);
+      insertGenerates(connection, nameMap.get("Milk"), id2);
+      insertGenerates(connection, nameMap.get("Milk"), id3);
+      insertGenerates(connection, nameMap.get("Large Milk"), id0);
+      insertGenerates(connection, nameMap.get("Large Milk"), id1);
+      insertGenerates(connection, nameMap.get("Large Milk"), id2);
+      insertGenerates(connection, nameMap.get("Large Milk"), id3);
+      
+      id0 = insertArtisanGood(connection, "Goat Cheese", 0, 400, 0);
+      id1 = insertArtisanGood(connection, "Goat Cheese", 1, 500, 0);
+      id2 = insertArtisanGood(connection, "Goat Cheese", 2, 600, 0);
+      id3 = insertArtisanGood(connection, "Goat Cheese", 3, 800, 0);
+      insertGenerates(connection, nameMap.get("Goat Milk"), id0);
+      insertGenerates(connection, nameMap.get("Goat Milk"), id1);
+      insertGenerates(connection, nameMap.get("Goat Milk"), id2);
+      insertGenerates(connection, nameMap.get("Goat Milk"), id3);
+      insertGenerates(connection, nameMap.get("L. Goat Milk"), id0);
+      insertGenerates(connection, nameMap.get("L. Goat Milk"), id1);
+      insertGenerates(connection, nameMap.get("L. Goat Milk"), id2);
+      insertGenerates(connection, nameMap.get("L. Goat Milk"), id3);
+      
+      id0 = insertArtisanGood(connection, "Mayonnaise", 0, 190, 0);
+      id1 = insertArtisanGood(connection, "Mayonnaise", 1, 237, 0);
+      id2 = insertArtisanGood(connection, "Mayonnaise", 2, 285, 0);
+      id3 = insertArtisanGood(connection, "Mayonnaise", 3, 380, 0);
+      insertGenerates(connection, nameMap.get("Egg"), id0);
+      insertGenerates(connection, nameMap.get("Egg"), id1);
+      insertGenerates(connection, nameMap.get("Egg"), id2);
+      insertGenerates(connection, nameMap.get("Egg"), id3);
+      insertGenerates(connection, nameMap.get("Large Egg"), id0);
+      insertGenerates(connection, nameMap.get("Large Egg"), id1);
+      insertGenerates(connection, nameMap.get("Large Egg"), id2);
+      insertGenerates(connection, nameMap.get("Large Egg"), id3);
+      insertGenerates(connection, nameMap.get("Ostrich Egg"), id0);
+      insertGenerates(connection, nameMap.get("Ostrich Egg"), id1);
+      insertGenerates(connection, nameMap.get("Ostrich Egg"), id2);
+      insertGenerates(connection, nameMap.get("Ostrich Egg"), id3);
+      insertGenerates(connection, nameMap.get("Golden Egg"), id0);
+      insertGenerates(connection, nameMap.get("Golden Egg"), id1);
+      insertGenerates(connection, nameMap.get("Golden Egg"), id2);
+      insertGenerates(connection, nameMap.get("Golden Egg"), id3);
+      
+      insertGenerates(connection, nameMap.get("Duck Egg"), nameMap.get("Duck Mayonnaise"));
+      insertGenerates(connection, nameMap.get("Void Egg"), nameMap.get("Void Mayonnaise"));
+      insertGenerates(connection, nameMap.get("Dinosaur Egg"), nameMap.get("Dinosaur Mayonnaise"));
+      
+      insertGenerates(connection, nameMap.get("Truffle"), nameMap.get("Truffle Oil"));
+      insertGenerates(connection, nameMap.get("Corn"), nameMap.get("Oil"));
+      insertGenerates(connection, nameMap.get("Sunflower Seeds"), nameMap.get("Oil"));
+      insertGenerates(connection, nameMap.get("Sunflower"), nameMap.get("Oil"));
+      
+      updateArtisanGood(connection, nameMap.get("Pickles"), null, null, 50, 2.0);
+      insertGenerates(connection, nameMap.get("Ginger"), nameMap.get("Pickles"));
+      for(String idStr : categoryMap.get("-75")) {
+         insertGenerates(connection, idMap.get(idStr), nameMap.get("Pickles"));
+      }
+      
+      updateArtisanGood(connection, nameMap.get("Jelly"), null, null, 50, 2.0);
+      for(String idStr : categoryMap.get("-79")) {
+         insertGenerates(connection, idMap.get(idStr), nameMap.get("Jelly"));
+      }
+      
+      insertGenerates(connection, nameMap.get("Roe"), nameMap.get("Caviar"));
+      
+      updateArtisanGood(connection, nameMap.get("Aged Roe"), null, null, 0, 2.0);
+      insertGenerates(connection, nameMap.get("Roe"), nameMap.get("Aged Roe"));
 	}
 
 	public static int insertProfession(Connection connection, String category, double multiplier) throws Exception {
