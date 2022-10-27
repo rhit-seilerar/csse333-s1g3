@@ -693,25 +693,23 @@ public class StardewHoes {
                       System.out.print("Please provide the animal's base price (leave empty for null):\n> ");
                       String baseprice = nextLine(scanner);
                     
-                		Integer qual;
-                		Integer basePrice;
-                		int aId = Integer.parseInt(animalId);
-                		if(name.length() == 0) {
-                			name = null;
-                		} else {
-                			name = name;
-                		}
-                		if(quality.length() == 0) {
-                			qual = null;
-                		}
-                		else {
-                			qual = Integer.valueOf(quality);
-                		}
-                		if(baseprice.length() == 0) {
-                			basePrice = null;
-                		} else {
-                			basePrice = Integer.valueOf(baseprice);
-                		}
+                      Integer qual;
+                      Integer basePrice;
+                      int aId = Integer.parseInt(animalId);
+                      if(name.length() == 0) {
+                    	  name = null;
+                      }
+                      if(quality.length() == 0) {
+                    	  qual = null;
+                      }
+                      else {
+                    	  qual = Integer.valueOf(quality);
+                      }
+                      if(baseprice.length() == 0) {
+                    	  basePrice = null;
+                      } else {
+                    	  basePrice = Integer.valueOf(baseprice);
+                      }
                     
                       updateAnimal(connection, aId, name, qual, basePrice);
                    } break;
@@ -728,25 +726,23 @@ public class StardewHoes {
                       System.out.print("Please provide the animal produt's base price (leave empty for null):\n> ");
                       String baseprice = nextLine(scanner);
                     
-                		Integer qual;
-                		Integer basePrice;
-                		int aId = Integer.parseInt(animalId);
-                		if(name.length() == 0) {
-                			name = null;
-                		} else {
-                			name = name;
-                		}
-                		if(quality.length() == 0) {
-                			qual = null;
-                		}
-                		else {
-                			qual = Integer.valueOf(quality);
-                		}
-                		if(baseprice.length() == 0) {
-                			basePrice = null;
-                		} else {
-                			basePrice = Integer.valueOf(baseprice);
-                		}
+                      Integer qual;
+                      Integer basePrice;
+                      int aId = Integer.parseInt(animalId);
+                      if(name.length() == 0) {
+                    	  name = null;
+                      }
+                      if(quality.length() == 0) {
+                    	  qual = null;
+                      }
+                      else {
+                    	  qual = Integer.valueOf(quality);
+                      }
+                      if(baseprice.length() == 0) {
+                    	  basePrice = null;
+                      } else {
+                    	  basePrice = Integer.valueOf(baseprice);
+                      }
                     
                       updateAnimalProduct(connection, aId, name, qual, basePrice);
                    } break;
@@ -766,31 +762,29 @@ public class StardewHoes {
                       System.out.print("Please provide the artisan good's multiplier (leave empty for null):\n> ");
                       String multiplier = nextLine(scanner);
                     
-                		Integer qual;
-                		Integer basePrice;
-                		Double multi;
-                		int aId = Integer.parseInt(artisanId);
-                		if(name.length() == 0) {
-                			name = null;
-                		} else {
-                			name = name;
-                		}
-                		if(quality.length() == 0) {
-                			qual = null;
-                		}
-                		else {
-                			qual = Integer.valueOf(quality);
-                		}
-                		if(baseprice.length() == 0) {
-                			basePrice = null;
-                		} else {
-                			basePrice = Integer.valueOf(baseprice);
-                		}
-                		if(multiplier.length() == 0) {
-                			multi = null;
-                		} else {
-                			multi = Double.valueOf(multiplier);
-                		}
+                      Integer qual;
+                      Integer basePrice;
+                      Double multi;
+                      int aId = Integer.parseInt(artisanId);
+                      if(name.length() == 0) {
+                    	  name = null;
+                      }
+                      if(quality.length() == 0) {
+                    	  qual = null;
+                      }
+                      else {
+                    	  qual = Integer.valueOf(quality);
+                      }
+                      if(baseprice.length() == 0) {
+                    	  basePrice = null;
+                      } else {
+                    	  basePrice = Integer.valueOf(baseprice);
+                      }
+                      if(multiplier.length() == 0) {
+                    	  multi = null;
+                      } else {
+                    	  multi = Double.valueOf(multiplier);
+                      }
                     
                       updateArtisanGood(connection, aId, name, qual, basePrice, multi);
                    } break;
@@ -807,25 +801,23 @@ public class StardewHoes {
                       System.out.print("Please provide the fish's base price (leave empty for null):\n> ");
                       String baseprice = nextLine(scanner);
                     
-                		Integer qual;
-                		Integer basePrice;
-                		int fId = Integer.parseInt(fishId);
-                		if(name.length() == 0) {
-                			name = null;
-                		} else {
-                			name = name;
-                		}
-                		if(quality.length() == 0) {
-                			qual = null;
-                		}
-                		else {
-                			qual = Integer.valueOf(quality);
-                		}
-                		if(baseprice.length() == 0) {
-                			basePrice = null;
-                		} else {
-                			basePrice = Integer.valueOf(baseprice);
-                		}
+                      Integer qual;
+                      Integer basePrice;
+                      int fId = Integer.parseInt(fishId);
+                      if(name.length() == 0) {
+                    	  name = null;
+                      }
+                      if(quality.length() == 0) {
+                    	  qual = null;
+                      }
+                      else {
+                    	  qual = Integer.valueOf(quality);
+                      }
+                      if(baseprice.length() == 0) {
+                    	  basePrice = null;
+                      } else {
+                    	  basePrice = Integer.valueOf(baseprice);
+                      }
                     
                       updateFish(connection, fId, name, qual, basePrice);
                    } break;
@@ -842,27 +834,25 @@ public class StardewHoes {
                       System.out.print("Please provide the food's base price (leave empty for null):\n> ");
                       String baseprice = nextLine(scanner);
                     
-                		Integer qual;
-                		Integer basePrice;
-                		int fId = Integer.parseInt(foodId);
-                		if(name.length() == 0) {
-                			name = null;
-                		} else {
-                			name = name;
-                		}
-                		if(quality.length() == 0) {
-                			qual = null;
-                		}
-                		else {
-                			qual = Integer.valueOf(quality);
-                		}
-                		if(baseprice.length() == 0) {
-                			basePrice = null;
-                		} else {
-                			basePrice = Integer.valueOf(baseprice);
-                		}
+                      Integer qual;
+                      Integer basePrice;
+                      int fId = Integer.parseInt(foodId);
+                      if(name.length() == 0) {
+                    	  name = null;
+                      }
+                      if(quality.length() == 0) {
+                    	  qual = null;
+                      }
+                      else {
+                    	  qual = Integer.valueOf(quality);
+                      }
+                      if(baseprice.length() == 0) {
+                    	  basePrice = null;
+                      } else {
+                    	  basePrice = Integer.valueOf(baseprice);
+                      }
                 		
-                		updateFood(connection, fId, name, qual, basePrice);
+                      updateFood(connection, fId, name, qual, basePrice);
                 	} break;
                 	case "item": {
                 		System.out.print("Please provide the item's id:\n> ");
@@ -874,16 +864,14 @@ public class StardewHoes {
                 		System.out.print("Please provide the item's quality (0 for normal, 3 for iridium):\n> ");
                 		String quality = nextLine(scanner);
                     
-                      System.out.print("Please provide the item's base price (leave empty for null):\n> ");
-                      String baseprice = nextLine(scanner);
+                		System.out.print("Please provide the item's base price (leave empty for null):\n> ");
+                		String baseprice = nextLine(scanner);
                     
                 		Integer qual;
                 		Integer basePrice;
                 		int iId = Integer.parseInt(itemId);
                 		if(name.length() == 0) {
                 			name = null;
-                		} else {
-                			name = name;
                 		}
                 		if(quality.length() == 0) {
                 			qual = null;
@@ -920,8 +908,6 @@ public class StardewHoes {
                 		int ppId = Integer.parseInt(plantprodId);
                 		if(name.length() == 0) {
                 			name = null;
-                		} else {
-                			name = name;
                 		}
                 		if(quality.length() == 0) {
                 			qual = null;
@@ -935,7 +921,7 @@ public class StardewHoes {
                 			basePrice = Integer.valueOf(baseprice);
                 		}
                     
-                      updatePlantProduct(connection, ppId, name, qual, basePrice, type);
+                		updatePlantProduct(connection, ppId, name, qual, basePrice, type);
                    } break;
                    case "produce": {
                       System.out.print("Please provide the produce's id:\n> ");
@@ -950,25 +936,23 @@ public class StardewHoes {
                       System.out.print("Please provide the produce's base price (leave empty for null):\n> ");
                       String baseprice = nextLine(scanner);
                     
-                		Integer qual;
-                		Integer basePrice;
-                		int pId = Integer.parseInt(produceId);
-                		if(name.length() == 0) {
-                			name = null;
-                		} else {
-                			name = name;
-                		}
-                		if(quality.length() == 0) {
-                			qual = null;
-                		}
-                		else {
-                			qual = Integer.valueOf(quality);
-                		}
-                		if(baseprice.length() == 0) {
-                			basePrice = null;
-                		} else {
-                			basePrice = Integer.valueOf(baseprice);
-                		}
+                      Integer qual;
+                      Integer basePrice;
+                      int pId = Integer.parseInt(produceId);
+                      if(name.length() == 0) {
+                    	  name = null;
+                      }
+                      if(quality.length() == 0) {
+                    	  qual = null;
+                      }
+                      else {
+                    	  qual = Integer.valueOf(quality);
+                      }
+                      if(baseprice.length() == 0) {
+                    	  basePrice = null;
+                      } else {
+                    	  basePrice = Integer.valueOf(baseprice);
+                      }
                     
                       updateProduce(connection, pId, name, qual, basePrice);
                    } break;
@@ -982,31 +966,29 @@ public class StardewHoes {
                       System.out.print("Please provide the seed's quality (0 for normal, 3 for iridium) (leave empty for null):\n> ");
                       String quality = nextLine(scanner);
                     
-                		System.out.print("Please provide the seed's base price (leave empty for null):\n> ");
-                		String baseprice = nextLine(scanner);
+                      System.out.print("Please provide the seed's base price (leave empty for null):\n> ");
+                      String baseprice = nextLine(scanner);
                 		
-                		System.out.print("Please provide the seed's season (Spring, Summer, Fall, Spring/Summer, Spring/Fall, Summer/Fall, All, or None) (leave empty for null):\n> ");
-                		String type = nextLine(scanner);
+                      System.out.print("Please provide the seed's season (Spring, Summer, Fall, Spring/Summer, Spring/Fall, Summer/Fall, All, or None) (leave empty for null):\n> ");
+                      String type = nextLine(scanner);
                     
-                		Integer qual;
-                		Integer basePrice;
-                		int sId = Integer.parseInt(seedId);
-                		if(name.length() == 0) {
-                			name = null;
-                		} else {
-                			name = name;
-                		}
-                		if(quality.length() == 0) {
-                			qual = null;
-                		}
-                		else {
-                			qual = Integer.valueOf(quality);
-                		}
-                		if(baseprice.length() == 0) {
-                			basePrice = null;
-                		} else {
-                			basePrice = Integer.valueOf(baseprice);
-                		}
+                      Integer qual;
+                      Integer basePrice;
+                      int sId = Integer.parseInt(seedId);
+                      if(name.length() == 0) {
+                    	  name = null;
+                      }
+                      if(quality.length() == 0) {
+                    	  qual = null;
+                      }
+                      else {
+                    	  qual = Integer.valueOf(quality);
+                      }
+                      if(baseprice.length() == 0) {
+                    	  basePrice = null;
+                      } else {
+                    	  basePrice = Integer.valueOf(baseprice);
+                      }
                     
                       updateSeed(connection, sId, name, qual, basePrice, type);
                    }
@@ -1034,7 +1016,7 @@ public class StardewHoes {
             	System.out.print("Delete selected\nWhat would you like to delete? (type h for help)\n> ");
                 String item = nextLine(scanner);
                
-                switch(item) {
+               switch(item) {
                case "q":
                case "x": {
                   System.out.println("Exiting");
@@ -1048,16 +1030,16 @@ public class StardewHoes {
                   
                   String query = "{? = call delete_animal(?)}";
                   CallableStatement statement = connection.prepareCall(query);
-                      statement.registerOutParameter(1, Types.INTEGER);
-                      statement.setInt(2, aId);
+                  statement.registerOutParameter(1, Types.INTEGER);
+                  statement.setInt(2, aId);
                       
-                      statement.execute();
+                  statement.execute();
                   
-                      int result = statement.getInt(1);
-                      if(result == 0)
-                         System.out.printf("Successfully deleted animal\n");
-                      else
-                         System.out.printf("ERROR in deleteAnimal: Failed with error code %d\n", result);
+                  int result = statement.getInt(1);
+                  if(result == 0)
+                	  System.out.printf("Successfully deleted animal\n");
+                  else
+                	  System.out.printf("ERROR in deleteAnimal: Failed with error code %d\n", result);
                } break;
                case "animalProduct": {
                   System.out.print("Please provide the animal product's id:\n> ");
@@ -1067,16 +1049,16 @@ public class StardewHoes {
                   
                   String query = "{? = call delete_animalproduct(?)}";
                   CallableStatement statement = connection.prepareCall(query);
-                      statement.registerOutParameter(1, Types.INTEGER);
-                      statement.setInt(2, aId);
-                      
-                      statement.execute();
+                  statement.registerOutParameter(1, Types.INTEGER);
+                  statement.setInt(2, aId);
+                     
+                  statement.execute();
                   
-                      int result = statement.getInt(1);
-                      if(result == 0)
-                         System.out.printf("Successfully deleted animal product\n");
-                      else
-                         System.out.printf("ERROR in deleteAnimalProduct: Failed with error code %d\n", result);
+                  int result = statement.getInt(1);
+                  if(result == 0)
+                	  System.out.printf("Successfully deleted animal product\n");
+                  else
+                	  System.out.printf("ERROR in deleteAnimalProduct: Failed with error code %d\n", result);
                 
                } break;
                case "artisanGood": {
@@ -1087,16 +1069,16 @@ public class StardewHoes {
                   
                   String query = "{? = call delete_artisangood(?)}";
                   CallableStatement statement = connection.prepareCall(query);
-                      statement.registerOutParameter(1, Types.INTEGER);
-                      statement.setInt(2, aId);
+                  statement.registerOutParameter(1, Types.INTEGER);
+                  statement.setInt(2, aId);
                       
-                      statement.execute();
+                  statement.execute();
                   
-                      int result = statement.getInt(1);
-                      if(result == 0)
-                         System.out.printf("Successfully deleted Artisan Good\n");
-                      else
-                         System.out.printf("ERROR in deleteArtisanGood: Failed with error code %d\n", result);
+                  int result = statement.getInt(1);
+                  if(result == 0)
+                	  System.out.printf("Successfully deleted Artisan Good\n");
+                  else
+                	  System.out.printf("ERROR in deleteArtisanGood: Failed with error code %d\n", result);
                 
                } break;
                case "fish": {
@@ -1107,16 +1089,16 @@ public class StardewHoes {
                   
                   String query = "{? = call delete_fish(?)}";
                   CallableStatement statement = connection.prepareCall(query);
-                      statement.registerOutParameter(1, Types.INTEGER);
-                      statement.setInt(2, fId);
+                  statement.registerOutParameter(1, Types.INTEGER);
+                  statement.setInt(2, fId);
                       
-                      statement.execute();
+                  statement.execute();
                   
-                      int result = statement.getInt(1);
-                      if(result == 0)
-                         System.out.printf("Successfully deleted fish\n");
-                      else
-                         System.out.printf("ERROR in deleteFish: Failed with error code %d\n", result);
+                  int result = statement.getInt(1);
+                  if(result == 0)
+                	  System.out.printf("Successfully deleted fish\n");
+                  else
+                	  System.out.printf("ERROR in deleteFish: Failed with error code %d\n", result);
                } break;
                case "food": {
                   System.out.print("Please provide the food's id:\n> ");
@@ -1126,16 +1108,16 @@ public class StardewHoes {
                   
                   String query = "{? = call delete_food(?)}";
                   CallableStatement statement = connection.prepareCall(query);
-                      statement.registerOutParameter(1, Types.INTEGER);
-                      statement.setInt(2, fId);
+                  statement.registerOutParameter(1, Types.INTEGER);
+                  statement.setInt(2, fId);
                       
-                      statement.execute();
+                  statement.execute();
                   
-                      int result = statement.getInt(1);
-                      if(result == 0)
-                         System.out.printf("Successfully deleted food\n");
-                      else
-                         System.out.printf("ERROR in deleteFood: Failed with error code %d\n", result);
+                  int result = statement.getInt(1);
+                  if(result == 0)
+                	  System.out.printf("Successfully deleted food\n");
+                  else
+                	  System.out.printf("ERROR in deleteFood: Failed with error code %d\n", result);
                } break;
                case "item": {
                   System.out.print("Please provide the item's ID (leave empty for null):\n> ");
@@ -1179,12 +1161,40 @@ public class StardewHoes {
                   String plantprodId = nextLine(scanner);
                 
                   int ppId = Integer.parseInt(plantprodId);
+                  
+                  String query = "{? = call delete_plantProduct(?)}";
+                  CallableStatement statement = connection.prepareCall(query);
+                  statement.registerOutParameter(1, Types.INTEGER);
+                  statement.setInt(2, ppId);
+                      
+                  statement.execute();
+                  
+                  int result = statement.getInt(1);
+                  if(result == 0)
+                	  System.out.printf("Successfully deleted Plant Product\n");
+                  else
+                	  System.out.printf("ERROR in deletePlantProduct: Failed with error code %d\n", result);
+                  
                } break;
                case "produce": {
                   System.out.print("Please provide the produce's id:\n> ");
                   String produceId = nextLine(scanner);
                 
                   int pId = Integer.parseInt(produceId);
+                  
+                  String query = "{? = call delete_produce(?)}";
+                  CallableStatement statement = connection.prepareCall(query);
+                  statement.registerOutParameter(1, Types.INTEGER);
+                  statement.setInt(2, pId);
+                      
+                  statement.execute();
+                  
+                  int result = statement.getInt(1);
+                  if(result == 0)
+                	  System.out.printf("Successfully deleted produce\n");
+                  else
+                	  System.out.printf("ERROR in deleteProduce: Failed with error code %d\n", result);
+                  
                } break;
                case "seed": {
                   System.out.print("Please provide the seed's id:\n> ");
@@ -1192,6 +1202,18 @@ public class StardewHoes {
                   
                   int sId = Integer.parseInt(seedId);
                   
+                  String query = "{? = call delete_seed(?)}";
+                  CallableStatement statement = connection.prepareCall(query);
+                  statement.registerOutParameter(1, Types.INTEGER);
+                  statement.setInt(2, sId);
+                      
+                  statement.execute();
+                  
+                  int result = statement.getInt(1);
+                  if(result == 0)
+                	  System.out.printf("Successfully deleted seed\n");
+                  else
+                	  System.out.printf("ERROR in deleteSeed: Failed with error code %d\n", result);
                }
                default:
                     System.out.println("Unknown option. Here are the recognized options:");
