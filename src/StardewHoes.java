@@ -19,7 +19,7 @@ import javax.crypto.spec.PBEKeySpec;
 import org.json.JSONObject;
 
 public class StardewHoes {
-   public static boolean skipLogin = true;
+   public static boolean skipLogin = false;
    
    public static String nextLine(Scanner scanner)
    {
