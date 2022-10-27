@@ -1,36 +1,24 @@
 use StardewHoes10
 go
 
-create procedure get_PlantProduct (
-	@ID int,
-	@Name varchar(20) = null output,
-	@Quality tinyint = null output,
-	@BasePrice int = null output,
-	@Type varchar(20) = null output
+create or alter procedure get_PlantProduct (
+	@ID int = null,
+	@Name varchar(20) = null,
+	@Quality tinyint = null,
+	@BasePrice int = null,
+	@Type varchar(20) = null
 ) as
+	declare @Status int
 
-declare @Status int
+	select I.*, Type
+	from PlantProduct P
+	join Item I on P.ID = I.ID
+	where (@ID is null or P.ID = @ID) and (@Name is null or Name = @Name) and (@Quality is null or Quality = @Quality) and (@BasePrice is null or BasePrice = @BasePrice)
+	set @Status = @@ERROR
+	if @Status != 0 begin
+		print 'ERROR in get_PlantProduct: Failed to retrieve the requested data.'
+		return @Status
+	end
 
-if @ID is null begin
-	print 'ERROR in get_PlantProduct: ID cannot be null.'
-	return 1
-end
-
-select @Name = Name, @Quality = Quality, @BasePrice = BasePrice, @Type = Type
-from PlantProduct
-join Item on PlantProduct.ID = Item.ID
-where PlantProduct.ID = @ID
-set @Status = @@ERROR
-if @Status != 0 begin
-	print 'ERROR in get_PlantProduct: Failed to retrieve the data for the record with ID ' + convert(varchar(20), @ID) + '.'
-	return @Status
-end
-
-if @Type is null begin
-	print 'ERROR in get_PlantProduct: Failed to retrieve the type for the record with ID ' + convert(varchar(20), @ID) + '.'
-	return 1
-end
-
-print 'get_PlantProduct: Successfully retrieved the data for the record with ID ' + convert(varchar(20), @ID) + '.'
-return 0
+	print 'get_PlantProduct: Successfully retrieved the data for the record with ID ' + convert(varchar(20), @ID) + '.'
 go

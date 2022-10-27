@@ -91,9 +91,9 @@ create table Generates (
 	ProduceID int,
 	ProductID int
 	Primary Key (ProduceID, ProductID),
-	Foreign Key (ProduceID) references Produce(ID)
+	Foreign Key (ProduceID) references Item(ID)
 	on delete cascade,
-	Foreign Key (ProductID) references ArtisanGood(ID)
+	Foreign Key (ProductID) references Item(ID)
 	on delete no action
 )
 
@@ -137,7 +137,7 @@ CREATE TABLE HasIngredient(
 CREATE TABLE Profession(
 	ID int IDENTITY(1,1) NOT NULL PRIMARY KEY,
 	BoostCategory varchar(10) NULL,
-	BoostMultiplier decimal(18, 0) NULL)
+	BoostMultiplier decimal(8, 4) NULL)
 
 CREATE TABLE HasProfession(
 	ProfessionID int NOT NULL,
@@ -168,7 +168,7 @@ create table Shopkeeper (
 
 create table Shop (
 	OwnerID int,
-	Address varchar(40) not null,
+	Address varchar(100) not null,
 	Schedule varchar(100) not null,
 	Name varchar(20) not null unique,
 	Primary Key (OwnerID),

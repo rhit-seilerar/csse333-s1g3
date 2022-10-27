@@ -3,7 +3,6 @@ go
 
 create or alter procedure insert_Shopkeeper (
 	@Name varchar(20) = null,
-	@isDeleted bit = null,
 	@ID int = null output
 ) as
 	if @ID is not null and exists (select * from Shopkeeper where ID = @ID) begin
@@ -20,7 +19,7 @@ create or alter procedure insert_Shopkeeper (
 	end
 
 	insert into Shopkeeper (ID, IsDeleted)
-	values (@ID, @IsDeleted)
+	values (@ID, 0)
 	set @Status = @@ERROR
 	if @Status != 0 begin
 		raiserror('ERROR in insert_Shopkeeper: Failed to insert the Shopkeeper %s  into the Shopkeeper table.', 14, 1, @Name)

@@ -5,17 +5,16 @@ create or alter procedure insert_Generates (
 	@ProduceID int = null,
 	@ProductID int = null
 ) as
-	
-	if @ProduceID is not null and exists (select * from Generates where ProduceID = @ProduceID) and @ProductID is not null and exists (select * from Generates where ProductID = @ProductID) begin
-		raiserror('ERROR in insert_Generates: The tuple with ProduceID %d  and ProductID %d already exists.', 14, 1, @ProduceID, @ProductID)
+	if @ProduceID is null begin
+		raiserror('ERROR in insert_Generates: ProduceID cannot be null.', 14, 1)
 		return 1
 	end
-	if @ProduceID is null begin
-		raiserror('ERROR in insert_Generates: ProduceID cannot be null.', 14, 2)
+	if @ProductID is null begin
+		raiserror('ERROR in insert_Generates: ProductID cannot be null.', 14, 2)
 		return 2
 	end
-	if @ProductID is null begin
-		raiserror('ERROR in insert_Generates: ProductID cannot be null.', 14, 3)
+	if exists (select * from Generates where ProduceID = @ProduceID and ProductID = @ProductID) begin
+		raiserror('ERROR in insert_Generates: The tuple with ProduceID %d and ProductID %d already exists.', 14, 3, @ProduceID, @ProductID)
 		return 3
 	end
 

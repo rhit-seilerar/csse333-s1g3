@@ -3,7 +3,7 @@ go
 
 create or alter procedure insert_Profession (
 	@BoostCategory varchar(10) = null,
-	@BoostMultiplier decimal(18,0) = null,
+	@BoostMultiplier decimal(8,4) = null,
 	@ID int = null output
 ) as
 	declare @Status int

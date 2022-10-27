@@ -4,7 +4,7 @@ go
 create or alter procedure insert_Shop (
 	@OwnerID int,
 	@Name varchar(20),
-	@Address varchar(40),
+	@Address varchar(100),
 	@Schedule varchar(100)
 ) as
 	declare @Status int
