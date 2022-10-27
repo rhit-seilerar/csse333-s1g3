@@ -2,20 +2,19 @@ use StardewHoes10
 go
 
 create or alter procedure insert_HasIngredient (
-	@IngredientID int = null,
-	@FoodID int = null
+	@IngredientID int,
+	@FoodID int
 ) as
-	
-	if @IngredientID is not null and exists (select * from HasIngredient where IngredientID = @IngredientID) and @FoodID is not null and exists (select * from HasIngredient where FoodID = @FoodID) begin
-		raiserror('ERROR in insert_HasIngredient: The tuple with IngredientID %d  and FoodID %d already exists.', 14, 1, @IngredientID, @FoodID)
+	if @IngredientID is null begin
+		raiserror('ERROR in insert_HasIngredient: IngredientID cannot be null.', 14, 1)
 		return 1
 	end
-	if @IngredientID is null begin
-		raiserror('ERROR in insert_HasIngredient: IngredientID cannot be null.', 14, 2)
+	if @FoodID is null begin
+		raiserror('ERROR in insert_HasIngredient: FoodID cannot be null.', 14, 2)
 		return 2
 	end
-	if @FoodID is null begin
-		raiserror('ERROR in insert_HasIngredient: FoodID cannot be null.', 14, 3)
+	if exists (select * from HasIngredient where IngredientID = @IngredientID and FoodID = @FoodID) begin
+		raiserror('ERROR in insert_HasIngredient: The tuple with IngredientID %d and FoodID %d already exists.', 14, 3, @IngredientID, @FoodID)
 		return 3
 	end
 

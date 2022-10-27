@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
@@ -17,9 +18,9 @@ import javax.crypto.spec.PBEKeySpec;
 
 import org.json.JSONObject;
 
-//import org.json.JSONObject;
-
 public class StardewHoes {
+   public static boolean skipLogin = true;
+   
    public static String nextLine(Scanner scanner)
    {
       while(!scanner.hasNextLine());
@@ -33,17 +34,17 @@ public class StardewHoes {
       Scanner scanner = new Scanner(System.in);
       Random random = new SecureRandom();
       
-      String defaultServer   = (args.length >= 1) ? args[0] : "titan.csse.rose-hulman.edu";
-      String defaultDatabase = (args.length >= 2) ? args[1] : "StardewHoes10";
+      String server = "titan.csse.rose-hulman.edu";
+      String database = "StardewHoes10";
       String appUsername = "StardewHoesapp10";
       String appPassword = "Password1234";
       
-      url = url.replace("${dbServer}", defaultServer).replace("${dbName}", defaultDatabase).replace("${user}", appUsername).replace("${pass}", appPassword);
+      url = url.replace("${dbServer}", server).replace("${dbName}", database).replace("${user}", appUsername).replace("${pass}", appPassword);
       Connection connection = DriverManager.getConnection(url);
       
       boolean loop = true;
-      boolean loggedIn = false;
-      while(loop) {
+      boolean loggedIn = skipLogin;
+      while(!loggedIn && loop) {
          System.out.print("What action would you like to perform? (type h for help)\n> ");
          String modeStr = nextLine(scanner);
          char mode = (modeStr.length() > 0) ? modeStr.charAt(0) : '\n';
@@ -360,31 +361,37 @@ public class StardewHoes {
       JSONObject objsContent = objsRoot.getJSONObject("content");
       
       HashMap<String, Integer> IdMap = new HashMap<>();
+      HashMap<String, ArrayList<String>> categoryMap = new HashMap<>();
       
       Iterator<String> keys = objsContent.keys();
       while(keys.hasNext()) {
          String itemId = keys.next();
          String[] values = objsContent.getString(itemId).split("/");
          
-         if(itemId.equals("770")) {
-            continue;
-         }
-         
-         if(itemId.equals("906")) {
-            System.out.println("hi");
-         }
-         
          String name = values[0];
          int price = Integer.valueOf(values[1]);
          
          //TODO: Handle quality
          String[] types = values[3].split(" ");
-         int itemDBId;
+         Integer itemDBId = null;
+         
+         if(types.length > 1) {
+            ArrayList<String> categoryList = categoryMap.get(types[1]);
+            if(categoryList == null) {
+               categoryList = new ArrayList<>();
+               categoryMap.put(types[1], categoryList);
+            }
+            categoryList.add(itemId);
+         }
+         
          if(types[0].equals("Seeds")) {
-            String season = cropsContent.getString(itemId).split("/")[1];
-            season = season.replace("spring", "Spring").replace("summer", "Summer").replace("fall", "Fall").replace(" ", "/");
-            if(season.equals("Spring/Summer/Fall")) season = "All";
-            if(!season.contains("Spring") && !season.contains("Summer") && !season.contains("Fall")) season = "None";
+            String season = "All";
+            if(cropsContent.has(itemId)) {
+               season = cropsContent.getString(itemId).split("/")[1];
+               season = season.replace("spring", "Spring").replace("summer", "Summer").replace("fall", "Fall").replace(" ", "/");
+               if(season.equals("Spring/Summer/Fall")) season = "All";
+               if(!season.contains("Spring") && !season.contains("Summer") && !season.contains("Fall")) season = "None";
+            }
             
             itemDBId = insertSeed(connection, name, price, season);
          } else if(types[0].equals("Fish")) {
@@ -402,7 +409,7 @@ public class StardewHoes {
                      itemDBId = insertAnimalProduct(connection, name, null, price);
                   } break;
                   
-                  case 17: {
+                  case -17: {
                      if(itemId.equals("417")) itemDBId = insertProduce(connection, name, null, price);
                      else if(itemId.equals("430")) itemDBId = insertAnimalProduct(connection, name, null, price);
                      else itemDBId = insertItem(connection, name, null, price);
@@ -413,7 +420,19 @@ public class StardewHoes {
                      itemDBId = insertArtisanGood(connection, name, null, price, 0.0);
                   } break;
                   
-                  case -74: itemDBId = insertPlantProduct(connection, name, null, price, "Vegetable"); break;
+                  case -74: {
+                     if(name.equals("Banana Sapling"))           itemDBId = insertSeed(connection, name, price, "Summer");
+                     else if(name.equals("Tea Sapling"))         itemDBId = insertSeed(connection, name, price, "All");
+                     else if(name.equals("Cherry Sapling"))      itemDBId = insertSeed(connection, name, price, "Spring");
+                     else if(name.equals("Apricot Sapling"))     itemDBId = insertSeed(connection, name, price, "Spring");
+                     else if(name.equals("Orange Sapling"))      itemDBId = insertSeed(connection, name, price, "Summer");
+                     else if(name.equals("Peach Sapling"))       itemDBId = insertSeed(connection, name, price, "Summer");
+                     else if(name.equals("Pomegranite Sapling")) itemDBId = insertSeed(connection, name, price, "Fall");
+                     else if(name.equals("Apple Sapling"))       itemDBId = insertSeed(connection, name, price, "Fall");
+                     else if(name.equals("Mango Sapling"))       itemDBId = insertSeed(connection, name, price, "Summer");
+                  } break;
+                  
+                  case -75: itemDBId = insertPlantProduct(connection, name, null, price, "Vegetable"); break;
                   case -79: itemDBId = insertPlantProduct(connection, name, null, price, "Fruit"); break;
                   case -80: itemDBId = insertPlantProduct(connection, name, null, price, "Flower"); break;
                   case -81: itemDBId = insertPlantProduct(connection, name, null, price, "Forage"); break;
@@ -421,31 +440,37 @@ public class StardewHoes {
                   default: itemDBId = insertItem(connection, name, null, price);
                }
             } else {
-               itemDBId = insertProduce(connection, name, null, price);
+               itemDBId = insertItem(connection, name, null, price);
+            }
+         } else if(types[0].equals("Arch")) {
+            if(name.equals("Dinosaur Egg")) {
+               itemDBId = insertAnimalProduct(connection, name, null, price);
+            } else {
+               itemDBId = insertItem(connection, name, null, price);
             }
          } else {
-            // Minerals, Quest, asdf, Crafting, Arch, Ring
+            // Minerals, Quest, asdf, Crafting, Ring
             itemDBId = insertItem(connection, name, null, price);
          }
          
-         IdMap.put(name, itemDBId);
+         IdMap.put(itemId, itemDBId);
       }
       
       fileData = Files.readString((new File("data/Data/FarmAnimals.json")).toPath());
       JSONObject animalsRoot = new JSONObject(fileData);
       JSONObject animalsContent = animalsRoot.getJSONObject("content");
       
-      return;
-      /*
       keys = animalsContent.keys();
       while(keys.hasNext()) {
          String name = keys.next();
+         if(name.equals("Hog")) continue;
+         
          String[] values = animalsContent.getString(name).split("/");
          
          Integer produceDBId1 = IdMap.get(values[2]);
          Integer produceDBId2 = IdMap.get(values[3]);
          
-         Integer price = null;
+         Integer price = 0;
          if(name.contains("Chicken")) price = 800;
          else if(name.contains("Duck")) price = 1200;
          else if(name.contains("Rabbit")) price = 8000;
@@ -457,8 +482,10 @@ public class StardewHoes {
          int animalDBId = insertAnimal(connection, name, price);
          IdMap.put(name, animalDBId);
          
-         if(produceDBId1 != null) insertProduces(connection, animalDBId, produceDBId1);
-         if(produceDBId2 != null) insertProduces(connection, animalDBId, produceDBId2);
+         if(produceDBId1 != null)
+            insertProduces(connection, animalDBId, produceDBId1);
+         if(produceDBId2 != null && produceDBId1 != produceDBId2)
+            insertProduces(connection, animalDBId, produceDBId2);
       }
       
       fileData = Files.readString((new File("data/Data/CookingRecipes.json")).toPath());
@@ -480,11 +507,19 @@ public class StardewHoes {
          Integer resultId = IdMap.get(outputs[0]);
          
          for(int i = 0; i < inputs.length; i += 2) {
-            Integer ingredientId = IdMap.get(inputs[i]);
-            insertHasIngredient(connection, ingredientId, resultId);
+            ArrayList<String> categoryList = categoryMap.get(inputs[i]);
+            
+            if(categoryList != null) {
+               for(String item : categoryList) {
+                  insertHasIngredient(connection, IdMap.get(item), resultId);
+               }
+            } else {
+               insertHasIngredient(connection, IdMap.get(inputs[i]), resultId);
+            }
          }
       }
       
+      /*
       int mrQiId1 = insertShopkeeper(connection, "MisterQi1");
       int mrQiId2 = insertShopkeeper(connection, "MisterQi2");
       IdMap.put("MisterQi1", mrQiId1);

@@ -2,20 +2,19 @@ use StardewHoes10
 go
 
 create or alter procedure insert_Produces (
-	@AnimalID int = null,
-	@ProductID int = null
+	@AnimalID int,
+	@ProductID int
 ) as
-	
-	if @AnimalID is not null and exists (select * from Produces where AnimalID = @AnimalID) and @ProductID is not null and exists (select * from Produces where ProductID = @ProductID) begin
-		raiserror('ERROR in insert_Produces: The tuple with AnimalID %d  and ProductID %d already exists.', 14, 1, @AnimalID, @ProductID)
+	if @AnimalID is null begin
+		raiserror('ERROR in insert_Produces: AnimalID cannot be null.', 14, 1)
 		return 1
 	end
-	if @AnimalID is null begin
-		raiserror('ERROR in insert_Produces: AnimalID cannot be null.', 14, 2)
+	if @ProductID is null begin
+		raiserror('ERROR in insert_Produces: ProductID cannot be null.', 14, 2)
 		return 2
 	end
-	if @ProductID is null begin
-		raiserror('ERROR in insert_Produces: ProductID cannot be null.', 14, 3)
+	if exists (select * from Produces where AnimalID = @AnimalID and ProductID = @ProductID) begin
+		raiserror('ERROR in insert_Produces: The tuple with AnimalID %d and ProductID %d already exists.', 14, 3, @AnimalID, @ProductID)
 		return 3
 	end
 
