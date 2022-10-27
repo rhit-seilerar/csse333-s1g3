@@ -66,7 +66,7 @@ public class StardewHoes {
             
             // Get
             case 'g': {
-               System.out.println("Retieval selected");
+               System.out.println("Retrieval selected");
                
                System.out.print("Please provide the item's ID (leave empty for null):\n> ");
                String idStr = nextLine(scanner);
@@ -187,19 +187,41 @@ public class StardewHoes {
             
             // Delete
             case 'd': {
-               System.out.print("Delete selected\nPlease provide the item ID:\n>");
-               String id = nextLine(scanner);
+               System.out.print("Delete selected");
                
-               int ID = Integer.parseInt(id);
+               System.out.print("Please provide the item's ID (leave empty for null):\n> ");
+               String idStr = nextLine(scanner);
                
-               String query = "{? = call delete_Item(?)}";
+               System.out.print("Please provide the item's name (leave empty for null):\n> ");
+               String nameStr = nextLine(scanner);
+               
+               System.out.print("Please provide the item's quality (leave empty for null):\n> ");
+               String qualityStr = nextLine(scanner);
+               
+               System.out.print("Please provide the item's price (leave empty for null):\n> ");
+               String priceStr = nextLine(scanner);
+               
+               String query = "{? = call delete_Item(?, ?, ?, ?)}";
                CallableStatement statement = connection.prepareCall(query);
                statement.registerOutParameter(1, Types.INTEGER);
-               statement.setInt(2, ID);
+               
+               if(idStr.length() > 0) statement.setInt(2, Integer.valueOf(idStr));
+               else statement.setNull(2, Types.INTEGER);
+               
+               if(nameStr.length() > 0) statement.setString(3, nameStr);
+               else statement.setNull(3, Types.VARCHAR);
+               
+               if(qualityStr.length() > 0) statement.setInt(4, Integer.valueOf(qualityStr));
+               else statement.setNull(4, Types.TINYINT);
+               
+               if(priceStr.length() > 0) statement.setInt(5, Integer.valueOf(priceStr));
+               else statement.setNull(5, Types.INTEGER);
+               
                statement.execute();
+               
                int result = statement.getInt(1);
                if(result == 0)
-                  System.out.printf("Successfully deleted Item with ID: " + id + "\n");
+                  System.out.printf("Successfully deleted items\n");
                else
                   System.out.printf("ERROR in deleteItem: Failed with error code %d\n", result);
             } break;

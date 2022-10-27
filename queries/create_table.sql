@@ -194,3 +194,10 @@ create table ShopSells (
 	Foreign Key (ItemID) references Item(ID)
 	on delete cascade
 )
+
+create table Login (
+	Username varchar(30),
+	Hash int not null,
+	Salt int not null
+	Primary Key (Username)
+)
