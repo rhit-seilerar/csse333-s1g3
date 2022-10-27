@@ -1163,19 +1163,59 @@ public class StardewHoes {
                      String plantprodId = nextLine(scanner);
                      
                      int ppId = Integer.parseInt(plantprodId);
+                     
+                     String query = "{? = call delete_plantProduct(?)}";
+                     CallableStatement statement = connection.prepareCall(query);
+                     statement.registerOutParameter(1, Types.INTEGER);
+                     statement.setInt(2, ppId);
+                     
+                     statement.execute();
+                     
+                     int result = statement.getInt(1);
+                     if(result == 0)
+                        System.out.printf("Successfully deleted Plant Product\n");
+                     else
+                        System.out.printf("ERROR in deletePlantProduct: Failed with error code %d\n", result);
                   } break;
                   case "produce": {
                      System.out.print("Please provide the produce's id:\n> ");
                      String produceId = nextLine(scanner);
                      
                      int pId = Integer.parseInt(produceId);
+                     
+                     String query = "{? = call delete_produce(?)}";
+                     CallableStatement statement = connection.prepareCall(query);
+                     statement.registerOutParameter(1, Types.INTEGER);
+                     statement.setInt(2, pId);
+                     
+                     statement.execute();
+                     
+                     int result = statement.getInt(1);
+                     if(result == 0)
+                        System.out.printf("Successfully deleted produce\n");
+                     else
+                        System.out.printf("ERROR in deleteProduce: Failed with error code %d\n", result);
                   } break;
                   case "seed": {
                      System.out.print("Please provide the seed's id:\n> ");
                      String seedId = nextLine(scanner);
                      
                      int sId = Integer.parseInt(seedId);
-                  }
+                     
+                     String query = "{? = call delete_seed(?)}";
+                     CallableStatement statement = connection.prepareCall(query);
+                     statement.registerOutParameter(1, Types.INTEGER);
+                     statement.setInt(2, sId);
+                     
+                     statement.execute();
+                     
+                     int result = statement.getInt(1);
+                     if(result == 0)
+                        System.out.printf("Successfully deleted seed\n");
+                     else
+                        System.out.printf("ERROR in deleteSeed: Failed with error code %d\n", result);
+                  } break;
+                  
                   default:
                      System.out.println("Unknown option. Here are the recognized options:");
                   case "h":
@@ -1194,7 +1234,7 @@ public class StardewHoes {
                   } break;
                }
             } break;
-            
+               
             // Help
             default:
                System.out.println("Unknown option. Here are the recognized options:");
