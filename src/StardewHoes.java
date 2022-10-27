@@ -1103,105 +1103,104 @@ public class StardewHoes {
                         System.out.printf("ERROR in deleteFish: Failed with error code %d\n", result);
                   } break;
                   case "food": {
-                  System.out.print("Please provide the food's id:\n> ");
-                  String foodId = nextLine(scanner);
-                
-                  int fId = Integer.parseInt(foodId);
-                  
-                  String query = "{? = call delete_food(?)}";
-                  CallableStatement statement = connection.prepareCall(query);
-                      statement.registerOutParameter(1, Types.INTEGER);
-                      statement.setInt(2, fId);
-                      
-                      statement.execute();
-                  
-                      int result = statement.getInt(1);
-                      if(result == 0)
-                         System.out.printf("Successfully deleted food\n");
-                      else
-                         System.out.printf("ERROR in deleteFood: Failed with error code %d\n", result);
-               } break;
-               case "item": {
-                  System.out.print("Please provide the item's ID (leave empty for null):\n> ");
-                  String idStr = nextLine(scanner);
-                  
-                  System.out.print("Please provide the item's name (leave empty for null):\n> ");
-                  String nameStr = nextLine(scanner);
-                  
-                  System.out.print("Please provide the item's quality (leave empty for null):\n> ");
-                  String qualityStr = nextLine(scanner);
-                  
-                  System.out.print("Please provide the item's price (leave empty for null):\n> ");
-                  String priceStr = nextLine(scanner);
-                  
-                  String query = "{? = call delete_item(?, ?, ?, ?)}";
-                  CallableStatement statement = connection.prepareCall(query);
-                  statement.registerOutParameter(1, Types.INTEGER);
-                  
-                  if(idStr.length() > 0) statement.setInt(2, Integer.valueOf(idStr));
-                  else statement.setNull(2, Types.INTEGER);
-                  
-                  if(nameStr.length() > 0) statement.setString(3, nameStr);
-                  else statement.setNull(3, Types.VARCHAR);
-                  
-                  if(qualityStr.length() > 0) statement.setInt(4, Integer.valueOf(qualityStr));
-                  else statement.setNull(4, Types.TINYINT);
-                  
-                  if(priceStr.length() > 0) statement.setInt(5, Integer.valueOf(priceStr));
-                  else statement.setNull(5, Types.INTEGER);
-                  
-                  statement.execute();
-                  
-                  int result = statement.getInt(1);
-                  if(result == 0)
-                     System.out.printf("Successfully deleted items\n");
-                  else
-                     System.out.printf("ERROR in deleteItem: Failed with error code %d\n", result);
-               } break;
-               case "plantProduct": {
-                  System.out.print("Please provide the plant product's id:\n> ");
-                  String plantprodId = nextLine(scanner);
-                
-                  int ppId = Integer.parseInt(plantprodId);
-               } break;
-               case "produce": {
-                  System.out.print("Please provide the produce's id:\n> ");
-                  String produceId = nextLine(scanner);
-                
-                  int pId = Integer.parseInt(produceId);
-               } break;
-               case "seed": {
-                  System.out.print("Please provide the seed's id:\n> ");
-                  String seedId = nextLine(scanner);
-                  
-                  int sId = Integer.parseInt(seedId);
-                  
+                     System.out.print("Please provide the food's id:\n> ");
+                     String foodId = nextLine(scanner);
+                     
+                     int fId = Integer.parseInt(foodId);
+                     
+                     String query = "{? = call delete_food(?)}";
+                     CallableStatement statement = connection.prepareCall(query);
+                     statement.registerOutParameter(1, Types.INTEGER);
+                     statement.setInt(2, fId);
+                     
+                     statement.execute();
+                     
+                     int result = statement.getInt(1);
+                     if(result == 0)
+                        System.out.printf("Successfully deleted food\n");
+                     else
+                        System.out.printf("ERROR in deleteFood: Failed with error code %d\n", result);
+                  } break;
+                  case "item": {
+                     System.out.print("Please provide the item's ID (leave empty for null):\n> ");
+                     String idStr = nextLine(scanner);
+                     
+                     System.out.print("Please provide the item's name (leave empty for null):\n> ");
+                     String nameStr = nextLine(scanner);
+                     
+                     System.out.print("Please provide the item's quality (leave empty for null):\n> ");
+                     String qualityStr = nextLine(scanner);
+                     
+                     System.out.print("Please provide the item's price (leave empty for null):\n> ");
+                     String priceStr = nextLine(scanner);
+                     
+                     String query = "{? = call delete_item(?, ?, ?, ?)}";
+                     CallableStatement statement = connection.prepareCall(query);
+                     statement.registerOutParameter(1, Types.INTEGER);
+                     
+                     if(idStr.length() > 0) statement.setInt(2, Integer.valueOf(idStr));
+                     else statement.setNull(2, Types.INTEGER);
+                     
+                     if(nameStr.length() > 0) statement.setString(3, nameStr);
+                     else statement.setNull(3, Types.VARCHAR);
+                     
+                     if(qualityStr.length() > 0) statement.setInt(4, Integer.valueOf(qualityStr));
+                     else statement.setNull(4, Types.TINYINT);
+                     
+                     if(priceStr.length() > 0) statement.setInt(5, Integer.valueOf(priceStr));
+                     else statement.setNull(5, Types.INTEGER);
+                     
+                     statement.execute();
+                     
+                     int result = statement.getInt(1);
+                     if(result == 0)
+                        System.out.printf("Successfully deleted items\n");
+                     else
+                        System.out.printf("ERROR in deleteItem: Failed with error code %d\n", result);
+                  } break;
+                  case "plantProduct": {
+                     System.out.print("Please provide the plant product's id:\n> ");
+                     String plantprodId = nextLine(scanner);
+                     
+                     int ppId = Integer.parseInt(plantprodId);
+                  } break;
+                  case "produce": {
+                     System.out.print("Please provide the produce's id:\n> ");
+                     String produceId = nextLine(scanner);
+                     
+                     int pId = Integer.parseInt(produceId);
+                  } break;
+                  case "seed": {
+                     System.out.print("Please provide the seed's id:\n> ");
+                     String seedId = nextLine(scanner);
+                     
+                     int sId = Integer.parseInt(seedId);
+                  }
+                  default:
+                     System.out.println("Unknown option. Here are the recognized options:");
+                  case "h":
+                  case "?": {
+                     System.out.println("q or x: Exit");
+                     System.out.println("animal: delete animal");
+                     System.out.println("animalProdouct: delete animal product");
+                     System.out.println("artisanGood: delete artisan good");
+                     System.out.println("fish: delete fish");
+                     System.out.println("food: delete food");
+                     System.out.println("item: delete item");
+                     System.out.println("plantProduct: delete plantProduct");
+                     System.out.println("produce: delete produce");
+                     System.out.println("seed: delete seed");
+                     System.out.println("h or ?: Show this help menu");
+                  } break;
                }
-               default:
-                    System.out.println("Unknown option. Here are the recognized options:");
-                    case "h":
-                    case "?": {
-                       System.out.println("q or x: Exit");
-                    System.out.println("animal: delete animal");
-                    System.out.println("animalProdouct: delete animal product");
-                    System.out.println("artisanGood: delete artisan good");
-                    System.out.println("fish: delete fish");
-                    System.out.println("food: delete food");
-                    System.out.println("item: delete item");
-                    System.out.println("plantProduct: delete plantProduct");
-                    System.out.println("produce: delete produce");
-                    System.out.println("seed: delete seed");
-                    System.out.println("h or ?: Show this help menu");
-                 } break;
-                }
             } break;
             
             // Help
             default:
                System.out.println("Unknown option. Here are the recognized options:");
-               case 'h':
-               case '?': {
-                  System.out.println("q or x: Exit");
+            case 'h':
+            case '?': {
+               System.out.println("q or x: Exit");
                System.out.println("p: Populate the database");
                System.out.println("g: Retrieve data from the database");
                System.out.println("i: Insert new data into the database");
@@ -1215,7 +1214,7 @@ public class StardewHoes {
       scanner.close();
       connection.close();
    }
-
+   
    public static byte[] hashPassword(String password, byte[] salt) throws Exception {
       KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
       SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
@@ -1653,7 +1652,7 @@ public class StardewHoes {
       updateArtisanGood(connection, nameMap.get("Aged Roe"), null, null, 0, 2.0);
       insertGenerates(connection, nameMap.get("Roe"), nameMap.get("Aged Roe"));
    }
-
+   
    public static int insertProfession(Connection connection, String category, double multiplier) throws Exception {
       String query = "{? = call insert_Profession(?, ?, ?)}";
       CallableStatement statement = connection.prepareCall(query);
@@ -1664,16 +1663,15 @@ public class StardewHoes {
       statement.execute();
       int result = statement.getInt(1);
       int id = statement.getInt(4);
-
+      
       if (result == 0)
-         System.out.printf("Successfully inserted Profession for category %s with boost %f.\n", category,
-               multiplier);
+         System.out.printf("Successfully inserted Profession for category %s with boost %f.\n", category, multiplier);
       else
          System.out.printf("ERROR in insertProfesison: Failed with error code %d.\n", result);
-
+      
       return id;
    }
-
+   
    public static int insertHasProfession(Connection connection, int profId, int farmerId) throws Exception {
       String query = "{? = call insert_HasProfession(?, ?)}";
       CallableStatement statement = connection.prepareCall(query);
@@ -1684,13 +1682,12 @@ public class StardewHoes {
       statement.execute();
       int result = statement.getInt(1);
       int id = statement.getInt(4);
-
+      
       if (result == 0)
-         System.out.printf("Successfully inserted HasProfession for farmer %d with profession %d.\n", farmerId,
-               profId);
+         System.out.printf("Successfully inserted HasProfession for farmer %d with profession %d.\n", farmerId, profId);
       else
          System.out.printf("ERROR in insertProfesison: Failed with error code %d.\n", result);
-
+      
       return id;
    }
 
