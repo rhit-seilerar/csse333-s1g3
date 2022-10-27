@@ -197,7 +197,7 @@ create table ShopSells (
 
 create table Login (
 	Username varchar(30),
-	Hash int not null,
-	Salt int not null
+	Hash binary(16) not null,
+	Salt binary(16) not null
 	Primary Key (Username)
 )

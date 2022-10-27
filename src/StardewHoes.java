@@ -1,5 +1,7 @@
 import java.io.File;
 import java.nio.file.Files;
+import java.security.SecureRandom;
+import java.security.spec.KeySpec;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,7 +9,11 @@ import java.sql.ResultSet;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.Scanner;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
 import org.json.JSONObject;
 
@@ -24,43 +30,131 @@ public class StardewHoes {
    {
       String url = "jdbc:sqlserver://${dbServer};databaseName=${dbName};user=${user};password={${pass}}";
       
+      Scanner scanner = new Scanner(System.in);
+      Random random = new SecureRandom();
+      
       String defaultServer   = (args.length >= 1) ? args[0] : "titan.csse.rose-hulman.edu";
       String defaultDatabase = (args.length >= 2) ? args[1] : "StardewHoes10";
+      String appUsername = "StardewHoesapp10";
+      String appPassword = "Password1234";
       
-      Scanner scanner = new Scanner(System.in);
-      String username, password;
-      if(args.length >= 3) {
-         username = args[2];
-      } else {
-         System.out.print("What is your username?\n> ");
-         username = nextLine(scanner);
-      }
-      
-      if(args.length >= 4) {
-         password = args[3];
-      } else {
-         System.out.print("What is your password?\n> ");
-         password = nextLine(scanner);
-      }
-      
-      url = url.replace("${dbServer}", defaultServer).replace("${dbName}", defaultDatabase).replace("${user}", username).replace("${pass}", password);
+      url = url.replace("${dbServer}", defaultServer).replace("${dbName}", defaultDatabase).replace("${user}", appUsername).replace("${pass}", appPassword);
       Connection connection = DriverManager.getConnection(url);
       
       boolean loop = true;
+      boolean loggedIn = false;
       while(loop) {
          System.out.print("What action would you like to perform? (type h for help)\n> ");
-         char mode = nextLine(scanner).strip().charAt(0);
+         String modeStr = nextLine(scanner);
+         char mode = (modeStr.length() > 0) ? modeStr.charAt(0) : '\n';
          
          switch(mode) {
             // Quit / Exit
             case 'q':
             case 'x': {
+               System.out.println("Exiting");
                loop = false;
-               scanner.close();
+            } break;
+            
+            // Login
+            case 'l': {
+               System.out.println("Login selected");
+               
+               System.out.print("Please provide your username:\n> ");
+               String username = nextLine(scanner);
+               
+               System.out.print("Please provide your password:\n> ");
+               String password = nextLine(scanner);
+               
+               CallableStatement statement = connection.prepareCall("{? = call get_Login(?)}");
+               statement.registerOutParameter(1, Types.INTEGER);
+               statement.setString(2, username);
+               ResultSet resultSet = statement.executeQuery();
+               
+               if(resultSet.isClosed() || !resultSet.next()) {
+                  System.out.printf("ERROR: Failed to login %s\n", username);
+               } else {
+                  byte[] storedHash = resultSet.getBytes(2);
+                  byte[] storedSalt = resultSet.getBytes(3);
+                  byte[] givenHash = hashPassword(password, storedSalt);
+                  
+                  if(givenHash.equals(storedHash)) {
+                     System.out.printf("ERROR: Failed to login %s\n", username);
+                  } else {
+                     System.out.printf("Successfully logged in %s\n", username);
+                     loop = false;
+                     loggedIn = true;
+                  }
+               }
+            } break;
+            
+            // Register
+            case 'r': {
+               System.out.println("Registration selected");
+               
+               System.out.print("Please provide a username:\n> ");
+               String username = nextLine(scanner);
+               
+               System.out.print("Please provide a password:\n> ");
+               String password = nextLine(scanner);
+               
+               byte[] salt = new byte[16];
+               random.nextBytes(salt);
+               byte[] hash = hashPassword(password, salt);
+               
+               CallableStatement statement = connection.prepareCall("{? = call insert_Login(?, ?, ?)}");
+               statement.registerOutParameter(1, Types.INTEGER);
+               statement.setString(2, username);
+               statement.setBytes(3, hash);
+               statement.setBytes(4, salt);
+               statement.execute();
+               int result = statement.getInt(1);
+               
+               if(result != 0) {
+                  System.out.printf("ERROR: Failed to register %s\n", username);
+               } else {
+                  System.out.printf("Successfully registered %s\n", username);
+                  
+                  System.out.print("Would you like to login with this account? [Y/n]\n> ");
+                  String response = scanner.nextLine();
+                  if(!response.equals("n")) {
+                     System.out.printf("Successfully logged in %s\n", username);
+                     loop = false;
+                     loggedIn = true;
+                  }
+               }
+            } break;
+            
+            // Help
+            default:
+            System.out.println("Unknown option. Here are the recognized options:");
+            case 'h':
+            case '?': {
+               System.out.println("q or x: Exit");
+               System.out.println("l: Login");
+               System.out.println("r: Register an account");
+               System.out.println("h or ?: Show this help menu");
+            } break;
+         }
+      }
+      
+      loop = true;
+      while(loggedIn && loop) {
+         System.out.print("What action would you like to perform? (type h for help)\n> ");
+         String modeStr = nextLine(scanner);
+         char mode = (modeStr.length() > 0) ? modeStr.charAt(0) : '\n';
+         
+         switch(mode) {
+            // Quit / Exit
+            case 'q':
+            case 'x': {
+               System.out.println("Exiting");
+               loop = false;
             } break;
             
             // Populate
             case 'p': {
+               System.out.println("Populate selected");
                populateDatabase(connection);
             } break;
             
@@ -132,14 +226,14 @@ public class StardewHoes {
             
             // Update
             case 'u': {
-            	System.out.print("Update selected\nPlease provide the item's id:\n> ");
-                String id = nextLine(scanner);
-                int ID = Integer.parseInt(id);
-                System.out.print("Please provide the item's new name:\n> ");
-                String name = nextLine(scanner);
-                System.out.print("Please provide the item's new quality (0 for normal, 3 for iridium):\n> ");
-                String qual = nextLine(scanner);
-                Object quality = null;
+               System.out.print("Update selected\nPlease provide the item's id:\n> ");
+               String id = nextLine(scanner);
+               int ID = Integer.parseInt(id);
+               System.out.print("Please provide the item's new name:\n> ");
+               String name = nextLine(scanner);
+               System.out.print("Please provide the item's new quality (0 for normal, 3 for iridium):\n> ");
+               String qual = nextLine(scanner);
+               Object quality = null;
                 System.out.print("Please provide the item's new base price:\n> ");
                 String bp = nextLine(scanner);
                 Object basePrice = null;
@@ -149,40 +243,40 @@ public class StardewHoes {
                 statement.setInt(2, ID);
                 
                 if(name == "null" || name == "") {
-                	name = null;
-                }
-                
-                if(qual == "null" || qual == "") {
-                	quality = null;
+                   name = null;
+                  }
+                  
+                  if(qual == "null" || qual == "") {
+                     quality = null;
+                  } else {
+                     quality = Integer.parseInt(qual);
+                  }
+                  
+                  if(bp == "null" || bp == "") {
+                     basePrice = null;
+                  } else {
+                     basePrice = Integer.parseInt(bp);
+                  }
+                  if (name != null) {
+                     statement.setString(3, name);
+                  } else {
+                     statement.setNull(3, Types.VARCHAR);
+                  }
+                  if (basePrice != null) {
+                   statement.setInt(5, (int) basePrice);
                 } else {
-                	quality = Integer.parseInt(qual);
-;                }
-                
-                if(bp == "null" || bp == "") {
-                	basePrice = null;
-                } else {
-                	basePrice = Integer.parseInt(bp);
-                }
-                if (name != null) {
-                	statement.setString(3, name);
-                } else {
-                	statement.setNull(3, Types.VARCHAR);
-                }
-                if (basePrice != null) {
-                	statement.setInt(5, (int) basePrice);
-                } else {
-                	statement.setNull(5, Types.INTEGER);
-                }
-                if(quality != null) {
-                	statement.setInt(4, (int) quality);
-                }
-                else {
-                	statement.setInt(4, Types.INTEGER);
-                }
-                
-                statement.execute();
-                System.out.println("statement executed with return value " + statement.getInt(1));
-                
+                   statement.setNull(5, Types.INTEGER);
+               }
+               if(quality != null) {
+                  statement.setInt(4, (int) quality);
+               }
+               else {
+                  statement.setInt(4, Types.INTEGER);
+               }
+               
+               statement.execute();
+               System.out.println("statement executed with return value " + statement.getInt(1));
+               
             } break;
             
             // Delete
@@ -223,15 +317,15 @@ public class StardewHoes {
                if(result == 0)
                   System.out.printf("Successfully deleted items\n");
                else
-                  System.out.printf("ERROR in deleteItem: Failed with error code %d\n", result);
+               System.out.printf("ERROR in deleteItem: Failed with error code %d\n", result);
             } break;
             
             // Help
             default:
                System.out.println("Unknown option. Here are the recognized options:");
-            case 'h':
-            case '?': {
-               System.out.println("q or x: Exit");
+               case 'h':
+               case '?': {
+                  System.out.println("q or x: Exit");
                System.out.println("p: Populate the database");
                System.out.println("g: Retrieve data from the database");
                System.out.println("i: Insert new data into the database");
@@ -242,7 +336,16 @@ public class StardewHoes {
          }
       }
       
+      scanner.close();
       connection.close();
+   }
+   
+   public static byte[] hashPassword(String password, byte[] salt) throws Exception
+   {
+      KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
+      SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+      byte[] hash = keyFactory.generateSecret(spec).getEncoded();
+      return hash;
    }
    
    @SuppressWarnings("unchecked")
