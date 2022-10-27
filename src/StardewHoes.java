@@ -16,18 +16,17 @@ import java.util.Scanner;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-//import org.json.JSONObject;
+import org.json.JSONObject;
 
 public class StardewHoes {
-	public static boolean skipLogin = false;
+   public static boolean skipLogin = true;
 
-	public static String nextLine(Scanner scanner) {
-		while (!scanner.hasNextLine())
-			;
-		return scanner.nextLine();
-	}
+   public static String nextLine(Scanner scanner) {
+      while (!scanner.hasNextLine());
+      return scanner.nextLine();
+   }
 
-	public static void main(String[] args) throws Exception {
+   public static void main(String[] args) throws Exception {
       String url = "jdbc:sqlserver://${dbServer};databaseName=${dbName};user=${user};password={${pass}}";
       
       Scanner scanner = new Scanner(System.in);
@@ -160,32 +159,32 @@ public class StardewHoes {
             
             // Get
             case 'g': {
-            	System.out.print("Get selected\nWhat would you like to retrieve? (type h for help)\n> ");
+               System.out.print("Get selected\nWhat would you like to retrieve? (type h for help)\n> ");
                 String item = nextLine(scanner);
                 
                 switch(item) {
-                	case "q":
-                	case "x": {
-                		System.out.println("Exiting");
-                		loop = false;
-                	} break;
-                	case "animal": {
-                		System.out.println("Get method does not exist, please use item");
-                	} break;
-                	case "animalProduct": {
-                		System.out.println("Get method does not exist, please use item");
-                	} break;
-                	case "artisanGood": {
-                		System.out.println("Get method does not exist, please use item");
-                	} break;
-                	case "fish": {
-                		System.out.println("Get method does not exist, please use item");
-                	} break;
-                	case "food": {
-                		System.out.println("Get method does not exist, please use item");
-                	} break;
-                	case "item": {
-                		System.out.print("Please provide the item's ID (leave empty for null):\n> ");
+                   case "q":
+                   case "x": {
+                      System.out.println("Exiting");
+                      loop = false;
+                   } break;
+                   case "animal": {
+                      System.out.println("Get method does not exist, please use item");
+                   } break;
+                   case "animalProduct": {
+                      System.out.println("Get method does not exist, please use item");
+                   } break;
+                   case "artisanGood": {
+                      System.out.println("Get method does not exist, please use item");
+                   } break;
+                   case "fish": {
+                      System.out.println("Get method does not exist, please use item");
+                   } break;
+                   case "food": {
+                      System.out.println("Get method does not exist, please use item");
+                   } break;
+                   case "item": {
+                      System.out.print("Please provide the item's ID (leave empty for null):\n> ");
                         String idStr = nextLine(scanner);
                         
                         System.out.print("Please provide the item's name (leave empty for null):\n> ");
@@ -228,9 +227,9 @@ public class StardewHoes {
                         } else {
                            System.out.printf("ERROR in getItem: Failed with error code %d\n", result);
                         }
-                	} break;
-                	case "plantProduct": {
-                		System.out.print("Please provide the plant product's ID (leave empty for null):\n> ");
+                   } break;
+                   case "plantProduct": {
+                      System.out.print("Please provide the plant product's ID (leave empty for null):\n> ");
                         String idStr = nextLine(scanner);
                         
                         System.out.print("Please provide the plant product's name (leave empty for null):\n> ");
@@ -273,9 +272,9 @@ public class StardewHoes {
                         } else {
                            System.out.printf("ERROR in getPlantProduct: Failed with error code %d\n", result);
                         }
-                	} break;
-                	case "produce": {
-                		System.out.print("Please provide the produce's ID (leave empty for null):\n> ");
+                   } break;
+                   case "produce": {
+                      System.out.print("Please provide the produce's ID (leave empty for null):\n> ");
                         String idStr = nextLine(scanner);
                         
                         System.out.print("Please provide the produce's name (leave empty for null):\n> ");
@@ -318,11 +317,11 @@ public class StardewHoes {
                         } else {
                            System.out.printf("ERROR in getProduce: Failed with error code %d\n", result);
                         }
-                	} break;
-                	case "seed": {
-                		System.out.println("Get method does not exist, please use item");
-                	}
-                	default:
+                   } break;
+                   case "seed": {
+                      System.out.println("Get method does not exist, please use item");
+                   }
+                   default:
                         System.out.println("Unknown option. Here are the recognized options:");
                         case "h":
                         case "?": {
@@ -343,154 +342,154 @@ public class StardewHoes {
             
             // Insert
             case 'i': {
-            	System.out.print("Insert selected\nWhat would you like to insert? (type h for help)\n> ");
+               System.out.print("Insert selected\nWhat would you like to insert? (type h for help)\n> ");
                 String item = nextLine(scanner);
                 
                 switch(item) {
-                	case "q":
-                	case "x": {
-                		System.out.println("Exiting");
-                		loop = false;
-                	} break;
-                	case "animal": {
-                		System.out.print("Please provide the animal's name:\n> ");
-                		String name = nextLine(scanner);
+                   case "q":
+                   case "x": {
+                      System.out.println("Exiting");
+                      loop = false;
+                   } break;
+                   case "animal": {
+                      System.out.print("Please provide the animal's name:\n> ");
+                      String name = nextLine(scanner);
                     
-                		System.out.print("Please provide the animal's base price:\n> ");
-                		String baseprice = nextLine(scanner);
+                      System.out.print("Please provide the animal's base price:\n> ");
+                      String baseprice = nextLine(scanner);
                     
-                		int basePrice = Integer.parseInt(baseprice);
+                      int basePrice = Integer.parseInt(baseprice);
                     
-                		insertAnimal(connection, name, basePrice);
-                	} break;
-                	case "animalProduct": {
-                		System.out.print("Please provide the animal product's name:\n> ");
-                		String name = nextLine(scanner);
-                		
-                		System.out.print("Please provide the animal product's quality (0 for normal, 3 for iridium):\n> ");
-                		String quality = nextLine(scanner);
+                      insertAnimal(connection, name, basePrice);
+                   } break;
+                   case "animalProduct": {
+                      System.out.print("Please provide the animal product's name:\n> ");
+                      String name = nextLine(scanner);
+                      
+                      System.out.print("Please provide the animal product's quality (0 for normal, 3 for iridium):\n> ");
+                      String quality = nextLine(scanner);
                     
-                		System.out.print("Please provide the animal product's base price:\n> ");
-                		String baseprice = nextLine(scanner);
+                      System.out.print("Please provide the animal product's base price:\n> ");
+                      String baseprice = nextLine(scanner);
                     
-                		int basePrice = Integer.parseInt(baseprice);
-                		int qual = Integer.parseInt(quality);
+                      int basePrice = Integer.parseInt(baseprice);
+                      int qual = Integer.parseInt(quality);
                     
-                		insertAnimalProduct(connection, name, qual, basePrice);
-                	} break;
-                	case "artisanGood": {
-                		System.out.print("Please provide the artisan good's name:\n> ");
-                		String name = nextLine(scanner);
-                		
-                		System.out.print("Please provide the artisan good's quality (0 for normal, 3 for iridium):\n> ");
-                		String quality = nextLine(scanner);
+                      insertAnimalProduct(connection, name, qual, basePrice);
+                   } break;
+                   case "artisanGood": {
+                      System.out.print("Please provide the artisan good's name:\n> ");
+                      String name = nextLine(scanner);
+                      
+                      System.out.print("Please provide the artisan good's quality (0 for normal, 3 for iridium):\n> ");
+                      String quality = nextLine(scanner);
                     
-                		System.out.print("Please provide the artisan good's base price:\n> ");
-                		String baseprice = nextLine(scanner);
-                		
-                		System.out.print("Please provide the artisan good's multiplier:\n> ");
-                		String multiplier = nextLine(scanner);
+                      System.out.print("Please provide the artisan good's base price:\n> ");
+                      String baseprice = nextLine(scanner);
+                      
+                      System.out.print("Please provide the artisan good's multiplier:\n> ");
+                      String multiplier = nextLine(scanner);
                     
-                		int basePrice = Integer.parseInt(baseprice);
-                		int qual = Integer.parseInt(quality);
-                		double multi = Double.parseDouble(multiplier);
+                      int basePrice = Integer.parseInt(baseprice);
+                      int qual = Integer.parseInt(quality);
+                      double multi = Double.parseDouble(multiplier);
                     
-                		insertArtisanGood(connection, name, qual, basePrice, multi);
-                	} break;
-                	case "farm": {
-                		System.out.print("Please provide the farm's name:\n> ");
-                		String name = nextLine(scanner);
-                		
-                		System.out.print("Please provide the farm's season\n> ");
-                		String season = nextLine(scanner);
+                      insertArtisanGood(connection, name, qual, basePrice, multi);
+                   } break;
+                   case "farm": {
+                      System.out.print("Please provide the farm's name:\n> ");
+                      String name = nextLine(scanner);
+                      
+                      System.out.print("Please provide the farm's season\n> ");
+                      String season = nextLine(scanner);
                     
-                		insertFarm(connection, name, season);
-                	} break;
-                	case "farmer": {
-                		System.out.print("Please provide the farmer's name:\n> ");
-                		String name = nextLine(scanner);
-                		
-                		System.out.print("Please provide the farmer's farmID\n> ");
-                		String id = nextLine(scanner);
-                		
-                		int farmid = Integer.parseInt(id);
+                      insertFarm(connection, name, season);
+                   } break;
+                   case "farmer": {
+                      System.out.print("Please provide the farmer's name:\n> ");
+                      String name = nextLine(scanner);
+                      
+                      System.out.print("Please provide the farmer's farmID\n> ");
+                      String id = nextLine(scanner);
+                      
+                      int farmid = Integer.parseInt(id);
                     
-                		insertFarmer(connection, name, farmid);
-                	} break;
-                	case "fish": {
-                		System.out.print("Please provide the fish's name:\n> ");
-                		String name = nextLine(scanner);
-                		
-                		System.out.print("Please provide the fish's quality (0 for normal, 3 for iridium):\\n> ");
-                		String quality = nextLine(scanner);
-                		
-                		System.out.print("Please provide the fish's base price:\n> ");
-                		String baseprice = nextLine(scanner);
+                      insertFarmer(connection, name, farmid);
+                   } break;
+                   case "fish": {
+                      System.out.print("Please provide the fish's name:\n> ");
+                      String name = nextLine(scanner);
+                      
+                      System.out.print("Please provide the fish's quality (0 for normal, 3 for iridium):\\n> ");
+                      String quality = nextLine(scanner);
+                      
+                      System.out.print("Please provide the fish's base price:\n> ");
+                      String baseprice = nextLine(scanner);
                     
-                		int basePrice = Integer.parseInt(baseprice);
-                		int qual = Integer.parseInt(quality);
+                      int basePrice = Integer.parseInt(baseprice);
+                      int qual = Integer.parseInt(quality);
                     
-                		insertFish(connection, name, qual, basePrice);
-                	} break;
-                	case "food": {
-                		System.out.print("Please provide the food's name:\n> ");
-                		String name = nextLine(scanner);
-                		
-                		System.out.print("Please provide the food's base price:\n> ");
-                		String baseprice = nextLine(scanner);
+                      insertFish(connection, name, qual, basePrice);
+                   } break;
+                   case "food": {
+                      System.out.print("Please provide the food's name:\n> ");
+                      String name = nextLine(scanner);
+                      
+                      System.out.print("Please provide the food's base price:\n> ");
+                      String baseprice = nextLine(scanner);
                     
-                		int basePrice = Integer.parseInt(baseprice);
+                      int basePrice = Integer.parseInt(baseprice);
                     
-                		insertFood(connection, name, basePrice);
-                	} break;
-                	case "generates": {
-                		System.out.print("Please provide the produceId:\n> ");
-                		String produceId = nextLine(scanner);
-                		
-                		System.out.print("Please provide the productId:\n> ");
-                		String productId = nextLine(scanner);
+                      insertFood(connection, name, basePrice);
+                   } break;
+                   case "generates": {
+                      System.out.print("Please provide the produceId:\n> ");
+                      String produceId = nextLine(scanner);
+                      
+                      System.out.print("Please provide the productId:\n> ");
+                      String productId = nextLine(scanner);
                     
-                		int pceId = Integer.parseInt(produceId);
-                		int pctId = Integer.parseInt(productId);
+                      int pceId = Integer.parseInt(produceId);
+                      int pctId = Integer.parseInt(productId);
                     
-                		insertGenerates(connection, pceId, pctId);
-                	} break;
-                	case "hasIngredient": {
-                		System.out.print("Please provide the ingredientId:\n> ");
-                		String ingredientId = nextLine(scanner);
-                		
-                		System.out.print("Please provide the foodId:\n> ");
-                		String foodId = nextLine(scanner);
+                      insertGenerates(connection, pceId, pctId);
+                   } break;
+                   case "hasIngredient": {
+                      System.out.print("Please provide the ingredientId:\n> ");
+                      String ingredientId = nextLine(scanner);
+                      
+                      System.out.print("Please provide the foodId:\n> ");
+                      String foodId = nextLine(scanner);
                     
-                		int iId = Integer.parseInt(ingredientId);
-                		int fId = Integer.parseInt(foodId);
+                      int iId = Integer.parseInt(ingredientId);
+                      int fId = Integer.parseInt(foodId);
                     
-                		insertHasIngredient(connection, iId, fId);
-                	} break;
-                	case "hasProfession": {
-                		System.out.print("Please provide the professionId:\n> ");
-                		String professionId = nextLine(scanner);
-                		
-                		System.out.print("Please provide the farmerId:\n> ");
-                		String farmerId = nextLine(scanner);
+                      insertHasIngredient(connection, iId, fId);
+                   } break;
+                   case "hasProfession": {
+                      System.out.print("Please provide the professionId:\n> ");
+                      String professionId = nextLine(scanner);
+                      
+                      System.out.print("Please provide the farmerId:\n> ");
+                      String farmerId = nextLine(scanner);
                     
-                		int pId = Integer.parseInt(professionId);
-                		int fId = Integer.parseInt(farmerId);
+                      int pId = Integer.parseInt(professionId);
+                      int fId = Integer.parseInt(farmerId);
                     
-                		insertHasProfession(connection, pId, fId);
-                	} break;
-                	case "item": {
-                		System.out.print("Please provide the item's name:\n> ");
-                		String name = nextLine(scanner);
+                      insertHasProfession(connection, pId, fId);
+                   } break;
+                   case "item": {
+                      System.out.print("Please provide the item's name:\n> ");
+                      String name = nextLine(scanner);
                     
-                		System.out.print("Please provide the item's quality (0 for normal, 3 for iridium):\n> ");
-                		String quality = nextLine(scanner);
+                      System.out.print("Please provide the item's quality (0 for normal, 3 for iridium):\n> ");
+                      String quality = nextLine(scanner);
                     
-                		System.out.print("Please provide the item's base price:\n> ");
-                		String baseprice = nextLine(scanner);
+                      System.out.print("Please provide the item's base price:\n> ");
+                      String baseprice = nextLine(scanner);
                     
-                		int basePrice = Integer.parseInt(baseprice);
-                		int qual = Integer.parseInt(quality);
+                      int basePrice = Integer.parseInt(baseprice);
+                      int qual = Integer.parseInt(quality);
                     
                 		insertItem(connection, name, qual, basePrice);
                 	} break;
@@ -545,128 +544,128 @@ public class StardewHoes {
                 		int qual = Integer.parseInt(quality);
                 		int price = Integer.parseInt(basePrice);
                     
-                		insertProduce(connection, name, qual, price);
-                	} break;
-                	case "produces": {
-                		System.out.print("Please provide the animalId:\n> ");
-                		String animalId = nextLine(scanner);
-                		
-                		System.out.print("Please provide the productId:\n> ");
-                		String productId = nextLine(scanner);
-                		
-                		int aId = Integer.parseInt(animalId);
-                		int pId = Integer.parseInt(productId);
+                      insertProduce(connection, name, qual, price);
+                   } break;
+                   case "produces": {
+                      System.out.print("Please provide the animalId:\n> ");
+                      String animalId = nextLine(scanner);
+                      
+                      System.out.print("Please provide the productId:\n> ");
+                      String productId = nextLine(scanner);
+                      
+                      int aId = Integer.parseInt(animalId);
+                      int pId = Integer.parseInt(productId);
                     
-                		insertProduces(connection, aId, pId);
-                	} break;
-                	case "profession": {
-                		System.out.print("Please provide the profession's boost category:\n> ");
-                		String bCat = nextLine(scanner);
-                		
-                		System.out.print("Please provide the profession's boost multiplier:\n> ");
-                		String bMult = nextLine(scanner);
-                		
-                		double mult = Double.parseDouble(bMult);
+                      insertProduces(connection, aId, pId);
+                   } break;
+                   case "profession": {
+                      System.out.print("Please provide the profession's boost category:\n> ");
+                      String bCat = nextLine(scanner);
+                      
+                      System.out.print("Please provide the profession's boost multiplier:\n> ");
+                      String bMult = nextLine(scanner);
+                      
+                      double mult = Double.parseDouble(bMult);
                     
-                		insertProfession(connection, bCat, mult);
-                	} break;
-                	case "seed": {
-                		System.out.print("Please provide the Seed's name:\n> ");
-                		String name = nextLine(scanner);
+                      insertProfession(connection, bCat, mult);
+                   } break;
+                   case "seed": {
+                      System.out.print("Please provide the Seed's name:\n> ");
+                      String name = nextLine(scanner);
                     
-                		System.out.print("Please provide the Seed's base price:\n> ");
-                		String basePrice = nextLine(scanner);
+                      System.out.print("Please provide the Seed's base price:\n> ");
+                      String basePrice = nextLine(scanner);
 
-                		System.out.print("Please provide the Seed's season (Spring, Summer, Fall, Spring/Summer, Spring/Fall, Summer/Fall, All, or None):\n> ");
-                		String season = nextLine(scanner);
-                		
-                		int price = Integer.parseInt(basePrice);
+                      System.out.print("Please provide the Seed's season (Spring, Summer, Fall, Spring/Summer, Spring/Fall, Summer/Fall, All, or None):\n> ");
+                      String season = nextLine(scanner);
+                      
+                      int price = Integer.parseInt(basePrice);
                     
-                		insertSeed(connection, name, price, season);
-                	} break;
-                	case "shop": {
-                		System.out.print("Please provide the Shop's ownerId:\n> ");
-                		String ownerId = nextLine(scanner);
+                      insertSeed(connection, name, price, season);
+                   } break;
+                   case "shop": {
+                      System.out.print("Please provide the Shop's ownerId:\n> ");
+                      String ownerId = nextLine(scanner);
                     
-                		System.out.print("Please provide the Shop's name:\n> ");
-                		String name = nextLine(scanner);
+                      System.out.print("Please provide the Shop's name:\n> ");
+                      String name = nextLine(scanner);
 
-                		System.out.print("Please provide the Shop's address:\n> ");
-                		String address = nextLine(scanner);
-                		
-                		System.out.print("Please provide the Shop's schedule:\n> ");
-                		String schedule = nextLine(scanner);
-                		
-                		int oId = Integer.parseInt(ownerId);
+                      System.out.print("Please provide the Shop's address:\n> ");
+                      String address = nextLine(scanner);
+                      
+                      System.out.print("Please provide the Shop's schedule:\n> ");
+                      String schedule = nextLine(scanner);
+                      
+                      int oId = Integer.parseInt(ownerId);
                     
-                		insertShop(connection, name, address, schedule, oId);
-                	} break;
-                	case "shopBuys": {
-                		System.out.print("Please provide the shopId:\n> ");
-                		String shopId = nextLine(scanner);
-                		
-                		System.out.print("Please provide the itemId:\n> ");
-                		String itemId = nextLine(scanner);
-                		
-                		int sId = Integer.parseInt(shopId);
-                		int iId = Integer.parseInt(itemId);
+                      insertShop(connection, name, address, schedule, oId);
+                   } break;
+                   case "shopBuys": {
+                      System.out.print("Please provide the shopId:\n> ");
+                      String shopId = nextLine(scanner);
+                      
+                      System.out.print("Please provide the itemId:\n> ");
+                      String itemId = nextLine(scanner);
+                      
+                      int sId = Integer.parseInt(shopId);
+                      int iId = Integer.parseInt(itemId);
                     
-                		insertShopBuys(connection, sId, iId);
-                	} break;
-                	case "shopkeeper": {
-                		System.out.print("Please provide the Shopkeeper's name:\n> ");
-                		String name = nextLine(scanner);
+                      insertShopBuys(connection, sId, iId);
+                   } break;
+                   case "shopkeeper": {
+                      System.out.print("Please provide the Shopkeeper's name:\n> ");
+                      String name = nextLine(scanner);
                     
-                		insertShopkeeper(connection, name);
-                	} break;
-                	case "shopSells": {
-                		System.out.print("Please provide the shopId:\n> ");
-                		String shopId = nextLine(scanner);
-                		
-                		System.out.print("Please provide the itemId:\n> ");
-                		String itemId = nextLine(scanner);
-                		
-                		int sId = Integer.parseInt(shopId);
-                		int iId = Integer.parseInt(itemId);
+                      insertShopkeeper(connection, name);
+                   } break;
+                   case "shopSells": {
+                      System.out.print("Please provide the shopId:\n> ");
+                      String shopId = nextLine(scanner);
+                      
+                      System.out.print("Please provide the itemId:\n> ");
+                      String itemId = nextLine(scanner);
+                      
+                      int sId = Integer.parseInt(shopId);
+                      int iId = Integer.parseInt(itemId);
                     
-                		insertShopSells(connection, sId, iId);
-                	} break;
-                	case "villager": {
-                		System.out.print("Please provide the Villager's name:\n> ");
-                		String name = nextLine(scanner);
+                      insertShopSells(connection, sId, iId);
+                   } break;
+                   case "villager": {
+                      System.out.print("Please provide the Villager's name:\n> ");
+                      String name = nextLine(scanner);
                     
-                		insertVillager(connection, name);
-                	} break;
-                	default:
-                        System.out.println("Unknown option. Here are the recognized options:");
-                        case "h":
-                        case "?": {
-                           System.out.println("q or x: Exit");
-                        System.out.println("animal: insert animal");
-                        System.out.println("animalProdouct: insert animal product");
-                        System.out.println("artisanGood: insert artisan good");
-                        System.out.println("farm: insert farm");
-                        System.out.println("farmer: insert farmer");
-                        System.out.println("farmSells: insert farm sells");
-                        System.out.println("fish: insert fish");
-                        System.out.println("food: insert food");
-                        System.out.println("generates: insert generates");
-                        System.out.println("hasIngredient: insert has ingredient");
-                        System.out.println("hasProfession: insert has profession");
-                        System.out.println("item: insert item");
-                        System.out.println("needs: insert needs");
-                        System.out.println("plantProduct: insert plantProduct");
-                        System.out.println("produce: insert produce");
-                        System.out.println("produces: insert produces");
-                        System.out.println("profession: insert profession");
-                        System.out.println("seed: insert seed");
-                        System.out.println("shop: insert shop");
-                        System.out.println("shopBuys: insert shop buys");
-                        System.out.println("shopkeeper: insert shopkeeper");
-                        System.out.println("shopSells: insert shop sells");
-                        System.out.println("villager: insert villager");
-                        System.out.println("h or ?: Show this help menu");
-                     } break;
+                      insertVillager(connection, name);
+                   } break;
+                   default:
+                     System.out.println("Unknown option. Here are the recognized options:");
+                     case "h":
+                     case "?": {
+                        System.out.println("q or x: Exit");
+                     System.out.println("animal: insert animal");
+                     System.out.println("animalProdouct: insert animal product");
+                     System.out.println("artisanGood: insert artisan good");
+                     System.out.println("farm: insert farm");
+                     System.out.println("farmer: insert farmer");
+                     System.out.println("farmSells: insert farm sells");
+                     System.out.println("fish: insert fish");
+                     System.out.println("food: insert food");
+                     System.out.println("generates: insert generates");
+                     System.out.println("hasIngredient: insert has ingredient");
+                     System.out.println("hasProfession: insert has profession");
+                     System.out.println("item: insert item");
+                     System.out.println("needs: insert needs");
+                     System.out.println("plantProduct: insert plantProduct");
+                     System.out.println("produce: insert produce");
+                     System.out.println("produces: insert produces");
+                     System.out.println("profession: insert profession");
+                     System.out.println("seed: insert seed");
+                     System.out.println("shop: insert shop");
+                     System.out.println("shopBuys: insert shop buys");
+                     System.out.println("shopkeeper: insert shopkeeper");
+                     System.out.println("shopSells: insert shop sells");
+                     System.out.println("villager: insert villager");
+                     System.out.println("h or ?: Show this help menu");
+                  } break;
                 }
             } break;
             
@@ -676,58 +675,23 @@ public class StardewHoes {
                 String item = nextLine(scanner);
                 
                 switch(item) {
-                	case "q":
-                	case "x": {
-                		System.out.println("Exiting");
-                		loop = false;
-                	} break;
-                	case "animal": {
-                		System.out.print("Please provide the animal's id:\n> ");
-                		String animalId = nextLine(scanner);
-                		
-                		System.out.print("Please provide the animal's name (leave empty for null):\n> ");
-                		String name = nextLine(scanner);
-                		
-                		System.out.print("Please provide the animal's quality (0 for normal, 3 for iridium):\n> ");
-                		String quality = nextLine(scanner);
+                   case "q":
+                   case "x": {
+                      System.out.println("Exiting");
+                      loop = false;
+                   } break;
+                   case "animal": {
+                      System.out.print("Please provide the animal's id:\n> ");
+                      String animalId = nextLine(scanner);
+                      
+                      System.out.print("Please provide the animal's name (leave empty for null):\n> ");
+                      String name = nextLine(scanner);
+                      
+                      System.out.print("Please provide the animal's quality (0 for normal, 3 for iridium):\n> ");
+                      String quality = nextLine(scanner);
                     
-                		System.out.print("Please provide the animal's base price (leave empty for null):\n> ");
-                		String baseprice = nextLine(scanner);
-                    
-                		Integer qual;
-                		Integer basePrice;
-                		int aId = Integer.parseInt(animalId);
-                		if(name.length() == 0) {
-                			name = null;
-                		} else {
-                			name = name;
-                		}
-                		if(quality.length() == 0) {
-                			qual = null;
-                		}
-                		else {
-                			qual = Integer.valueOf(quality);
-                		}
-                		if(baseprice.length() == 0) {
-                			basePrice = null;
-                		} else {
-                			basePrice = Integer.valueOf(baseprice);
-                		}
-                    
-                		updateAnimal(connection, aId, name, qual, basePrice);
-                	} break;
-                	case "animalProduct": {
-                		System.out.print("Please provide the animal product's id:\n> ");
-                		String animalId = nextLine(scanner);
-                		
-                		System.out.print("Please provide the animal product's name (leave empty for null):\n> ");
-                		String name = nextLine(scanner);
-                		
-                		System.out.print("Please provide the animal product's quality (0 for normal, 3 for iridium):\n> ");
-                		String quality = nextLine(scanner);
-                    
-                		System.out.print("Please provide the animal produt's base price (leave empty for null):\n> ");
-                		String baseprice = nextLine(scanner);
+                      System.out.print("Please provide the animal's base price (leave empty for null):\n> ");
+                      String baseprice = nextLine(scanner);
                     
                 		Integer qual;
                 		Integer basePrice;
@@ -749,23 +713,58 @@ public class StardewHoes {
                 			basePrice = Integer.valueOf(baseprice);
                 		}
                     
-                		updateAnimalProduct(connection, aId, name, qual, basePrice);
-                	} break;
-                	case "artisanGood": {
-                		System.out.print("Please provide the artisan good's id:\n> ");
-                		String artisanId = nextLine(scanner);
-                		
-                		System.out.print("Please provide the artisan good's name (leave empty for null):\n> ");
-                		String name = nextLine(scanner);
-                		
-                		System.out.print("Please provide the artisan good's quality (0 for normal, 3 for iridium):\n> ");
-                		String quality = nextLine(scanner);
+                      updateAnimal(connection, aId, name, qual, basePrice);
+                   } break;
+                   case "animalProduct": {
+                      System.out.print("Please provide the animal product's id:\n> ");
+                      String animalId = nextLine(scanner);
+                      
+                      System.out.print("Please provide the animal product's name (leave empty for null):\n> ");
+                      String name = nextLine(scanner);
+                      
+                      System.out.print("Please provide the animal product's quality (0 for normal, 3 for iridium):\n> ");
+                      String quality = nextLine(scanner);
                     
-                		System.out.print("Please provide the artisan good's base price (leave empty for null):\n> ");
-                		String baseprice = nextLine(scanner);
-                		
-                		System.out.print("Please provide the artisan good's multiplier (leave empty for null):\n> ");
-                		String multiplier = nextLine(scanner);
+                      System.out.print("Please provide the animal produt's base price (leave empty for null):\n> ");
+                      String baseprice = nextLine(scanner);
+                    
+                		Integer qual;
+                		Integer basePrice;
+                		int aId = Integer.parseInt(animalId);
+                		if(name.length() == 0) {
+                			name = null;
+                		} else {
+                			name = name;
+                		}
+                		if(quality.length() == 0) {
+                			qual = null;
+                		}
+                		else {
+                			qual = Integer.valueOf(quality);
+                		}
+                		if(baseprice.length() == 0) {
+                			basePrice = null;
+                		} else {
+                			basePrice = Integer.valueOf(baseprice);
+                		}
+                    
+                      updateAnimalProduct(connection, aId, name, qual, basePrice);
+                   } break;
+                   case "artisanGood": {
+                      System.out.print("Please provide the artisan good's id:\n> ");
+                      String artisanId = nextLine(scanner);
+                      
+                      System.out.print("Please provide the artisan good's name (leave empty for null):\n> ");
+                      String name = nextLine(scanner);
+                      
+                      System.out.print("Please provide the artisan good's quality (0 for normal, 3 for iridium):\n> ");
+                      String quality = nextLine(scanner);
+                    
+                      System.out.print("Please provide the artisan good's base price (leave empty for null):\n> ");
+                      String baseprice = nextLine(scanner);
+                      
+                      System.out.print("Please provide the artisan good's multiplier (leave empty for null):\n> ");
+                      String multiplier = nextLine(scanner);
                     
                 		Integer qual;
                 		Integer basePrice;
@@ -793,20 +792,20 @@ public class StardewHoes {
                 			multi = Double.valueOf(multiplier);
                 		}
                     
-                		updateArtisanGood(connection, aId, name, qual, basePrice, multi);
-                	} break;
-                	case "fish": {
-                		System.out.print("Please provide the fish's id:\n> ");
-                		String fishId = nextLine(scanner);
-                		
-                		System.out.print("Please provide the fish's name (leave empty for null):\n> ");
-                		String name = nextLine(scanner);
-                		
-                		System.out.print("Please provide the fish's quality (0 for normal, 3 for iridium):\n> ");
-                		String quality = nextLine(scanner);
+                      updateArtisanGood(connection, aId, name, qual, basePrice, multi);
+                   } break;
+                   case "fish": {
+                      System.out.print("Please provide the fish's id:\n> ");
+                      String fishId = nextLine(scanner);
+                      
+                      System.out.print("Please provide the fish's name (leave empty for null):\n> ");
+                      String name = nextLine(scanner);
+                      
+                      System.out.print("Please provide the fish's quality (0 for normal, 3 for iridium):\n> ");
+                      String quality = nextLine(scanner);
                     
-                		System.out.print("Please provide the fish's base price (leave empty for null):\n> ");
-                		String baseprice = nextLine(scanner);
+                      System.out.print("Please provide the fish's base price (leave empty for null):\n> ");
+                      String baseprice = nextLine(scanner);
                     
                 		Integer qual;
                 		Integer basePrice;
@@ -828,20 +827,20 @@ public class StardewHoes {
                 			basePrice = Integer.valueOf(baseprice);
                 		}
                     
-                		updateFish(connection, fId, name, qual, basePrice);
-                	} break;
-                	case "food": {
-                		System.out.print("Please provide the food's id:\n> ");
-                		String foodId = nextLine(scanner);
-                		
-                		System.out.print("Please provide the food's name (leave empty for null):\n> ");
-                		String name = nextLine(scanner);
-                		
-                		System.out.print("Please provide the food's quality (0 for normal, 3 for iridium):\n> ");
-                		String quality = nextLine(scanner);
+                      updateFish(connection, fId, name, qual, basePrice);
+                   } break;
+                   case "food": {
+                      System.out.print("Please provide the food's id:\n> ");
+                      String foodId = nextLine(scanner);
+                      
+                      System.out.print("Please provide the food's name (leave empty for null):\n> ");
+                      String name = nextLine(scanner);
+                      
+                      System.out.print("Please provide the food's quality (0 for normal, 3 for iridium):\n> ");
+                      String quality = nextLine(scanner);
                     
-                		System.out.print("Please provide the food's base price (leave empty for null):\n> ");
-                		String baseprice = nextLine(scanner);
+                      System.out.print("Please provide the food's base price (leave empty for null):\n> ");
+                      String baseprice = nextLine(scanner);
                     
                 		Integer qual;
                 		Integer basePrice;
@@ -875,8 +874,8 @@ public class StardewHoes {
                 		System.out.print("Please provide the item's quality (0 for normal, 3 for iridium):\n> ");
                 		String quality = nextLine(scanner);
                     
-                		System.out.print("Please provide the item's base price (leave empty for null):\n> ");
-                		String baseprice = nextLine(scanner);
+                      System.out.print("Please provide the item's base price (leave empty for null):\n> ");
+                      String baseprice = nextLine(scanner);
                     
                 		Integer qual;
                 		Integer basePrice;
@@ -936,20 +935,20 @@ public class StardewHoes {
                 			basePrice = Integer.valueOf(baseprice);
                 		}
                     
-                		updatePlantProduct(connection, ppId, name, qual, basePrice, type);
-                	} break;
-                	case "produce": {
-                		System.out.print("Please provide the produce's id:\n> ");
-                		String produceId = nextLine(scanner);
-                		
-                		System.out.print("Please provide the produce's name (leave empty for null):\n> ");
-                		String name = nextLine(scanner);
-                		
-                		System.out.print("Please provide the produce's quality (0 for normal, 3 for iridium):\n> ");
-                		String quality = nextLine(scanner);
+                      updatePlantProduct(connection, ppId, name, qual, basePrice, type);
+                   } break;
+                   case "produce": {
+                      System.out.print("Please provide the produce's id:\n> ");
+                      String produceId = nextLine(scanner);
+                      
+                      System.out.print("Please provide the produce's name (leave empty for null):\n> ");
+                      String name = nextLine(scanner);
+                      
+                      System.out.print("Please provide the produce's quality (0 for normal, 3 for iridium):\n> ");
+                      String quality = nextLine(scanner);
                     
-                		System.out.print("Please provide the produce's base price (leave empty for null):\n> ");
-                		String baseprice = nextLine(scanner);
+                      System.out.print("Please provide the produce's base price (leave empty for null):\n> ");
+                      String baseprice = nextLine(scanner);
                     
                 		Integer qual;
                 		Integer basePrice;
@@ -971,17 +970,17 @@ public class StardewHoes {
                 			basePrice = Integer.valueOf(baseprice);
                 		}
                     
-                		updateProduce(connection, pId, name, qual, basePrice);
-                	} break;
-                	case "seed": {
-                		System.out.print("Please provide the seed's id:\n> ");
-                		String seedId = nextLine(scanner);
-                		
-                		System.out.print("Please provide the seed's name (leave empty for null):\n> ");
-                		String name = nextLine(scanner);
-                		
-                		System.out.print("Please provide the seed's quality (0 for normal, 3 for iridium) (leave empty for null):\n> ");
-                		String quality = nextLine(scanner);
+                      updateProduce(connection, pId, name, qual, basePrice);
+                   } break;
+                   case "seed": {
+                      System.out.print("Please provide the seed's id:\n> ");
+                      String seedId = nextLine(scanner);
+                      
+                      System.out.print("Please provide the seed's name (leave empty for null):\n> ");
+                      String name = nextLine(scanner);
+                      
+                      System.out.print("Please provide the seed's quality (0 for normal, 3 for iridium) (leave empty for null):\n> ");
+                      String quality = nextLine(scanner);
                     
                 		System.out.print("Please provide the seed's base price (leave empty for null):\n> ");
                 		String baseprice = nextLine(scanner);
@@ -1009,9 +1008,9 @@ public class StardewHoes {
                 			basePrice = Integer.valueOf(baseprice);
                 		}
                     
-                		updateSeed(connection, sId, name, qual, basePrice, type);
-                	}
-                	default:
+                      updateSeed(connection, sId, name, qual, basePrice, type);
+                   }
+                   default:
                         System.out.println("Unknown option. Here are the recognized options:");
                         case "h":
                         case "?": {
@@ -1034,167 +1033,167 @@ public class StardewHoes {
             case 'd': {
             	System.out.print("Delete selected\nWhat would you like to delete? (type h for help)\n> ");
                 String item = nextLine(scanner);
-            	
+               
                 switch(item) {
-            	case "q":
-            	case "x": {
-            		System.out.println("Exiting");
-            		loop = false;
-            	} break;
-            	case "animal": {
-            		System.out.print("Please provide the animal's id:\n> ");
-            		String animalId = nextLine(scanner);
-            		
-            		int aId = Integer.parseInt(animalId);
-            		
-            		String query = "{? = call delete_animal(?)}";
-            		CallableStatement statement = connection.prepareCall(query);
-                   	statement.registerOutParameter(1, Types.INTEGER);
-                   	statement.setInt(2, aId);
-                   	
-                   	statement.execute();
+               case "q":
+               case "x": {
+                  System.out.println("Exiting");
+                  loop = false;
+               } break;
+               case "animal": {
+                  System.out.print("Please provide the animal's id:\n> ");
+                  String animalId = nextLine(scanner);
                   
-                   	int result = statement.getInt(1);
-                   	if(result == 0)
-                   		System.out.printf("Successfully deleted animal\n");
-                   	else
-                   		System.out.printf("ERROR in deleteAnimal: Failed with error code %d\n", result);
-            	} break;
-            	case "animalProduct": {
-            		System.out.print("Please provide the animal product's id:\n> ");
-            		String animalId = nextLine(scanner);
+                  int aId = Integer.parseInt(animalId);
+                  
+                  String query = "{? = call delete_animal(?)}";
+                  CallableStatement statement = connection.prepareCall(query);
+                      statement.registerOutParameter(1, Types.INTEGER);
+                      statement.setInt(2, aId);
+                      
+                      statement.execute();
+                  
+                      int result = statement.getInt(1);
+                      if(result == 0)
+                         System.out.printf("Successfully deleted animal\n");
+                      else
+                         System.out.printf("ERROR in deleteAnimal: Failed with error code %d\n", result);
+               } break;
+               case "animalProduct": {
+                  System.out.print("Please provide the animal product's id:\n> ");
+                  String animalId = nextLine(scanner);
                 
-            		int aId = Integer.parseInt(animalId);
-            		
-            		String query = "{? = call delete_animalproduct(?)}";
-            		CallableStatement statement = connection.prepareCall(query);
-                   	statement.registerOutParameter(1, Types.INTEGER);
-                   	statement.setInt(2, aId);
-                   	
-                   	statement.execute();
+                  int aId = Integer.parseInt(animalId);
                   
-                   	int result = statement.getInt(1);
-                   	if(result == 0)
-                   		System.out.printf("Successfully deleted animal product\n");
-                   	else
-                   		System.out.printf("ERROR in deleteAnimalProduct: Failed with error code %d\n", result);
+                  String query = "{? = call delete_animalproduct(?)}";
+                  CallableStatement statement = connection.prepareCall(query);
+                      statement.registerOutParameter(1, Types.INTEGER);
+                      statement.setInt(2, aId);
+                      
+                      statement.execute();
+                  
+                      int result = statement.getInt(1);
+                      if(result == 0)
+                         System.out.printf("Successfully deleted animal product\n");
+                      else
+                         System.out.printf("ERROR in deleteAnimalProduct: Failed with error code %d\n", result);
                 
-            	} break;
-            	case "artisanGood": {
-            		System.out.print("Please provide the artisan good's id:\n> ");
-            		String artisanId = nextLine(scanner);
-            		
-            		int aId = Integer.parseInt(artisanId);
-            		
-            		String query = "{? = call delete_artisangood(?)}";
-            		CallableStatement statement = connection.prepareCall(query);
-                   	statement.registerOutParameter(1, Types.INTEGER);
-                   	statement.setInt(2, aId);
-                   	
-                   	statement.execute();
+               } break;
+               case "artisanGood": {
+                  System.out.print("Please provide the artisan good's id:\n> ");
+                  String artisanId = nextLine(scanner);
                   
-                   	int result = statement.getInt(1);
-                   	if(result == 0)
-                   		System.out.printf("Successfully deleted Artisan Good\n");
-                   	else
-                   		System.out.printf("ERROR in deleteArtisanGood: Failed with error code %d\n", result);
+                  int aId = Integer.parseInt(artisanId);
+                  
+                  String query = "{? = call delete_artisangood(?)}";
+                  CallableStatement statement = connection.prepareCall(query);
+                      statement.registerOutParameter(1, Types.INTEGER);
+                      statement.setInt(2, aId);
+                      
+                      statement.execute();
+                  
+                      int result = statement.getInt(1);
+                      if(result == 0)
+                         System.out.printf("Successfully deleted Artisan Good\n");
+                      else
+                         System.out.printf("ERROR in deleteArtisanGood: Failed with error code %d\n", result);
                 
-            	} break;
-            	case "fish": {
-            		System.out.print("Please provide the fish's id:\n> ");
-            		String fishId = nextLine(scanner);
+               } break;
+               case "fish": {
+                  System.out.print("Please provide the fish's id:\n> ");
+                  String fishId = nextLine(scanner);
                 
-            		int fId = Integer.parseInt(fishId);
-            		
-            		String query = "{? = call delete_fish(?)}";
-            		CallableStatement statement = connection.prepareCall(query);
-                   	statement.registerOutParameter(1, Types.INTEGER);
-                   	statement.setInt(2, fId);
-                   	
-                   	statement.execute();
+                  int fId = Integer.parseInt(fishId);
                   
-                   	int result = statement.getInt(1);
-                   	if(result == 0)
-                   		System.out.printf("Successfully deleted fish\n");
-                   	else
-                   		System.out.printf("ERROR in deleteFish: Failed with error code %d\n", result);
-            	} break;
-            	case "food": {
-            		System.out.print("Please provide the food's id:\n> ");
-            		String foodId = nextLine(scanner);
+                  String query = "{? = call delete_fish(?)}";
+                  CallableStatement statement = connection.prepareCall(query);
+                      statement.registerOutParameter(1, Types.INTEGER);
+                      statement.setInt(2, fId);
+                      
+                      statement.execute();
+                  
+                      int result = statement.getInt(1);
+                      if(result == 0)
+                         System.out.printf("Successfully deleted fish\n");
+                      else
+                         System.out.printf("ERROR in deleteFish: Failed with error code %d\n", result);
+               } break;
+               case "food": {
+                  System.out.print("Please provide the food's id:\n> ");
+                  String foodId = nextLine(scanner);
                 
-            		int fId = Integer.parseInt(foodId);
-            		
-            		String query = "{? = call delete_food(?)}";
-            		CallableStatement statement = connection.prepareCall(query);
-                   	statement.registerOutParameter(1, Types.INTEGER);
-                   	statement.setInt(2, fId);
-                   	
-                   	statement.execute();
+                  int fId = Integer.parseInt(foodId);
                   
-                   	int result = statement.getInt(1);
-                   	if(result == 0)
-                   		System.out.printf("Successfully deleted food\n");
-                   	else
-                   		System.out.printf("ERROR in deleteFood: Failed with error code %d\n", result);
-            	} break;
-            	case "item": {
-            		System.out.print("Please provide the item's ID (leave empty for null):\n> ");
-            		String idStr = nextLine(scanner);
+                  String query = "{? = call delete_food(?)}";
+                  CallableStatement statement = connection.prepareCall(query);
+                      statement.registerOutParameter(1, Types.INTEGER);
+                      statement.setInt(2, fId);
+                      
+                      statement.execute();
                   
-            		System.out.print("Please provide the item's name (leave empty for null):\n> ");
-            		String nameStr = nextLine(scanner);
+                      int result = statement.getInt(1);
+                      if(result == 0)
+                         System.out.printf("Successfully deleted food\n");
+                      else
+                         System.out.printf("ERROR in deleteFood: Failed with error code %d\n", result);
+               } break;
+               case "item": {
+                  System.out.print("Please provide the item's ID (leave empty for null):\n> ");
+                  String idStr = nextLine(scanner);
                   
-            		System.out.print("Please provide the item's quality (leave empty for null):\n> ");
-            		String qualityStr = nextLine(scanner);
+                  System.out.print("Please provide the item's name (leave empty for null):\n> ");
+                  String nameStr = nextLine(scanner);
                   
-            		System.out.print("Please provide the item's price (leave empty for null):\n> ");
-            		String priceStr = nextLine(scanner);
+                  System.out.print("Please provide the item's quality (leave empty for null):\n> ");
+                  String qualityStr = nextLine(scanner);
                   
-            		String query = "{? = call delete_item(?, ?, ?, ?)}";
-            		CallableStatement statement = connection.prepareCall(query);
-            		statement.registerOutParameter(1, Types.INTEGER);
+                  System.out.print("Please provide the item's price (leave empty for null):\n> ");
+                  String priceStr = nextLine(scanner);
                   
-            		if(idStr.length() > 0) statement.setInt(2, Integer.valueOf(idStr));
-            		else statement.setNull(2, Types.INTEGER);
+                  String query = "{? = call delete_item(?, ?, ?, ?)}";
+                  CallableStatement statement = connection.prepareCall(query);
+                  statement.registerOutParameter(1, Types.INTEGER);
                   
-            		if(nameStr.length() > 0) statement.setString(3, nameStr);
-            		else statement.setNull(3, Types.VARCHAR);
+                  if(idStr.length() > 0) statement.setInt(2, Integer.valueOf(idStr));
+                  else statement.setNull(2, Types.INTEGER);
                   
-            		if(qualityStr.length() > 0) statement.setInt(4, Integer.valueOf(qualityStr));
-            		else statement.setNull(4, Types.TINYINT);
+                  if(nameStr.length() > 0) statement.setString(3, nameStr);
+                  else statement.setNull(3, Types.VARCHAR);
                   
-            		if(priceStr.length() > 0) statement.setInt(5, Integer.valueOf(priceStr));
-            		else statement.setNull(5, Types.INTEGER);
+                  if(qualityStr.length() > 0) statement.setInt(4, Integer.valueOf(qualityStr));
+                  else statement.setNull(4, Types.TINYINT);
                   
-            		statement.execute();
+                  if(priceStr.length() > 0) statement.setInt(5, Integer.valueOf(priceStr));
+                  else statement.setNull(5, Types.INTEGER);
                   
-            		int result = statement.getInt(1);
-            		if(result == 0)
-            			System.out.printf("Successfully deleted items\n");
-            		else
-            			System.out.printf("ERROR in deleteItem: Failed with error code %d\n", result);
-            	} break;
-            	case "plantProduct": {
-            		System.out.print("Please provide the plant product's id:\n> ");
-            		String plantprodId = nextLine(scanner);
+                  statement.execute();
+                  
+                  int result = statement.getInt(1);
+                  if(result == 0)
+                     System.out.printf("Successfully deleted items\n");
+                  else
+                     System.out.printf("ERROR in deleteItem: Failed with error code %d\n", result);
+               } break;
+               case "plantProduct": {
+                  System.out.print("Please provide the plant product's id:\n> ");
+                  String plantprodId = nextLine(scanner);
                 
-            		int ppId = Integer.parseInt(plantprodId);
-            	} break;
-            	case "produce": {
-            		System.out.print("Please provide the produce's id:\n> ");
-            		String produceId = nextLine(scanner);
+                  int ppId = Integer.parseInt(plantprodId);
+               } break;
+               case "produce": {
+                  System.out.print("Please provide the produce's id:\n> ");
+                  String produceId = nextLine(scanner);
                 
-            		int pId = Integer.parseInt(produceId);
-            	} break;
-            	case "seed": {
-            		System.out.print("Please provide the seed's id:\n> ");
-            		String seedId = nextLine(scanner);
-            		
-            		int sId = Integer.parseInt(seedId);
-            		
-            	}
-            	default:
+                  int pId = Integer.parseInt(produceId);
+               } break;
+               case "seed": {
+                  System.out.print("Please provide the seed's id:\n> ");
+                  String seedId = nextLine(scanner);
+                  
+                  int sId = Integer.parseInt(seedId);
+                  
+               }
+               default:
                     System.out.println("Unknown option. Here are the recognized options:");
                     case "h":
                     case "?": {
@@ -1233,15 +1232,14 @@ public class StardewHoes {
       connection.close();
    }
 
-	public static byte[] hashPassword(String password, byte[] salt) throws Exception {
-		KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
-		SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-		byte[] hash = keyFactory.generateSecret(spec).getEncoded();
-		return hash;
-	}
-
-	@SuppressWarnings("unchecked")
-	public static void populateDatabase(Connection connection) throws Exception {
+   public static byte[] hashPassword(String password, byte[] salt) throws Exception {
+      KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
+      SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+      byte[] hash = keyFactory.generateSecret(spec).getEncoded();
+      return hash;
+   }
+   
+   public static void populateDatabase(Connection connection) throws Exception {
       String fileData = Files.readString((new File("data/Data/Crops.json")).toPath());
       JSONObject cropsRoot = new JSONObject(fileData);
       JSONObject cropsContent = cropsRoot.getJSONObject("content");
