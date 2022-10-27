@@ -160,120 +160,120 @@ public class StardewHoes {
             // Get
             case 'g': {
                System.out.print("Get selected\nWhat would you like to retrieve? (type h for help)\n> ");
-                String item = nextLine(scanner);
-                
-                switch(item) {
-                   case "q":
-                   case "x": {
-                      System.out.println("Exiting");
-                      loop = false;
-                   } break;
-                   case "animal": {
-                      System.out.println("Get method does not exist, please use item");
-                   } break;
-                   case "animalProduct": {
-                      System.out.println("Get method does not exist, please use item");
-                   } break;
-                   case "artisanGood": {
-                      System.out.println("Get method does not exist, please use item");
-                   } break;
-                   case "fish": {
-                      System.out.println("Get method does not exist, please use item");
-                   } break;
-                   case "food": {
-                      System.out.println("Get method does not exist, please use item");
-                   } break;
-                   case "item": {
-                      System.out.print("Please provide the item's ID (leave empty for null):\n> ");
-                        String idStr = nextLine(scanner);
-                        
-                        System.out.print("Please provide the item's name (leave empty for null):\n> ");
-                        String nameStr = nextLine(scanner);
-                        
-                        System.out.print("Please provide the item's quality (leave empty for null):\n> ");
-                        String qualityStr = nextLine(scanner);
-                        
-                        System.out.print("Please provide the item's price (leave empty for null):\n> ");
-                        String priceStr = nextLine(scanner);
-                        
-                        String query = "{? = call get_Item(?, ?, ?, ?)}";
-                        CallableStatement statement = connection.prepareCall(query);
-                        statement.registerOutParameter(1, Types.INTEGER);
-                        
-                        if(idStr.length() > 0) statement.setInt(2, Integer.valueOf(idStr));
-                        else statement.setNull(2, Types.INTEGER);
-                        
-                        if(nameStr.length() > 0) statement.setString(3, nameStr);
-                        else statement.setNull(3, Types.VARCHAR);
-                        
-                        if(qualityStr.length() > 0) statement.setInt(4, Integer.valueOf(qualityStr));
-                        else statement.setNull(4, Types.TINYINT);
-                        
-                        if(priceStr.length() > 0) statement.setInt(5, Integer.valueOf(priceStr));
-                        else statement.setNull(5, Types.INTEGER);
-                        
-                        ResultSet resultSet = statement.executeQuery();
-                        
-                        System.out.println("        | ID         | Name                                     | Quality | Price");
-                        int i = 0;
-                        while(!resultSet.isClosed() && resultSet.next()) {
-                           System.out.printf(" %-6d | %-10d | %-40s | %d       | %d\n", i, resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3), resultSet.getInt(4));
-                           i++;
-                        }
-                        
-                        int result = statement.getInt(1);
-                        if(result == 0) {
-                           System.out.printf("Successfully retrieved Item with ID %s\n", idStr);
-                        } else {
-                           System.out.printf("ERROR in getItem: Failed with error code %d\n", result);
-                        }
+               String item = nextLine(scanner);
+               
+               switch(item) {
+                  case "q":
+                  case "x": {
+                     System.out.println("Exiting");
+                     loop = false;
+                  } break;
+                  case "animal": {
+                     System.out.println("Get method does not exist, please use item");
+                  } break;
+                  case "animalProduct": {
+                     System.out.println("Get method does not exist, please use item");
+                  } break;
+                  case "artisanGood": {
+                     System.out.println("Get method does not exist, please use item");
+                  } break;
+                  case "fish": {
+                     System.out.println("Get method does not exist, please use item");
+                  } break;
+                  case "food": {
+                     System.out.println("Get method does not exist, please use item");
+                  } break;
+                  case "item": {
+                     System.out.print("Please provide the item's ID (leave empty for null):\n> ");
+                     String idStr = nextLine(scanner);
+                     
+                     System.out.print("Please provide the item's name (leave empty for null):\n> ");
+                     String nameStr = nextLine(scanner);
+                     
+                     System.out.print("Please provide the item's quality (leave empty for null):\n> ");
+                     String qualityStr = nextLine(scanner);
+                     
+                     System.out.print("Please provide the item's price (leave empty for null):\n> ");
+                     String priceStr = nextLine(scanner);
+                     
+                     String query = "{? = call get_Item(?, ?, ?, ?)}";
+                     CallableStatement statement = connection.prepareCall(query);
+                     statement.registerOutParameter(1, Types.INTEGER);
+                     
+                     if(idStr.length() > 0) statement.setInt(2, Integer.valueOf(idStr));
+                     else statement.setNull(2, Types.INTEGER);
+                     
+                     if(nameStr.length() > 0) statement.setString(3, nameStr);
+                     else statement.setNull(3, Types.VARCHAR);
+                     
+                     if(qualityStr.length() > 0) statement.setInt(4, Integer.valueOf(qualityStr));
+                     else statement.setNull(4, Types.TINYINT);
+                     
+                     if(priceStr.length() > 0) statement.setInt(5, Integer.valueOf(priceStr));
+                     else statement.setNull(5, Types.INTEGER);
+                     
+                     ResultSet resultSet = statement.executeQuery();
+                     
+                     System.out.println("        | ID         | Name                                     | Quality | Price");
+                     int i = 0;
+                     while(!resultSet.isClosed() && resultSet.next()) {
+                        System.out.printf(" %-6d | %-10d | %-40s | %d       | %d\n", i, resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3), resultSet.getInt(4));
+                        i++;
+                     }
+                     
+                     int result = statement.getInt(1);
+                     if(result == 0) {
+                        System.out.printf("Successfully retrieved Item with ID %s\n", idStr);
+                     } else {
+                        System.out.printf("ERROR in getItem: Failed with error code %d\n", result);
+                     }
                    } break;
                    case "plantProduct": {
-                      System.out.print("Please provide the plant product's ID (leave empty for null):\n> ");
-                        String idStr = nextLine(scanner);
-                        
-                        System.out.print("Please provide the plant product's name (leave empty for null):\n> ");
-                        String nameStr = nextLine(scanner);
-                        
-                        System.out.print("Please provide the plant product's quality (leave empty for null):\n> ");
-                        String qualityStr = nextLine(scanner);
-                        
-                        System.out.print("Please provide the plant product's price (leave empty for null):\n> ");
-                        String priceStr = nextLine(scanner);
-                        
-                        String query = "{? = call get_PlantProduct(?, ?, ?, ?)}";
-                        CallableStatement statement = connection.prepareCall(query);
-                        statement.registerOutParameter(1, Types.INTEGER);
-                        
-                        if(idStr.length() > 0) statement.setInt(2, Integer.valueOf(idStr));
-                        else statement.setNull(2, Types.INTEGER);
-                        
-                        if(nameStr.length() > 0) statement.setString(3, nameStr);
-                        else statement.setNull(3, Types.VARCHAR);
-                        
-                        if(qualityStr.length() > 0) statement.setInt(4, Integer.valueOf(qualityStr));
-                        else statement.setNull(4, Types.TINYINT);
-                        
-                        if(priceStr.length() > 0) statement.setInt(5, Integer.valueOf(priceStr));
-                        else statement.setNull(5, Types.INTEGER);
-                        
-                        ResultSet resultSet = statement.executeQuery();
-                        
-                        System.out.println("        | ID         | Name                                     | Quality | Price");
-                        int i = 0;
-                        while(!resultSet.isClosed() && resultSet.next()) {
-                           System.out.printf(" %-6d | %-10d | %-40s | %d       | %d\n", i, resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3), resultSet.getInt(4));
-                           i++;
-                        }
-                        
-                        int result = statement.getInt(1);
-                        if(result == 0) {
-                           System.out.printf("Successfully retrieved plantProduct with ID %s\n", idStr);
-                        } else {
-                           System.out.printf("ERROR in getPlantProduct: Failed with error code %d\n", result);
-                        }
-                   } break;
-                   case "produce": {
+                     System.out.print("Please provide the plant product's ID (leave empty for null):\n> ");
+                     String idStr = nextLine(scanner);
+                     
+                     System.out.print("Please provide the plant product's name (leave empty for null):\n> ");
+                     String nameStr = nextLine(scanner);
+                     
+                     System.out.print("Please provide the plant product's quality (leave empty for null):\n> ");
+                     String qualityStr = nextLine(scanner);
+                     
+                     System.out.print("Please provide the plant product's price (leave empty for null):\n> ");
+                     String priceStr = nextLine(scanner);
+                     
+                     String query = "{? = call get_PlantProduct(?, ?, ?, ?)}";
+                     CallableStatement statement = connection.prepareCall(query);
+                     statement.registerOutParameter(1, Types.INTEGER);
+                     
+                     if(idStr.length() > 0) statement.setInt(2, Integer.valueOf(idStr));
+                     else statement.setNull(2, Types.INTEGER);
+                     
+                     if(nameStr.length() > 0) statement.setString(3, nameStr);
+                     else statement.setNull(3, Types.VARCHAR);
+                     
+                     if(qualityStr.length() > 0) statement.setInt(4, Integer.valueOf(qualityStr));
+                     else statement.setNull(4, Types.TINYINT);
+                     
+                     if(priceStr.length() > 0) statement.setInt(5, Integer.valueOf(priceStr));
+                     else statement.setNull(5, Types.INTEGER);
+                     
+                     ResultSet resultSet = statement.executeQuery();
+                     
+                     System.out.println("        | ID         | Name                                     | Quality | Price");
+                     int i = 0;
+                     while(!resultSet.isClosed() && resultSet.next()) {
+                        System.out.printf(" %-6d | %-10d | %-40s | %d       | %d\n", i, resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3), resultSet.getInt(4));
+                        i++;
+                     }
+                     
+                     int result = statement.getInt(1);
+                     if(result == 0) {
+                        System.out.printf("Successfully retrieved plantProduct with ID %s\n", idStr);
+                     } else {
+                        System.out.printf("ERROR in getPlantProduct: Failed with error code %d\n", result);
+                     }
+                  } break;
+                  case "produce": {
                       System.out.print("Please provide the produce's ID (leave empty for null):\n> ");
                         String idStr = nextLine(scanner);
                         
@@ -491,58 +491,58 @@ public class StardewHoes {
                       int basePrice = Integer.parseInt(baseprice);
                       int qual = Integer.parseInt(quality);
                     
-                		insertItem(connection, name, qual, basePrice);
-                	} break;
-                	case "needs": {
-                		System.out.print("Please provide the villagerId:\n> ");
-                		String villagerId = nextLine(scanner);
-                		
-                		System.out.print("Please provide the itemId:\n> ");
-                		String itemId = nextLine(scanner);
+                      insertItem(connection, name, qual, basePrice);
+                   } break;
+                   case "needs": {
+                      System.out.print("Please provide the villagerId:\n> ");
+                      String villagerId = nextLine(scanner);
+                      
+                      System.out.print("Please provide the itemId:\n> ");
+                      String itemId = nextLine(scanner);
                     
-                		System.out.print("Please provide the reward:\n> ");
-                		String reward = nextLine(scanner);
-                		
-                		System.out.print("Please provide the quantity:\n> ");
-                		String quantity = nextLine(scanner);
-                		
-                		int vId = Integer.parseInt(villagerId);
-                		int iId = Integer.parseInt(itemId);
-                		int r = Integer.parseInt(reward);
-                		int quant = Integer.parseInt(quantity);
+                      System.out.print("Please provide the reward:\n> ");
+                      String reward = nextLine(scanner);
+                      
+                      System.out.print("Please provide the quantity:\n> ");
+                      String quantity = nextLine(scanner);
+                      
+                      int vId = Integer.parseInt(villagerId);
+                      int iId = Integer.parseInt(itemId);
+                      int r = Integer.parseInt(reward);
+                      int quant = Integer.parseInt(quantity);
                     
-                		insertNeeds(connection, vId, iId, r, quant);
-                	} break;
-                	case "plantProduct": {
-                		System.out.print("Please provide the plantProduct's name:\n> ");
-                		String name = nextLine(scanner);
-                		
-                		System.out.print("Please provide the plantProduct's quality (0 for normal, 3 for iridium):\n> ");
-                		String quality = nextLine(scanner);
+                      insertNeeds(connection, vId, iId, r, quant);
+                   } break;
+                   case "plantProduct": {
+                      System.out.print("Please provide the plantProduct's name:\n> ");
+                      String name = nextLine(scanner);
+                      
+                      System.out.print("Please provide the plantProduct's quality (0 for normal, 3 for iridium):\n> ");
+                      String quality = nextLine(scanner);
                     
-                		System.out.print("Please provide the plantProduct's base price:\n> ");
-                		String basePrice = nextLine(scanner);
-                		
-                		System.out.print("Please provide the plantProduct's type (Fruit, Vegetable, Forage, or Flower):\n> ");
-                		String type = nextLine(scanner);
-                		
-                		int qual = Integer.parseInt(quality);
-                		int price = Integer.parseInt(basePrice);
+                      System.out.print("Please provide the plantProduct's base price:\n> ");
+                      String basePrice = nextLine(scanner);
+                      
+                      System.out.print("Please provide the plantProduct's type (Fruit, Vegetable, Forage, or Flower):\n> ");
+                      String type = nextLine(scanner);
+                      
+                      int qual = Integer.parseInt(quality);
+                      int price = Integer.parseInt(basePrice);
                     
-                		insertPlantProduct(connection, name, qual, price, type);
-                	} break;
-                	case "produce": {
-                		System.out.print("Please provide the Produce's name:\n> ");
-                		String name = nextLine(scanner);
-                		
-                		System.out.print("Please provide the Produce's quality (0 for normal, 3 for iridium):\n> ");
-                		String quality = nextLine(scanner);
+                      insertPlantProduct(connection, name, qual, price, type);
+                   } break;
+                   case "produce": {
+                      System.out.print("Please provide the Produce's name:\n> ");
+                      String name = nextLine(scanner);
+                      
+                      System.out.print("Please provide the Produce's quality (0 for normal, 3 for iridium):\n> ");
+                      String quality = nextLine(scanner);
                     
-                		System.out.print("Please provide the Produce's base price:\n> ");
-                		String basePrice = nextLine(scanner);
-                		
-                		int qual = Integer.parseInt(quality);
-                		int price = Integer.parseInt(basePrice);
+                      System.out.print("Please provide the Produce's base price:\n> ");
+                      String basePrice = nextLine(scanner);
+                      
+                      int qual = Integer.parseInt(quality);
+                      int price = Integer.parseInt(basePrice);
                     
                       insertProduce(connection, name, qual, price);
                    } break;
@@ -671,7 +671,7 @@ public class StardewHoes {
             
             // Update
             case 'u': {
-            	System.out.print("Update selected\nWhat would you like to update? (type h for help)\n> ");
+               System.out.print("Update selected\nWhat would you like to update? (type h for help)\n> ");
                 String item = nextLine(scanner);
                 
                 switch(item) {
@@ -693,25 +693,23 @@ public class StardewHoes {
                       System.out.print("Please provide the animal's base price (leave empty for null):\n> ");
                       String baseprice = nextLine(scanner);
                     
-                		Integer qual;
-                		Integer basePrice;
-                		int aId = Integer.parseInt(animalId);
-                		if(name.length() == 0) {
-                			name = null;
-                		} else {
-                			name = name;
-                		}
-                		if(quality.length() == 0) {
-                			qual = null;
-                		}
-                		else {
-                			qual = Integer.valueOf(quality);
-                		}
-                		if(baseprice.length() == 0) {
-                			basePrice = null;
-                		} else {
-                			basePrice = Integer.valueOf(baseprice);
-                		}
+                      Integer qual;
+                      Integer basePrice;
+                      int aId = Integer.parseInt(animalId);
+                      if(name.length() == 0) {
+                         name = null;
+                      }
+                      if(quality.length() == 0) {
+                         qual = null;
+                      }
+                      else {
+                         qual = Integer.valueOf(quality);
+                      }
+                      if(baseprice.length() == 0) {
+                         basePrice = null;
+                      } else {
+                         basePrice = Integer.valueOf(baseprice);
+                      }
                     
                       updateAnimal(connection, aId, name, qual, basePrice);
                    } break;
@@ -728,71 +726,67 @@ public class StardewHoes {
                       System.out.print("Please provide the animal produt's base price (leave empty for null):\n> ");
                       String baseprice = nextLine(scanner);
                     
-                		Integer qual;
-                		Integer basePrice;
-                		int aId = Integer.parseInt(animalId);
-                		if(name.length() == 0) {
-                			name = null;
-                		} else {
-                			name = name;
-                		}
-                		if(quality.length() == 0) {
-                			qual = null;
-                		}
-                		else {
-                			qual = Integer.valueOf(quality);
-                		}
-                		if(baseprice.length() == 0) {
-                			basePrice = null;
-                		} else {
-                			basePrice = Integer.valueOf(baseprice);
-                		}
+                      Integer qual;
+                      Integer basePrice;
+                      int aId = Integer.parseInt(animalId);
+                      if(name.length() == 0) {
+                         name = null;
+                      }
+                      if(quality.length() == 0) {
+                         qual = null;
+                      }
+                      else {
+                         qual = Integer.valueOf(quality);
+                      }
+                      if(baseprice.length() == 0) {
+                         basePrice = null;
+                      } else {
+                         basePrice = Integer.valueOf(baseprice);
+                      }
                     
                       updateAnimalProduct(connection, aId, name, qual, basePrice);
-                   } break;
-                   case "artisanGood": {
-                      System.out.print("Please provide the artisan good's id:\n> ");
-                      String artisanId = nextLine(scanner);
-                      
-                      System.out.print("Please provide the artisan good's name (leave empty for null):\n> ");
-                      String name = nextLine(scanner);
-                      
-                      System.out.print("Please provide the artisan good's quality (0 for normal, 3 for iridium):\n> ");
-                      String quality = nextLine(scanner);
-                    
-                      System.out.print("Please provide the artisan good's base price (leave empty for null):\n> ");
-                      String baseprice = nextLine(scanner);
-                      
-                      System.out.print("Please provide the artisan good's multiplier (leave empty for null):\n> ");
-                      String multiplier = nextLine(scanner);
-                    
-                		Integer qual;
-                		Integer basePrice;
-                		Double multi;
-                		int aId = Integer.parseInt(artisanId);
-                		if(name.length() == 0) {
-                			name = null;
-                		} else {
-                			name = name;
-                		}
-                		if(quality.length() == 0) {
-                			qual = null;
-                		}
-                		else {
-                			qual = Integer.valueOf(quality);
-                		}
-                		if(baseprice.length() == 0) {
-                			basePrice = null;
-                		} else {
-                			basePrice = Integer.valueOf(baseprice);
-                		}
-                		if(multiplier.length() == 0) {
-                			multi = null;
-                		} else {
-                			multi = Double.valueOf(multiplier);
-                		}
-                    
-                      updateArtisanGood(connection, aId, name, qual, basePrice, multi);
+                  } break;
+                  case "artisanGood": {
+                     System.out.print("Please provide the artisan good's id:\n> ");
+                     String artisanId = nextLine(scanner);
+                     
+                     System.out.print("Please provide the artisan good's name (leave empty for null):\n> ");
+                     String name = nextLine(scanner);
+                     
+                     System.out.print("Please provide the artisan good's quality (0 for normal, 3 for iridium):\n> ");
+                     String quality = nextLine(scanner);
+                     
+                     System.out.print("Please provide the artisan good's base price (leave empty for null):\n> ");
+                     String baseprice = nextLine(scanner);
+                     
+                     System.out.print("Please provide the artisan good's multiplier (leave empty for null):\n> ");
+                     String multiplier = nextLine(scanner);
+                     
+                      Integer qual;
+                      Integer basePrice;
+                      Double multi;
+                      int aId = Integer.parseInt(artisanId);
+                      if(name.length() == 0) {
+                         name = null;
+                      }
+                      if(quality.length() == 0) {
+                         qual = null;
+                      }
+                      else {
+                         qual = Integer.valueOf(quality);
+                      }
+                      if(baseprice.length() == 0) {
+                         basePrice = null;
+                      } else {
+                         basePrice = Integer.valueOf(baseprice);
+                      }
+                      if(multiplier.length() == 0) {
+                         multi = null;
+                      } else {
+                         multi = Double.valueOf(multiplier);
+                      }
+                     
+                     updateArtisanGood(connection, aId, name, qual, basePrice, multi);
                    } break;
                    case "fish": {
                       System.out.print("Please provide the fish's id:\n> ");
@@ -807,25 +801,23 @@ public class StardewHoes {
                       System.out.print("Please provide the fish's base price (leave empty for null):\n> ");
                       String baseprice = nextLine(scanner);
                     
-                		Integer qual;
-                		Integer basePrice;
-                		int fId = Integer.parseInt(fishId);
-                		if(name.length() == 0) {
-                			name = null;
-                		} else {
-                			name = name;
-                		}
-                		if(quality.length() == 0) {
-                			qual = null;
-                		}
-                		else {
-                			qual = Integer.valueOf(quality);
-                		}
-                		if(baseprice.length() == 0) {
-                			basePrice = null;
-                		} else {
-                			basePrice = Integer.valueOf(baseprice);
-                		}
+                      Integer qual;
+                      Integer basePrice;
+                      int fId = Integer.parseInt(fishId);
+                      if(name.length() == 0) {
+                         name = null;
+                      }
+                      if(quality.length() == 0) {
+                         qual = null;
+                      }
+                      else {
+                         qual = Integer.valueOf(quality);
+                      }
+                      if(baseprice.length() == 0) {
+                         basePrice = null;
+                      } else {
+                         basePrice = Integer.valueOf(baseprice);
+                      }
                     
                       updateFish(connection, fId, name, qual, basePrice);
                    } break;
@@ -842,98 +834,92 @@ public class StardewHoes {
                       System.out.print("Please provide the food's base price (leave empty for null):\n> ");
                       String baseprice = nextLine(scanner);
                     
-                		Integer qual;
-                		Integer basePrice;
-                		int fId = Integer.parseInt(foodId);
-                		if(name.length() == 0) {
-                			name = null;
-                		} else {
-                			name = name;
-                		}
-                		if(quality.length() == 0) {
-                			qual = null;
-                		}
-                		else {
-                			qual = Integer.valueOf(quality);
-                		}
-                		if(baseprice.length() == 0) {
-                			basePrice = null;
-                		} else {
-                			basePrice = Integer.valueOf(baseprice);
-                		}
-                		
-                		updateFood(connection, fId, name, qual, basePrice);
-                	} break;
-                	case "item": {
-                		System.out.print("Please provide the item's id:\n> ");
-                		String itemId = nextLine(scanner);
-                		
-                		System.out.print("Please provide the item's name (leave empty for null):\n> ");
-                		String name = nextLine(scanner);
-                		
-                		System.out.print("Please provide the item's quality (0 for normal, 3 for iridium):\n> ");
-                		String quality = nextLine(scanner);
+                      Integer qual;
+                      Integer basePrice;
+                      int fId = Integer.parseInt(foodId);
+                      if(name.length() == 0) {
+                         name = null;
+                      }
+                      if(quality.length() == 0) {
+                         qual = null;
+                      }
+                      else {
+                         qual = Integer.valueOf(quality);
+                      }
+                      if(baseprice.length() == 0) {
+                         basePrice = null;
+                      } else {
+                         basePrice = Integer.valueOf(baseprice);
+                      }
+                      
+                      updateFood(connection, fId, name, qual, basePrice);
+                   } break;
+                   case "item": {
+                      System.out.print("Please provide the item's id:\n> ");
+                      String itemId = nextLine(scanner);
+                      
+                      System.out.print("Please provide the item's name (leave empty for null):\n> ");
+                      String name = nextLine(scanner);
+                      
+                      System.out.print("Please provide the item's quality (0 for normal, 3 for iridium):\n> ");
+                      String quality = nextLine(scanner);
                     
                       System.out.print("Please provide the item's base price (leave empty for null):\n> ");
                       String baseprice = nextLine(scanner);
                     
-                		Integer qual;
-                		Integer basePrice;
-                		int iId = Integer.parseInt(itemId);
-                		if(name.length() == 0) {
-                			name = null;
-                		} else {
-                			name = name;
-                		}
-                		if(quality.length() == 0) {
-                			qual = null;
-                		}
-                		else {
-                			qual = Integer.valueOf(quality);
-                		}
-                		if(baseprice.length() == 0) {
-                			basePrice = null;
-                		} else {
-                			basePrice = Integer.valueOf(baseprice);
-                		}
-                		
-                		updateItem(connection, iId, name, qual, basePrice);
-                	} break;
-                	case "plantProduct": {
-                		System.out.print("Please provide the plant product's id:\n> ");
-                		String plantprodId = nextLine(scanner);
-                		
-                		System.out.print("Please provide the plant product's name (leave empty for null):\n> ");
-                		String name = nextLine(scanner);
-                		
-                		System.out.print("Please provide the plant product's quality (0 for normal, 3 for iridium) (leave empty for null):\n> ");
-                		String quality = nextLine(scanner);
+                      Integer qual;
+                      Integer basePrice;
+                      int iId = Integer.parseInt(itemId);
+                      if(name.length() == 0) {
+                         name = null;
+                      }
+                      if(quality.length() == 0) {
+                         qual = null;
+                      }
+                      else {
+                         qual = Integer.valueOf(quality);
+                      }
+                      if(baseprice.length() == 0) {
+                         basePrice = null;
+                      } else {
+                         basePrice = Integer.valueOf(baseprice);
+                      }
+                      
+                      updateItem(connection, iId, name, qual, basePrice);
+                   } break;
+                   case "plantProduct": {
+                      System.out.print("Please provide the plant product's id:\n> ");
+                      String plantprodId = nextLine(scanner);
+                      
+                      System.out.print("Please provide the plant product's name (leave empty for null):\n> ");
+                      String name = nextLine(scanner);
+                      
+                      System.out.print("Please provide the plant product's quality (0 for normal, 3 for iridium) (leave empty for null):\n> ");
+                      String quality = nextLine(scanner);
                     
-                		System.out.print("Please provide the plant product's base price (leave empty for null):\n> ");
-                		String baseprice = nextLine(scanner);
-                		
-                		System.out.print("Please provide the plant product's type (Fruit, Vegetable, Forage, or Flower) (leave empty for null):\n> ");
-                		String type = nextLine(scanner);
+                      System.out.print("Please provide the plant product's base price (leave empty for null):\n> ");
+                      String baseprice = nextLine(scanner);
+                      
+                      System.out.print("Please provide the plant product's type (Fruit, Vegetable, Forage, or Flower) (leave empty for null):\n> ");
+                      String type = nextLine(scanner);
                     
-                		Integer qual;
-                		Integer basePrice;
-                		int ppId = Integer.parseInt(plantprodId);
-                		if(name.length() == 0) {
-                			name = null;
-                		} else {
-                			name = name;
-                		}
-                		if(quality.length() == 0) {
-                			qual = null;
-                		}
-                		else {
-                			qual = Integer.valueOf(quality);
-                		}
-                		if(baseprice.length() == 0) {
-                			basePrice = null;
-                		} else {
-                			basePrice = Integer.valueOf(baseprice);
-                		}
+                      Integer qual;
+                      Integer basePrice;
+                      int ppId = Integer.parseInt(plantprodId);
+                      if(name.length() == 0) {
+                         name = null;
+                      }
+                      if(quality.length() == 0) {
+                         qual = null;
+                      }
+                      else {
+                         qual = Integer.valueOf(quality);
+                      }
+                      if(baseprice.length() == 0) {
+                         basePrice = null;
+                      } else {
+                         basePrice = Integer.valueOf(baseprice);
+                      }
                     
                       updatePlantProduct(connection, ppId, name, qual, basePrice, type);
                    } break;
@@ -950,25 +936,23 @@ public class StardewHoes {
                       System.out.print("Please provide the produce's base price (leave empty for null):\n> ");
                       String baseprice = nextLine(scanner);
                     
-                		Integer qual;
-                		Integer basePrice;
-                		int pId = Integer.parseInt(produceId);
-                		if(name.length() == 0) {
-                			name = null;
-                		} else {
-                			name = name;
-                		}
-                		if(quality.length() == 0) {
-                			qual = null;
-                		}
-                		else {
-                			qual = Integer.valueOf(quality);
-                		}
-                		if(baseprice.length() == 0) {
-                			basePrice = null;
-                		} else {
-                			basePrice = Integer.valueOf(baseprice);
-                		}
+                      Integer qual;
+                      Integer basePrice;
+                      int pId = Integer.parseInt(produceId);
+                      if(name.length() == 0) {
+                         name = null;
+                      }
+                      if(quality.length() == 0) {
+                         qual = null;
+                      }
+                      else {
+                         qual = Integer.valueOf(quality);
+                      }
+                      if(baseprice.length() == 0) {
+                         basePrice = null;
+                      } else {
+                         basePrice = Integer.valueOf(baseprice);
+                      }
                     
                       updateProduce(connection, pId, name, qual, basePrice);
                    } break;
@@ -982,31 +966,29 @@ public class StardewHoes {
                       System.out.print("Please provide the seed's quality (0 for normal, 3 for iridium) (leave empty for null):\n> ");
                       String quality = nextLine(scanner);
                     
-                		System.out.print("Please provide the seed's base price (leave empty for null):\n> ");
-                		String baseprice = nextLine(scanner);
-                		
-                		System.out.print("Please provide the seed's season (Spring, Summer, Fall, Spring/Summer, Spring/Fall, Summer/Fall, All, or None) (leave empty for null):\n> ");
-                		String type = nextLine(scanner);
+                      System.out.print("Please provide the seed's base price (leave empty for null):\n> ");
+                      String baseprice = nextLine(scanner);
+                      
+                      System.out.print("Please provide the seed's season (Spring, Summer, Fall, Spring/Summer, Spring/Fall, Summer/Fall, All, or None) (leave empty for null):\n> ");
+                      String type = nextLine(scanner);
                     
-                		Integer qual;
-                		Integer basePrice;
-                		int sId = Integer.parseInt(seedId);
-                		if(name.length() == 0) {
-                			name = null;
-                		} else {
-                			name = name;
-                		}
-                		if(quality.length() == 0) {
-                			qual = null;
-                		}
-                		else {
-                			qual = Integer.valueOf(quality);
-                		}
-                		if(baseprice.length() == 0) {
-                			basePrice = null;
-                		} else {
-                			basePrice = Integer.valueOf(baseprice);
-                		}
+                      Integer qual;
+                      Integer basePrice;
+                      int sId = Integer.parseInt(seedId);
+                      if(name.length() == 0) {
+                         name = null;
+                      }
+                      if(quality.length() == 0) {
+                         qual = null;
+                      }
+                      else {
+                         qual = Integer.valueOf(quality);
+                      }
+                      if(baseprice.length() == 0) {
+                         basePrice = null;
+                      } else {
+                         basePrice = Integer.valueOf(baseprice);
+                      }
                     
                       updateSeed(connection, sId, name, qual, basePrice, type);
                    }
@@ -1031,7 +1013,7 @@ public class StardewHoes {
             
             // Delete
             case 'd': {
-            	System.out.print("Delete selected\nWhat would you like to delete? (type h for help)\n> ");
+               System.out.print("Delete selected\nWhat would you like to delete? (type h for help)\n> ");
                 String item = nextLine(scanner);
                
                 switch(item) {
@@ -1239,6 +1221,7 @@ public class StardewHoes {
       return hash;
    }
    
+   @SuppressWarnings("unchecked")
    public static void populateDatabase(Connection connection) throws Exception {
       String fileData = Files.readString((new File("data/Data/Crops.json")).toPath());
       JSONObject cropsRoot = new JSONObject(fileData);
@@ -1667,707 +1650,707 @@ public class StardewHoes {
       
       updateArtisanGood(connection, nameMap.get("Aged Roe"), null, null, 0, 2.0);
       insertGenerates(connection, nameMap.get("Roe"), nameMap.get("Aged Roe"));
-	}
-
-	public static int insertProfession(Connection connection, String category, double multiplier) throws Exception {
-		String query = "{? = call insert_Profession(?, ?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setString(2, category);
-		statement.setDouble(3, multiplier);
-		statement.registerOutParameter(4, Types.INTEGER);
-		statement.execute();
-		int result = statement.getInt(1);
-		int id = statement.getInt(4);
-
-		if (result == 0)
-			System.out.printf("Successfully inserted Profession for category %s with boost %f.\n", category,
-					multiplier);
-		else
-			System.out.printf("ERROR in insertProfesison: Failed with error code %d.\n", result);
-
-		return id;
-	}
-
-	public static int insertHasProfession(Connection connection, int profId, int farmerId) throws Exception {
-		String query = "{? = call insert_HasProfession(?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setInt(2, profId);
-		statement.setInt(3, farmerId);
-		statement.registerOutParameter(4, Types.INTEGER);
-		statement.execute();
-		int result = statement.getInt(1);
-		int id = statement.getInt(4);
-
-		if (result == 0)
-			System.out.printf("Successfully inserted HasProfession for farmer %d with profession %d.\n", farmerId,
-					profId);
-		else
-			System.out.printf("ERROR in insertProfesison: Failed with error code %d.\n", result);
-
-		return id;
-	}
-
-	public static void insertShop(Connection connection, String name, String address, String schedule, int shopkeeperId)
-			throws Exception {
-		String query = "{? = call insert_Shop(?, ?, ?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setInt(2, shopkeeperId);
-		statement.setString(3, name);
-		statement.setString(4, address);
-		statement.setString(5, schedule);
-		statement.execute();
-		int result = statement.getInt(1);
-
-		if (result == 0)
-			System.out.printf("Successfully inserted Shop with name %s, address %s, schedule %s, and shopkeeper %d.\n",
-					name, address, schedule, shopkeeperId);
-		else
-			System.out.printf("ERROR in insertShopkeeper: Failed with error code %d.\n", result);
-	}
-
-	public static void insertNeeds(Connection connection, int villagerId, int itemId, int reward, int quantity)
-			throws Exception {
-		String query = "{? = call insert_Needs(?, ?, ?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setInt(2, villagerId);
-		statement.setInt(3, itemId);
-		statement.setInt(4, reward);
-		statement.setInt(5, quantity);
-		statement.execute();
-		int result = statement.getInt(1);
-
-		if (result == 0)
-			System.out.printf(
-					"Successfully inserted Needs with villagerId %d, itemId %d, reward %d, and quantity %d.\n",
-					villagerId, itemId, reward, quantity);
-		else
-			System.out.printf("ERROR in insertNeeds: Failed with error code %d.\n", result);
-	}
-
-	public static int insertShopkeeper(Connection connection, String name) throws Exception {
-		String query = "{? = call insert_Shopkeeper(?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setString(2, name);
-		statement.registerOutParameter(3, Types.INTEGER);
-		statement.execute();
-		int result = statement.getInt(1);
-		int id = statement.getInt(3);
-
-		if (result == 0)
-			System.out.printf("Successfully inserted Shopkeeper with name %s.\n", name);
-		else
-			System.out.printf("ERROR in insertShopkeeper: Failed with error code %d.\n", result);
-
-		return id;
-	}
-
-	public static int insertVillager(Connection connection, String name) throws Exception {
-		String query = "{? = call insert_Villager(?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setString(2, name);
-		statement.registerOutParameter(3, Types.INTEGER);
-		statement.execute();
-		int result = statement.getInt(1);
-		int id = statement.getInt(3);
-
-		if (result == 0)
-			System.out.printf("Successfully inserted Villager with name %s.\n", name);
-		else
-			System.out.printf("ERROR in insertVillager: Failed with error code %d.\n", result);
-
-		return id;
-	}
-
-	public static void insertGenerates(Connection connection, int produceID, int productID) throws Exception {
-		String query = "{? = call insert_Generates(?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setInt(2, produceID);
-		statement.setInt(3, productID);
-		statement.execute();
-		int result = statement.getInt(1);
-
-		if (result == 0)
-			System.out.printf("Successfully inserted Generates relation for produce %d and product %d.\n", produceID,
-					productID);
-		else
-			System.out.printf("ERROR in insertGenerates: Failed with error code %d.\n", result);
-	}
-
-	public static void insertProduces(Connection connection, int animalID, int produceID) throws Exception {
-		String query = "{? = call insert_Produces(?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setInt(2, animalID);
-		statement.setInt(3, produceID);
-		statement.execute();
-		int result = statement.getInt(1);
-
-		if (result == 0)
-			System.out.printf("Successfully inserted Produces relation for animal %d and animal product %d.\n",
-					animalID, produceID);
-		else
-			System.out.printf("ERROR in insertProduces: Failed with error code %d.\n", result);
-	}
-
-	public static void insertHasIngredient(Connection connection, int ingredientId, int foodId) throws Exception {
-		String query = "{? = call insert_HasIngredient(?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setInt(2, ingredientId);
-		statement.setInt(3, foodId);
-		statement.execute();
-		int result = statement.getInt(1);
-
-		if (result == 0)
-			System.out.printf("Successfully inserted HasIngredient relation for ingredient %d and food %d.\n",
-					ingredientId, foodId);
-		else
-			System.out.printf("ERROR in insertHasIngredient: Failed with error code %d.\n", result);
-	}
-
-	public static int insertSeed(Connection connection, String name, int basePrice, String season) throws Exception {
-		String query = "{? = call insert_Seed(?, ?, ?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setString(2, name);
-		statement.setInt(3, basePrice);
-		statement.setString(4, season);
-		statement.registerOutParameter(5, Types.INTEGER);
-		statement.execute();
-		int result = statement.getInt(1);
-		int id = statement.getInt(5);
-
-		if (result == 0)
-			System.out.printf("Successfully inserted Seed with name %s, price %d, and season %s.\n", name, basePrice,
-					season);
-		else
-			System.out.printf("ERROR in insertSeed: Failed with error code %d.\n", result);
-
-		return id;
-	}
-
-	public static int insertArtisanGood(Connection connection, String name, Integer quality, int basePrice,
-			double multiplier) throws Exception {
-		String query = "{? = call insert_ArtisanGood(?, ?, ?, ?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setString(2, name);
-		if (quality == null)
-			statement.setNull(3, Types.INTEGER);
-		else
-			statement.setInt(3, quality);
-		statement.setInt(4, basePrice);
-		statement.setDouble(5, multiplier);
-		statement.registerOutParameter(6, Types.INTEGER);
-		statement.execute();
-		int result = statement.getInt(1);
-		int id = statement.getInt(6);
-
-		if (result == 0)
-			System.out.printf(
-					"Successfully inserted ArtisanGood with name %s, quality %d, price %d, and multiplier %f.\n", name,
-					quality, basePrice, multiplier);
-		else
-			System.out.printf("ERROR in insertArtisanGood: Failed with error code %d.\n", result);
-
-		return id;
-	}
-
-	public static void updateArtisanGood(Connection connection, int id, String name, Integer quality, Integer basePrice,
-			Double multiplier) throws Exception {
-		String query = "{? = call update_ArtisanGood(?, ?, ?, ?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setInt(2, id);
-		statement.setString(3, name);
-		if (quality == null)
-			statement.setNull(4, Types.INTEGER);
-		else
-			statement.setInt(4, quality);
-		if (basePrice == null)
-			statement.setNull(5, Types.INTEGER);
-		else
-			statement.setInt(5, basePrice);
-		if (multiplier == null)
-			statement.setNull(6, Types.DOUBLE);
-		else
-			statement.setDouble(6, multiplier);
-		statement.execute();
-		int result = statement.getInt(1);
-
-		if (result == 0)
-			System.out.printf("Successfully updated ArtisanGood with ID %d.\n", id);
-		else
-			System.out.printf("ERROR in updateArtisanGood: Failed with error code %d.\n", result);
-	}
-
-	public static int insertPlantProduct(Connection connection, String name, Integer quality, int basePrice,
-			String type) throws Exception {
-		String query = "{? = call insert_PlantProduct(?, ?, ?, ?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setString(2, name);
-		if (quality == null)
-			statement.setNull(3, Types.INTEGER);
-		else
-			statement.setInt(3, quality);
-		statement.setInt(4, basePrice);
-		statement.setString(5, type);
-		statement.registerOutParameter(6, Types.INTEGER);
-		statement.execute();
-		int result = statement.getInt(1);
-		int id = statement.getInt(6);
-
-		if (result == 0)
-			System.out.printf("Successfully inserted PlantProduct with name %s (%s), quality %d, and price %d.\n", name,
-					type, quality, basePrice);
-		else
-			System.out.printf("ERROR in insertPlantProduct: Failed with error code %d.\n", result);
-
-		return id;
-	}
-
-	public static int insertAnimal(Connection connection, String name, Integer basePrice) throws Exception {
-		String query = "{? = call insert_Animal(?, ?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setString(2, name);
-		statement.setInt(3, basePrice);
-		statement.registerOutParameter(4, Types.INTEGER);
-		statement.execute();
-		int result = statement.getInt(1);
-		int id = statement.getInt(4);
-
-		if (result == 0)
-			System.out.printf("Successfully inserted Animal with name %s and price %d.\n", name, basePrice);
-		else
-			System.out.printf("ERROR in insertAnimal: Failed with error code %d.\n", result);
-
-		return id;
-	}
-
-	public static int insertAnimalProduct(Connection connection, String name, Integer quality, int basePrice)
-			throws Exception {
-		String query = "{? = call insert_AnimalProduct(?, ?, ?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setString(2, name);
-		if (quality == null)
-			statement.setNull(3, Types.INTEGER);
-		else
-			statement.setInt(3, quality);
-		statement.setInt(4, basePrice);
-		statement.registerOutParameter(5, Types.INTEGER);
-		statement.execute();
-		int result = statement.getInt(1);
-		int id = statement.getInt(5);
-
-		if (result == 0)
-			System.out.printf("Successfully inserted AnimalProduct with name %s, qualiy %d, and price %d.\n", name,
-					quality, basePrice);
-		else
-			System.out.printf("ERROR in insertAnimalProduct: Failed with error code %d.\n", result);
-
-		return id;
-	}
-
-	public static int insertProduce(Connection connection, String name, Integer quality, int basePrice)
-			throws Exception {
-		String query = "{? = call insert_Produce(?, ?, ?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setString(2, name);
-		if (quality == null)
-			statement.setNull(3, Types.INTEGER);
-		else
-			statement.setInt(3, quality);
-		statement.setInt(4, basePrice);
-		statement.registerOutParameter(5, Types.INTEGER);
-		statement.execute();
-		int result = statement.getInt(1);
-		int id = statement.getInt(5);
-
-		if (result == 0)
-			System.out.printf("Successfully inserted Produce with name %s, qualiy %d, and price %d.\n", name, quality,
-					basePrice);
-		else
-			System.out.printf("ERROR in insertProduce: Failed with error code %d.\n", result);
-
-		return id;
-	}
-
-	public static int insertFish(Connection connection, String name, Integer quality, int basePrice) throws Exception {
-		String query = "{? = call insert_Fish(?, ?, ?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setString(2, name);
-		if (quality == null)
-			statement.setNull(3, Types.INTEGER);
-		else
-			statement.setInt(3, quality);
-		statement.setInt(4, basePrice);
-		statement.registerOutParameter(5, Types.INTEGER);
-		statement.execute();
-		int result = statement.getInt(1);
-		int id = statement.getInt(5);
-
-		if (result == 0)
-			System.out.printf("Successfully inserted Fish with name %s, qualiy %d, and price %d.\n", name, quality,
-					basePrice);
-		else
-			System.out.printf("ERROR in insertFish: Failed with error code %d.\n", result);
-
-		return id;
-	}
-
-	public static int insertFood(Connection connection, String name, int basePrice) throws Exception {
-		String query = "{? = call insert_Food(?, ?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setString(2, name);
-		statement.setInt(3, basePrice);
-		statement.registerOutParameter(4, Types.INTEGER);
-		statement.execute();
-		int result = statement.getInt(1);
-		int id = statement.getInt(4);
-
-		if (result == 0)
-			System.out.printf("Successfully inserted Food with name %s and price %d.\n", name, basePrice);
-		else
-			System.out.printf("ERROR in insertFood: Failed with error code %d.\n", result);
-
-		return id;
-	}
-
-	public static int insertItem(Connection connection, String name, Integer quality, int basePrice) throws Exception {
-		String query = "{? = call insert_Item(?, ?, ?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setString(2, name);
-		if (quality == null)
-			statement.setNull(3, Types.INTEGER);
-		else
-			statement.setInt(3, quality);
-		statement.setInt(4, basePrice);
-		statement.registerOutParameter(5, Types.INTEGER);
-		statement.execute();
-		int result = statement.getInt(1);
-		int id = statement.getInt(5);
-
-		if (result == 0)
-			System.out.printf("Successfully inserted Item with name %s, qualiy %d, and price %d.\n", name, quality,
-					basePrice);
-		else
-			System.out.printf("ERROR in insertItem: Failed with error code %d.\n", result);
-
-		return id;
-	}
-
-	public static int insertFarm(Connection connection, String name, String season) throws Exception {
-		String query = "{? = call insert_Farm(?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setString(2, name);
-		statement.setString(3, season);
-		statement.registerOutParameter(5, Types.INTEGER);
-		statement.execute();
-		int result = statement.getInt(1);
-		int id = statement.getInt(5);
-
-		if (result == 0)
-			System.out.printf("Successfully inserted Farm with name %s, and season %s.\n", name, season);
-		else
-			System.out.printf("ERROR in insertFarm: Failed with error code %d.\n", result);
-
-		return id;
-	}
-
-	public static int insertFarmer(Connection connection, String name, int farmid) throws Exception {
-		String query = "{? = call insert_Farmer(?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setString(2, name);
-		statement.setInt(3, farmid);
-		statement.registerOutParameter(5, Types.INTEGER);
-		statement.execute();
-		int result = statement.getInt(1);
-		int id = statement.getInt(5);
-
-		if (result == 0)
-			System.out.printf("Successfully inserted Farmer with name %s, and farmId %d.\n", name, farmid);
-		else
-			System.out.printf("ERROR in insertFarmer: Failed with error code %d.\n", result);
-
-		return id;
-	}
-
-	public static int insertShopBuys(Connection connection, int shopId, int itemId) throws Exception {
-		String query = "{? = call insert_ShopBuys(?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setInt(2, shopId);
-		statement.setInt(3, itemId);
-		statement.registerOutParameter(5, Types.INTEGER);
-		statement.execute();
-		int result = statement.getInt(1);
-		int id = statement.getInt(5);
-
-		if (result == 0)
-			System.out.printf("Successfully inserted ShopBuys with shopId %d, and itemId %d.\n", shopId, itemId);
-		else
-			System.out.printf("ERROR in insertShopBuys: Failed with error code %d.\n", result);
-
-		return id;
-	}
-
-	public static int insertShopSells(Connection connection, int shopId, int itemId) throws Exception {
-		String query = "{? = call insert_ShopSells(?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setInt(2, shopId);
-		statement.setInt(3, itemId);
-		statement.registerOutParameter(5, Types.INTEGER);
-		statement.execute();
-		int result = statement.getInt(1);
-		int id = statement.getInt(5);
-
-		if (result == 0)
-			System.out.printf("Successfully inserted ShopSells with shopId %d, and itemId %d.\n", shopId, itemId);
-		else
-			System.out.printf("ERROR in insertShopSells: Failed with error code %d.\n", result);
-
-		return id;
-	}
-
-	public static void updateAnimal(Connection connection, int id, String name, Integer quality, Integer basePrice)
-			throws Exception {
-		String query = "{? = call update_Animal(?, ?, ?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setInt(2, id);
-		if (name == null)
-			statement.setNull(3, Types.VARCHAR);
-		else
-			statement.setString(3, name);
-		if (quality == null)
-			statement.setNull(4, Types.INTEGER);
-		else
-			statement.setInt(4, quality);
-		if (basePrice == null)
-			statement.setNull(5, Types.INTEGER);
-		else
-			statement.setInt(5, basePrice);
-		statement.execute();
-		int result = statement.getInt(1);
-
-		if (result == 0)
-			System.out.printf("Successfully updated Animal with ID %d.\n", id);
-		else
-			System.out.printf("ERROR in updateAnimal: Failed with error code %d.\n", result);
-	}
-
-	public static void updateAnimalProduct(Connection connection, int id, String name, Integer quality,
-			Integer basePrice) throws Exception {
-		String query = "{? = call update_AnimalProduct(?, ?, ?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setInt(2, id);
-		if (name == null)
-			statement.setNull(3, Types.VARCHAR);
-		else
-			statement.setString(3, name);
-		if (quality == null)
-			statement.setNull(4, Types.INTEGER);
-		else
-			statement.setInt(4, quality);
-		if (basePrice == null)
-			statement.setNull(5, Types.INTEGER);
-		else
-			statement.setInt(5, basePrice);
-		statement.execute();
-		int result = statement.getInt(1);
-
-		if (result == 0)
-			System.out.printf("Successfully updated AnimalProduct with ID %d.\n", id);
-		else
-			System.out.printf("ERROR in updateAnimalProduct: Failed with error code %d.\n", result);
-	}
-
-	public static void updateFish(Connection connection, int id, String name, Integer quality, Integer basePrice)
-			throws Exception {
-		String query = "{? = call update_Fish(?, ?, ?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setInt(2, id);
-		if (name == null)
-			statement.setNull(3, Types.VARCHAR);
-		else
-			statement.setString(3, name);
-		if (quality == null)
-			statement.setNull(4, Types.INTEGER);
-		else
-			statement.setInt(4, quality);
-		if (basePrice == null)
-			statement.setNull(5, Types.INTEGER);
-		else
-			statement.setInt(5, basePrice);
-		statement.execute();
-		int result = statement.getInt(1);
-
-		if (result == 0)
-			System.out.printf("Successfully updated Fish with ID %d.\n", id);
-		else
-			System.out.printf("ERROR in updateFish: Failed with error code %d.\n", result);
-	}
-
-	public static void updateFood(Connection connection, int id, String name, Integer quality, Integer basePrice)
-			throws Exception {
-		String query = "{? = call update_Food(?, ?, ?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setInt(2, id);
-		if (name == null)
-			statement.setNull(3, Types.VARCHAR);
-		else
-			statement.setString(3, name);
-		if (quality == null)
-			statement.setNull(4, Types.INTEGER);
-		else
-			statement.setInt(4, quality);
-		if (basePrice == null)
-			statement.setNull(5, Types.INTEGER);
-		else
-			statement.setInt(5, basePrice);
-		statement.execute();
-		int result = statement.getInt(1);
-
-		if (result == 0)
-			System.out.printf("Successfully updated Food with ID %d.\n", id);
-		else
-			System.out.printf("ERROR in updateFood: Failed with error code %d.\n", result);
-	}
-
-	public static void updateItem(Connection connection, int id, String name, Integer quality, Integer basePrice)
-			throws Exception {
-		String query = "{? = call update_Item(?, ?, ?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setInt(2, id);
-		if (name == null)
-			statement.setNull(3, Types.VARCHAR);
-		else
-			statement.setString(3, name);
-		if (quality == null)
-			statement.setNull(4, Types.INTEGER);
-		else
-			statement.setInt(4, quality);
-		if (basePrice == null)
-			statement.setNull(5, Types.INTEGER);
-		else
-			statement.setInt(5, basePrice);
-		statement.execute();
-		int result = statement.getInt(1);
-
-		if (result == 0)
-			System.out.printf("Successfully updated Item with ID %d.\n", id);
-		else
-			System.out.printf("ERROR in updateItem: Failed with error code %d.\n", result);
-	}
-
-	public static void updatePlantProduct(Connection connection, int id, String name, Integer quality,
-			Integer basePrice, String type) throws Exception {
-		String query = "{? = call update_PlantProduct(?, ?, ?, ?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setInt(2, id);
-		if (name == null)
-			statement.setNull(3, Types.VARCHAR);
-		else
-			statement.setString(3, name);
-		if (quality == null)
-			statement.setNull(4, Types.INTEGER);
-		else
-			statement.setInt(4, quality);
-		if (basePrice == null)
-			statement.setNull(5, Types.INTEGER);
-		else
-			statement.setInt(5, basePrice);
-		if (type == null)
-			statement.setNull(6, Types.VARCHAR);
-		else
-			statement.setString(6, type);
-		statement.execute();
-		int result = statement.getInt(1);
-
-		if (result == 0)
-			System.out.printf("Successfully updated PlantProduct with ID %d.\n", id);
-		else
-			System.out.printf("ERROR in updatePlantProduct: Failed with error code %d.\n", result);
-	}
-
-	public static void updateProduce(Connection connection, int id, String name, Integer quality, Integer basePrice)
-			throws Exception {
-		String query = "{? = call update_Produce(?, ?, ?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setInt(2, id);
-		if (name == null)
-			statement.setNull(3, Types.VARCHAR);
-		else
-			statement.setString(3, name);
-		if (quality == null)
-			statement.setNull(4, Types.INTEGER);
-		else
-			statement.setInt(4, quality);
-		if (basePrice == null)
-			statement.setNull(5, Types.INTEGER);
-		else
-			statement.setInt(5, basePrice);
-		statement.execute();
-		int result = statement.getInt(1);
-
-		if (result == 0)
-			System.out.printf("Successfully updated Produce with ID %d.\n", id);
-		else
-			System.out.printf("ERROR in updateProduce: Failed with error code %d.\n", result);
-	}
-
-	public static void updateSeed(Connection connection, int id, String name, Integer quality, Integer basePrice,
-			String season) throws Exception {
-		String query = "{? = call update_Seed(?, ?, ?, ?, ?)}";
-		CallableStatement statement = connection.prepareCall(query);
-		statement.registerOutParameter(1, Types.INTEGER);
-		statement.setInt(2, id);
-		if (name == null)
-			statement.setNull(3, Types.VARCHAR);
-		else
-			statement.setString(3, name);
-		if (quality == null)
-			statement.setNull(4, Types.INTEGER);
-		else
-			statement.setInt(4, quality);
-		if (basePrice == null)
-			statement.setNull(5, Types.INTEGER);
-		else
-			statement.setInt(5, basePrice);
-		if (season == null)
-			statement.setNull(6, Types.VARCHAR);
-		else
-			statement.setString(6, season);
-		statement.execute();
-		int result = statement.getInt(1);
-
-		if (result == 0)
-			System.out.printf("Successfully updated Seed with ID %d.\n", id);
-		else
-			System.out.printf("ERROR in updateSeed: Failed with error code %d.\n", result);
-	}
+   }
+
+   public static int insertProfession(Connection connection, String category, double multiplier) throws Exception {
+      String query = "{? = call insert_Profession(?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setString(2, category);
+      statement.setDouble(3, multiplier);
+      statement.registerOutParameter(4, Types.INTEGER);
+      statement.execute();
+      int result = statement.getInt(1);
+      int id = statement.getInt(4);
+
+      if (result == 0)
+         System.out.printf("Successfully inserted Profession for category %s with boost %f.\n", category,
+               multiplier);
+      else
+         System.out.printf("ERROR in insertProfesison: Failed with error code %d.\n", result);
+
+      return id;
+   }
+
+   public static int insertHasProfession(Connection connection, int profId, int farmerId) throws Exception {
+      String query = "{? = call insert_HasProfession(?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setInt(2, profId);
+      statement.setInt(3, farmerId);
+      statement.registerOutParameter(4, Types.INTEGER);
+      statement.execute();
+      int result = statement.getInt(1);
+      int id = statement.getInt(4);
+
+      if (result == 0)
+         System.out.printf("Successfully inserted HasProfession for farmer %d with profession %d.\n", farmerId,
+               profId);
+      else
+         System.out.printf("ERROR in insertProfesison: Failed with error code %d.\n", result);
+
+      return id;
+   }
+
+   public static void insertShop(Connection connection, String name, String address, String schedule, int shopkeeperId)
+         throws Exception {
+      String query = "{? = call insert_Shop(?, ?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setInt(2, shopkeeperId);
+      statement.setString(3, name);
+      statement.setString(4, address);
+      statement.setString(5, schedule);
+      statement.execute();
+      int result = statement.getInt(1);
+
+      if (result == 0)
+         System.out.printf("Successfully inserted Shop with name %s, address %s, schedule %s, and shopkeeper %d.\n",
+               name, address, schedule, shopkeeperId);
+      else
+         System.out.printf("ERROR in insertShopkeeper: Failed with error code %d.\n", result);
+   }
+
+   public static void insertNeeds(Connection connection, int villagerId, int itemId, int reward, int quantity)
+         throws Exception {
+      String query = "{? = call insert_Needs(?, ?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setInt(2, villagerId);
+      statement.setInt(3, itemId);
+      statement.setInt(4, reward);
+      statement.setInt(5, quantity);
+      statement.execute();
+      int result = statement.getInt(1);
+
+      if (result == 0)
+         System.out.printf(
+               "Successfully inserted Needs with villagerId %d, itemId %d, reward %d, and quantity %d.\n",
+               villagerId, itemId, reward, quantity);
+      else
+         System.out.printf("ERROR in insertNeeds: Failed with error code %d.\n", result);
+   }
+
+   public static int insertShopkeeper(Connection connection, String name) throws Exception {
+      String query = "{? = call insert_Shopkeeper(?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setString(2, name);
+      statement.registerOutParameter(3, Types.INTEGER);
+      statement.execute();
+      int result = statement.getInt(1);
+      int id = statement.getInt(3);
+
+      if (result == 0)
+         System.out.printf("Successfully inserted Shopkeeper with name %s.\n", name);
+      else
+         System.out.printf("ERROR in insertShopkeeper: Failed with error code %d.\n", result);
+
+      return id;
+   }
+
+   public static int insertVillager(Connection connection, String name) throws Exception {
+      String query = "{? = call insert_Villager(?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setString(2, name);
+      statement.registerOutParameter(3, Types.INTEGER);
+      statement.execute();
+      int result = statement.getInt(1);
+      int id = statement.getInt(3);
+
+      if (result == 0)
+         System.out.printf("Successfully inserted Villager with name %s.\n", name);
+      else
+         System.out.printf("ERROR in insertVillager: Failed with error code %d.\n", result);
+
+      return id;
+   }
+
+   public static void insertGenerates(Connection connection, int produceID, int productID) throws Exception {
+      String query = "{? = call insert_Generates(?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setInt(2, produceID);
+      statement.setInt(3, productID);
+      statement.execute();
+      int result = statement.getInt(1);
+
+      if (result == 0)
+         System.out.printf("Successfully inserted Generates relation for produce %d and product %d.\n", produceID,
+               productID);
+      else
+         System.out.printf("ERROR in insertGenerates: Failed with error code %d.\n", result);
+   }
+
+   public static void insertProduces(Connection connection, int animalID, int produceID) throws Exception {
+      String query = "{? = call insert_Produces(?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setInt(2, animalID);
+      statement.setInt(3, produceID);
+      statement.execute();
+      int result = statement.getInt(1);
+
+      if (result == 0)
+         System.out.printf("Successfully inserted Produces relation for animal %d and animal product %d.\n",
+               animalID, produceID);
+      else
+         System.out.printf("ERROR in insertProduces: Failed with error code %d.\n", result);
+   }
+
+   public static void insertHasIngredient(Connection connection, int ingredientId, int foodId) throws Exception {
+      String query = "{? = call insert_HasIngredient(?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setInt(2, ingredientId);
+      statement.setInt(3, foodId);
+      statement.execute();
+      int result = statement.getInt(1);
+
+      if (result == 0)
+         System.out.printf("Successfully inserted HasIngredient relation for ingredient %d and food %d.\n",
+               ingredientId, foodId);
+      else
+         System.out.printf("ERROR in insertHasIngredient: Failed with error code %d.\n", result);
+   }
+
+   public static int insertSeed(Connection connection, String name, int basePrice, String season) throws Exception {
+      String query = "{? = call insert_Seed(?, ?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setString(2, name);
+      statement.setInt(3, basePrice);
+      statement.setString(4, season);
+      statement.registerOutParameter(5, Types.INTEGER);
+      statement.execute();
+      int result = statement.getInt(1);
+      int id = statement.getInt(5);
+
+      if (result == 0)
+         System.out.printf("Successfully inserted Seed with name %s, price %d, and season %s.\n", name, basePrice,
+               season);
+      else
+         System.out.printf("ERROR in insertSeed: Failed with error code %d.\n", result);
+
+      return id;
+   }
+
+   public static int insertArtisanGood(Connection connection, String name, Integer quality, int basePrice,
+         double multiplier) throws Exception {
+      String query = "{? = call insert_ArtisanGood(?, ?, ?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setString(2, name);
+      if (quality == null)
+         statement.setNull(3, Types.INTEGER);
+      else
+         statement.setInt(3, quality);
+      statement.setInt(4, basePrice);
+      statement.setDouble(5, multiplier);
+      statement.registerOutParameter(6, Types.INTEGER);
+      statement.execute();
+      int result = statement.getInt(1);
+      int id = statement.getInt(6);
+
+      if (result == 0)
+         System.out.printf(
+               "Successfully inserted ArtisanGood with name %s, quality %d, price %d, and multiplier %f.\n", name,
+               quality, basePrice, multiplier);
+      else
+         System.out.printf("ERROR in insertArtisanGood: Failed with error code %d.\n", result);
+
+      return id;
+   }
+
+   public static void updateArtisanGood(Connection connection, int id, String name, Integer quality, Integer basePrice,
+         Double multiplier) throws Exception {
+      String query = "{? = call update_ArtisanGood(?, ?, ?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setInt(2, id);
+      statement.setString(3, name);
+      if (quality == null)
+         statement.setNull(4, Types.INTEGER);
+      else
+         statement.setInt(4, quality);
+      if (basePrice == null)
+         statement.setNull(5, Types.INTEGER);
+      else
+         statement.setInt(5, basePrice);
+      if (multiplier == null)
+         statement.setNull(6, Types.DOUBLE);
+      else
+         statement.setDouble(6, multiplier);
+      statement.execute();
+      int result = statement.getInt(1);
+
+      if (result == 0)
+         System.out.printf("Successfully updated ArtisanGood with ID %d.\n", id);
+      else
+         System.out.printf("ERROR in updateArtisanGood: Failed with error code %d.\n", result);
+   }
+
+   public static int insertPlantProduct(Connection connection, String name, Integer quality, int basePrice,
+         String type) throws Exception {
+      String query = "{? = call insert_PlantProduct(?, ?, ?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setString(2, name);
+      if (quality == null)
+         statement.setNull(3, Types.INTEGER);
+      else
+         statement.setInt(3, quality);
+      statement.setInt(4, basePrice);
+      statement.setString(5, type);
+      statement.registerOutParameter(6, Types.INTEGER);
+      statement.execute();
+      int result = statement.getInt(1);
+      int id = statement.getInt(6);
+
+      if (result == 0)
+         System.out.printf("Successfully inserted PlantProduct with name %s (%s), quality %d, and price %d.\n", name,
+               type, quality, basePrice);
+      else
+         System.out.printf("ERROR in insertPlantProduct: Failed with error code %d.\n", result);
+
+      return id;
+   }
+
+   public static int insertAnimal(Connection connection, String name, Integer basePrice) throws Exception {
+      String query = "{? = call insert_Animal(?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setString(2, name);
+      statement.setInt(3, basePrice);
+      statement.registerOutParameter(4, Types.INTEGER);
+      statement.execute();
+      int result = statement.getInt(1);
+      int id = statement.getInt(4);
+
+      if (result == 0)
+         System.out.printf("Successfully inserted Animal with name %s and price %d.\n", name, basePrice);
+      else
+         System.out.printf("ERROR in insertAnimal: Failed with error code %d.\n", result);
+
+      return id;
+   }
+
+   public static int insertAnimalProduct(Connection connection, String name, Integer quality, int basePrice)
+         throws Exception {
+      String query = "{? = call insert_AnimalProduct(?, ?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setString(2, name);
+      if (quality == null)
+         statement.setNull(3, Types.INTEGER);
+      else
+         statement.setInt(3, quality);
+      statement.setInt(4, basePrice);
+      statement.registerOutParameter(5, Types.INTEGER);
+      statement.execute();
+      int result = statement.getInt(1);
+      int id = statement.getInt(5);
+
+      if (result == 0)
+         System.out.printf("Successfully inserted AnimalProduct with name %s, qualiy %d, and price %d.\n", name,
+               quality, basePrice);
+      else
+         System.out.printf("ERROR in insertAnimalProduct: Failed with error code %d.\n", result);
+
+      return id;
+   }
+
+   public static int insertProduce(Connection connection, String name, Integer quality, int basePrice)
+         throws Exception {
+      String query = "{? = call insert_Produce(?, ?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setString(2, name);
+      if (quality == null)
+         statement.setNull(3, Types.INTEGER);
+      else
+         statement.setInt(3, quality);
+      statement.setInt(4, basePrice);
+      statement.registerOutParameter(5, Types.INTEGER);
+      statement.execute();
+      int result = statement.getInt(1);
+      int id = statement.getInt(5);
+
+      if (result == 0)
+         System.out.printf("Successfully inserted Produce with name %s, qualiy %d, and price %d.\n", name, quality,
+               basePrice);
+      else
+         System.out.printf("ERROR in insertProduce: Failed with error code %d.\n", result);
+
+      return id;
+   }
+
+   public static int insertFish(Connection connection, String name, Integer quality, int basePrice) throws Exception {
+      String query = "{? = call insert_Fish(?, ?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setString(2, name);
+      if (quality == null)
+         statement.setNull(3, Types.INTEGER);
+      else
+         statement.setInt(3, quality);
+      statement.setInt(4, basePrice);
+      statement.registerOutParameter(5, Types.INTEGER);
+      statement.execute();
+      int result = statement.getInt(1);
+      int id = statement.getInt(5);
+
+      if (result == 0)
+         System.out.printf("Successfully inserted Fish with name %s, qualiy %d, and price %d.\n", name, quality,
+               basePrice);
+      else
+         System.out.printf("ERROR in insertFish: Failed with error code %d.\n", result);
+
+      return id;
+   }
+
+   public static int insertFood(Connection connection, String name, int basePrice) throws Exception {
+      String query = "{? = call insert_Food(?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setString(2, name);
+      statement.setInt(3, basePrice);
+      statement.registerOutParameter(4, Types.INTEGER);
+      statement.execute();
+      int result = statement.getInt(1);
+      int id = statement.getInt(4);
+
+      if (result == 0)
+         System.out.printf("Successfully inserted Food with name %s and price %d.\n", name, basePrice);
+      else
+         System.out.printf("ERROR in insertFood: Failed with error code %d.\n", result);
+
+      return id;
+   }
+
+   public static int insertItem(Connection connection, String name, Integer quality, int basePrice) throws Exception {
+      String query = "{? = call insert_Item(?, ?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setString(2, name);
+      if (quality == null)
+         statement.setNull(3, Types.INTEGER);
+      else
+         statement.setInt(3, quality);
+      statement.setInt(4, basePrice);
+      statement.registerOutParameter(5, Types.INTEGER);
+      statement.execute();
+      int result = statement.getInt(1);
+      int id = statement.getInt(5);
+
+      if (result == 0)
+         System.out.printf("Successfully inserted Item with name %s, qualiy %d, and price %d.\n", name, quality,
+               basePrice);
+      else
+         System.out.printf("ERROR in insertItem: Failed with error code %d.\n", result);
+
+      return id;
+   }
+
+   public static int insertFarm(Connection connection, String name, String season) throws Exception {
+      String query = "{? = call insert_Farm(?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setString(2, name);
+      statement.setString(3, season);
+      statement.registerOutParameter(5, Types.INTEGER);
+      statement.execute();
+      int result = statement.getInt(1);
+      int id = statement.getInt(5);
+
+      if (result == 0)
+         System.out.printf("Successfully inserted Farm with name %s, and season %s.\n", name, season);
+      else
+         System.out.printf("ERROR in insertFarm: Failed with error code %d.\n", result);
+
+      return id;
+   }
+
+   public static int insertFarmer(Connection connection, String name, int farmid) throws Exception {
+      String query = "{? = call insert_Farmer(?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setString(2, name);
+      statement.setInt(3, farmid);
+      statement.registerOutParameter(5, Types.INTEGER);
+      statement.execute();
+      int result = statement.getInt(1);
+      int id = statement.getInt(5);
+
+      if (result == 0)
+         System.out.printf("Successfully inserted Farmer with name %s, and farmId %d.\n", name, farmid);
+      else
+         System.out.printf("ERROR in insertFarmer: Failed with error code %d.\n", result);
+
+      return id;
+   }
+
+   public static int insertShopBuys(Connection connection, int shopId, int itemId) throws Exception {
+      String query = "{? = call insert_ShopBuys(?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setInt(2, shopId);
+      statement.setInt(3, itemId);
+      statement.registerOutParameter(5, Types.INTEGER);
+      statement.execute();
+      int result = statement.getInt(1);
+      int id = statement.getInt(5);
+
+      if (result == 0)
+         System.out.printf("Successfully inserted ShopBuys with shopId %d, and itemId %d.\n", shopId, itemId);
+      else
+         System.out.printf("ERROR in insertShopBuys: Failed with error code %d.\n", result);
+
+      return id;
+   }
+
+   public static int insertShopSells(Connection connection, int shopId, int itemId) throws Exception {
+      String query = "{? = call insert_ShopSells(?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setInt(2, shopId);
+      statement.setInt(3, itemId);
+      statement.registerOutParameter(5, Types.INTEGER);
+      statement.execute();
+      int result = statement.getInt(1);
+      int id = statement.getInt(5);
+
+      if (result == 0)
+         System.out.printf("Successfully inserted ShopSells with shopId %d, and itemId %d.\n", shopId, itemId);
+      else
+         System.out.printf("ERROR in insertShopSells: Failed with error code %d.\n", result);
+
+      return id;
+   }
+
+   public static void updateAnimal(Connection connection, int id, String name, Integer quality, Integer basePrice)
+         throws Exception {
+      String query = "{? = call update_Animal(?, ?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setInt(2, id);
+      if (name == null)
+         statement.setNull(3, Types.VARCHAR);
+      else
+         statement.setString(3, name);
+      if (quality == null)
+         statement.setNull(4, Types.INTEGER);
+      else
+         statement.setInt(4, quality);
+      if (basePrice == null)
+         statement.setNull(5, Types.INTEGER);
+      else
+         statement.setInt(5, basePrice);
+      statement.execute();
+      int result = statement.getInt(1);
+
+      if (result == 0)
+         System.out.printf("Successfully updated Animal with ID %d.\n", id);
+      else
+         System.out.printf("ERROR in updateAnimal: Failed with error code %d.\n", result);
+   }
+
+   public static void updateAnimalProduct(Connection connection, int id, String name, Integer quality,
+         Integer basePrice) throws Exception {
+      String query = "{? = call update_AnimalProduct(?, ?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setInt(2, id);
+      if (name == null)
+         statement.setNull(3, Types.VARCHAR);
+      else
+         statement.setString(3, name);
+      if (quality == null)
+         statement.setNull(4, Types.INTEGER);
+      else
+         statement.setInt(4, quality);
+      if (basePrice == null)
+         statement.setNull(5, Types.INTEGER);
+      else
+         statement.setInt(5, basePrice);
+      statement.execute();
+      int result = statement.getInt(1);
+
+      if (result == 0)
+         System.out.printf("Successfully updated AnimalProduct with ID %d.\n", id);
+      else
+         System.out.printf("ERROR in updateAnimalProduct: Failed with error code %d.\n", result);
+   }
+
+   public static void updateFish(Connection connection, int id, String name, Integer quality, Integer basePrice)
+         throws Exception {
+      String query = "{? = call update_Fish(?, ?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setInt(2, id);
+      if (name == null)
+         statement.setNull(3, Types.VARCHAR);
+      else
+         statement.setString(3, name);
+      if (quality == null)
+         statement.setNull(4, Types.INTEGER);
+      else
+         statement.setInt(4, quality);
+      if (basePrice == null)
+         statement.setNull(5, Types.INTEGER);
+      else
+         statement.setInt(5, basePrice);
+      statement.execute();
+      int result = statement.getInt(1);
+
+      if (result == 0)
+         System.out.printf("Successfully updated Fish with ID %d.\n", id);
+      else
+         System.out.printf("ERROR in updateFish: Failed with error code %d.\n", result);
+   }
+
+   public static void updateFood(Connection connection, int id, String name, Integer quality, Integer basePrice)
+         throws Exception {
+      String query = "{? = call update_Food(?, ?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setInt(2, id);
+      if (name == null)
+         statement.setNull(3, Types.VARCHAR);
+      else
+         statement.setString(3, name);
+      if (quality == null)
+         statement.setNull(4, Types.INTEGER);
+      else
+         statement.setInt(4, quality);
+      if (basePrice == null)
+         statement.setNull(5, Types.INTEGER);
+      else
+         statement.setInt(5, basePrice);
+      statement.execute();
+      int result = statement.getInt(1);
+
+      if (result == 0)
+         System.out.printf("Successfully updated Food with ID %d.\n", id);
+      else
+         System.out.printf("ERROR in updateFood: Failed with error code %d.\n", result);
+   }
+
+   public static void updateItem(Connection connection, int id, String name, Integer quality, Integer basePrice)
+         throws Exception {
+      String query = "{? = call update_Item(?, ?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setInt(2, id);
+      if (name == null)
+         statement.setNull(3, Types.VARCHAR);
+      else
+         statement.setString(3, name);
+      if (quality == null)
+         statement.setNull(4, Types.INTEGER);
+      else
+         statement.setInt(4, quality);
+      if (basePrice == null)
+         statement.setNull(5, Types.INTEGER);
+      else
+         statement.setInt(5, basePrice);
+      statement.execute();
+      int result = statement.getInt(1);
+
+      if (result == 0)
+         System.out.printf("Successfully updated Item with ID %d.\n", id);
+      else
+         System.out.printf("ERROR in updateItem: Failed with error code %d.\n", result);
+   }
+
+   public static void updatePlantProduct(Connection connection, int id, String name, Integer quality,
+         Integer basePrice, String type) throws Exception {
+      String query = "{? = call update_PlantProduct(?, ?, ?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setInt(2, id);
+      if (name == null)
+         statement.setNull(3, Types.VARCHAR);
+      else
+         statement.setString(3, name);
+      if (quality == null)
+         statement.setNull(4, Types.INTEGER);
+      else
+         statement.setInt(4, quality);
+      if (basePrice == null)
+         statement.setNull(5, Types.INTEGER);
+      else
+         statement.setInt(5, basePrice);
+      if (type == null)
+         statement.setNull(6, Types.VARCHAR);
+      else
+         statement.setString(6, type);
+      statement.execute();
+      int result = statement.getInt(1);
+
+      if (result == 0)
+         System.out.printf("Successfully updated PlantProduct with ID %d.\n", id);
+      else
+         System.out.printf("ERROR in updatePlantProduct: Failed with error code %d.\n", result);
+   }
+
+   public static void updateProduce(Connection connection, int id, String name, Integer quality, Integer basePrice)
+         throws Exception {
+      String query = "{? = call update_Produce(?, ?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setInt(2, id);
+      if (name == null)
+         statement.setNull(3, Types.VARCHAR);
+      else
+         statement.setString(3, name);
+      if (quality == null)
+         statement.setNull(4, Types.INTEGER);
+      else
+         statement.setInt(4, quality);
+      if (basePrice == null)
+         statement.setNull(5, Types.INTEGER);
+      else
+         statement.setInt(5, basePrice);
+      statement.execute();
+      int result = statement.getInt(1);
+
+      if (result == 0)
+         System.out.printf("Successfully updated Produce with ID %d.\n", id);
+      else
+         System.out.printf("ERROR in updateProduce: Failed with error code %d.\n", result);
+   }
+
+   public static void updateSeed(Connection connection, int id, String name, Integer quality, Integer basePrice,
+         String season) throws Exception {
+      String query = "{? = call update_Seed(?, ?, ?, ?, ?)}";
+      CallableStatement statement = connection.prepareCall(query);
+      statement.registerOutParameter(1, Types.INTEGER);
+      statement.setInt(2, id);
+      if (name == null)
+         statement.setNull(3, Types.VARCHAR);
+      else
+         statement.setString(3, name);
+      if (quality == null)
+         statement.setNull(4, Types.INTEGER);
+      else
+         statement.setInt(4, quality);
+      if (basePrice == null)
+         statement.setNull(5, Types.INTEGER);
+      else
+         statement.setInt(5, basePrice);
+      if (season == null)
+         statement.setNull(6, Types.VARCHAR);
+      else
+         statement.setString(6, season);
+      statement.execute();
+      int result = statement.getInt(1);
+
+      if (result == 0)
+         System.out.printf("Successfully updated Seed with ID %d.\n", id);
+      else
+         System.out.printf("ERROR in updateSeed: Failed with error code %d.\n", result);
+   }
 
 }
