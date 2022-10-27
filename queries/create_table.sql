@@ -84,7 +84,7 @@ create table Produces (
 	Foreign Key (AnimalID) references Animal(ID)
 	on delete no action,
 	Foreign Key (ProductID) references Produce(ID)
-	on delete cascade
+	on delete no action
 )
 
 create table Generates (
@@ -92,7 +92,7 @@ create table Generates (
 	ProductID int
 	Primary Key (ProduceID, ProductID),
 	Foreign Key (ProduceID) references Item(ID)
-	on delete cascade,
+	on delete no action,
 	Foreign Key (ProductID) references Item(ID)
 	on delete no action
 )
