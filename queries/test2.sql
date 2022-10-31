@@ -37,4 +37,8 @@ select I.*, F.* from Generates H join Item I on H.ProduceID = I.ID join Item F o
 
 select A.*, D.* from Produces P join Item A on P.AnimalID = A.ID join Item D on P.ProductID = D.ID
 
+select * from Shop
 
+select * from ShopBuys
+
+select * from Villager

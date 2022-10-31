@@ -2092,23 +2092,19 @@ public class StardewHoes {
       return id;
    }
 
-   public static int insertFarm(Connection connection, String name, String season) throws Exception {
+   public static void insertFarm(Connection connection, String name, String season) throws Exception {
       String query = "{? = call insert_Farm(?, ?)}";
       CallableStatement statement = connection.prepareCall(query);
       statement.registerOutParameter(1, Types.INTEGER);
       statement.setString(2, name);
       statement.setString(3, season);
-      statement.registerOutParameter(5, Types.INTEGER);
       statement.execute();
       int result = statement.getInt(1);
-      int id = statement.getInt(5);
 
       if (result == 0)
          System.out.printf("Successfully inserted Farm with name %s, and season %s.\n", name, season);
       else
          System.out.printf("ERROR in insertFarm: Failed with error code %d.\n", result);
-
-      return id;
    }
 
    public static int insertFarmer(Connection connection, String name, int farmid) throws Exception {
@@ -2130,23 +2126,19 @@ public class StardewHoes {
       return id;
    }
 
-   public static int insertShopBuys(Connection connection, int shopId, int itemId) throws Exception {
+   public static void insertShopBuys(Connection connection, int shopId, int itemId) throws Exception {
       String query = "{? = call insert_ShopBuys(?, ?)}";
       CallableStatement statement = connection.prepareCall(query);
       statement.registerOutParameter(1, Types.INTEGER);
       statement.setInt(2, shopId);
       statement.setInt(3, itemId);
-      statement.registerOutParameter(5, Types.INTEGER);
       statement.execute();
       int result = statement.getInt(1);
-      int id = statement.getInt(5);
 
       if (result == 0)
          System.out.printf("Successfully inserted ShopBuys with shopId %d, and itemId %d.\n", shopId, itemId);
       else
          System.out.printf("ERROR in insertShopBuys: Failed with error code %d.\n", result);
-
-      return id;
    }
 
    public static int insertShopSells(Connection connection, int shopId, int itemId) throws Exception {
