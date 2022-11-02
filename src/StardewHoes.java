@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
@@ -10,32 +11,47 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.Random;
 import java.util.Scanner;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
+import org.jasypt.properties.EncryptableProperties;
 import org.json.JSONObject;
 
 public class StardewHoes {
-   public static boolean skipLogin = true;
-
-   public static String nextLine(Scanner scanner) {
-      while (!scanner.hasNextLine());
+   public static boolean skipLogin = false;
+   
+   public static String nextLine(Scanner scanner) throws Exception {
+      while (!scanner.hasNextLine()) Thread.sleep(1);
       return scanner.nextLine();
    }
-
+   
    public static void main(String[] args) throws Exception {
       String url = "jdbc:sqlserver://${dbServer};databaseName=${dbName};user=${user};password={${pass}}";
       
-      Scanner scanner = new Scanner(System.in);
-      Random random = new SecureRandom();
+      StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+      encryptor.setPassword("827CJIXWp73P11No9cO5p9NGrL8mLG2k");
+      encryptor.setAlgorithm("PBEWithMD5AndDES");
       
-      String server = "titan.csse.rose-hulman.edu";
-      String database = "StardewHoes10";
-      String appUsername = "StardewHoesapp10";
-      String appPassword = "Password1234";
+      Properties properties = new EncryptableProperties(encryptor);
+      properties.load(new FileInputStream(".properties"));
+      
+      String server      = properties.getProperty("server");
+      String database    = properties.getProperty("database");
+      String appUsername = properties.getProperty("username");
+      String appPassword = properties.getProperty("password");
+      
+      if(server == null || database == null || appUsername == null || appPassword == null) {
+         System.out.println("ERROR: Not enough information to establish a database connection.");
+         return;
+      }
+      
+      Random random = new SecureRandom();
+      Scanner scanner = new Scanner(System.in);
       
       url = url.replace("${dbServer}", server).replace("${dbName}", database).replace("${user}", appUsername).replace("${pass}", appPassword);
       Connection connection = DriverManager.getConnection(url);
@@ -62,8 +78,7 @@ public class StardewHoes {
                System.out.print("Please provide your username:\n> ");
                String username = nextLine(scanner);
                
-               System.out.print("Please provide your password:\n> ");
-               String password = nextLine(scanner);
+               String password = new String(System.console().readPassword("Please provide your password:\n> "));
                
                CallableStatement statement = connection.prepareCall("{? = call get_Login(?)}");
                statement.registerOutParameter(1, Types.INTEGER);
@@ -94,8 +109,7 @@ public class StardewHoes {
                System.out.print("Please provide a username:\n> ");
                String username = nextLine(scanner);
                
-               System.out.print("Please provide a password:\n> ");
-               String password = nextLine(scanner);
+               String password = new String(System.console().readPassword("Please provide a password:\n> "));
                
                byte[] salt = new byte[16];
                random.nextBytes(salt);
@@ -1258,8 +1272,7 @@ public class StardewHoes {
    public static byte[] hashPassword(String password, byte[] salt) throws Exception {
       KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
       SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-      byte[] hash = keyFactory.generateSecret(spec).getEncoded();
-      return hash;
+      return keyFactory.generateSecret(spec).getEncoded();
    }
    
    @SuppressWarnings("unchecked")

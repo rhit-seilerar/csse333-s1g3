@@ -5,6 +5,6 @@ import javax.swing.JTable;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
-public class table {
+public class DataTable {
     String tablename;
 }
