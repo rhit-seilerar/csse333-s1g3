@@ -1,21 +1,21 @@
-USE StardewHoes
-GO
-CREATE PROCEDURE get_farm(
-	@FarmID int
-) AS
-	IF @FarmID IS NULL
-	BEGIN
-		RAISERROR('Parameters cannot be null', 1, 1)
-		RETURN 1
-	END
-	IF NOT EXISTS (SELECT * FROM [dbo].[Farm] WHERE Farm.[ID] = @FarmID)
-	BEGIN
-		RAISERROR('Must try to grab an existing item', 2, 1)
-		RETURN 2
-	END
-	ELSE
-	BEGIN
-		SELECT * FROM [dbo].Farm WHERE [Farm].ID = @FarmID
-	END
+use StardewHoes10
+go
 
-	RETURN 0
+create or alter procedure get_Farm (
+	@ID int = null,
+	@Name varchar(30) = null,
+	@Season varchar(6) = null
+) as
+	declare @Status int
+	
+	select *
+	from Farm
+	where (@ID is null or ID = @ID) and (@Name is null or Name = @Name) and (@Season is null or Season = @Season)
+	set @Status = @@ERROR
+	if @Status != 0 begin
+		raiserror('ERROR in get_Farm: Failed to retrieve the data for farm %s.', 14, 1, @Name)
+		return @Status
+	end
+
+	print 'get_Farm: Successfully retrieved the data for the record with ID ' + convert(varchar(20), @ID) + '.'
+go

@@ -130,9 +130,9 @@ CREATE TABLE HasIngredient(
 	FoodID int NOT NULL,
 	PRIMARY KEY(IngredientID, FoodID),
 	FOREIGN KEY(IngredientID) REFERENCES Item(ID)
-	on delete cascade,
+	on delete no action,
 	FOREIGN KEY(FoodID) REFERENCES Food(ID)
-	on delete cascade)
+	on delete no action)
 
 CREATE TABLE Profession(
 	ID int IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -198,6 +198,8 @@ create table ShopSells (
 create table Login (
 	Username varchar(30),
 	Hash binary(16) not null,
-	Salt binary(16) not null
-	Primary Key (Username)
+	Salt binary(16) not null,
+	Type tinyint not null,
+	Primary Key (Username),
+	Check (Type <= 7)
 )

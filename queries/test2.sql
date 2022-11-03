@@ -4,6 +4,9 @@ go
 delete from Item
 delete from Villager
 delete from Profession
+delete from Login
+
+select * from Login	
 
 select * from Item
 
@@ -32,6 +35,7 @@ select Item.* from Item join ArtisanGood P on Item.ID = P.ID
 select item.* from Item join Food on Item.ID = Food.ID
 
 select I.*, F.* from HasIngredient H join Item I on H.IngredientID = I.ID join Food F on H.FoodID = F.ID
+select * from HasIngredient
 
 select I.*, F.* from Generates H join Item I on H.ProduceID = I.ID join Item F on H.ProductID = F.ID where F.Name = 'Juice'
 
