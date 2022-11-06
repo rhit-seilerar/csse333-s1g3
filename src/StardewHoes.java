@@ -55,9 +55,12 @@ public class StardewHoes {
       
       Scanner scanner = new Scanner(System.in);
       
-      url = url.replace("${dbServer}", server).replace("${dbName}", database).replace("${user}", appUsername).replace("${pass}", appPassword);
-      Connection connection = DriverManager.getConnection(url);
-      
+      //url = url.replace("${dbServer}", server).replace("${dbName}", database).replace("${user}", appUsername).replace("${pass}", appPassword);
+      //Connection connection = DriverManager.getConnection(url);
+      DatabaseConnectionService dbcs = new DatabaseConnectionService(server, database);
+      dbcs.connect(appUsername, appPassword);
+      Connection connection = dbcs.getConnection();
+
       boolean loop = true;
       String username = null;
       while(permissions == null && loop) {
