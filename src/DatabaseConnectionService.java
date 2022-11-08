@@ -12,8 +12,7 @@ public class DatabaseConnectionService {
     private String serverName;
 
     private String username;
-    private boolean isUser;
-
+    
     public DatabaseConnectionService(String serverName, String databaseName) {
         this.serverName = serverName;
         this.databaseName = databaseName;

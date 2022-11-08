@@ -5,7 +5,6 @@ import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Types;
 import java.util.ArrayList;
@@ -34,8 +33,6 @@ public class StardewHoes {
    }
    
    public static void main(String[] args) throws Exception {
-      String url = "jdbc:sqlserver://${dbServer};databaseName=${dbName};user=${user};password={${pass}}";
-      
       StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
       encryptor.setPassword("827CJIXWp73P11No9cO5p9NGrL8mLG2k");
       encryptor.setAlgorithm("PBEWithMD5AndDES");
