@@ -55,7 +55,7 @@ public class LogInFrame extends JFrame implements ActionListener {
 		JLabel users = new JLabel("Username: ");
 		this.user = new JTextField(15);
 		JLabel pass = new JLabel("Password: ");
-		this.passw = new JPasswordField("Password", 15);
+		this.passw = new JPasswordField(15);
 		this.login = new JButton("Log In");
 		this.login.addActionListener(this);
 		this.register = new JButton("Register User");
@@ -87,10 +87,10 @@ public class LogInFrame extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Boolean isManager = false;
 		Boolean managerExists;
-        Integer type = null;
-        Integer farmId = null;
+      Integer type = null;
+      Integer farmId = null;
 		username = this.user.getText();
-		password = this.passw.getText();
+		password = new String(this.passw.getPassword());
 		if(e.getSource() == this.login) {
         	try {
 				CallableStatement statement = this.dbcs.getConnection().prepareCall("{? = call get_Login(?)}");
@@ -106,20 +106,20 @@ public class LogInFrame extends JFrame implements ActionListener {
 				} else {
 					permissions = resultSet.getInt("Type");
 					byte[] storedHash = resultSet.getBytes("Hash");
-			   		byte[] storedSalt = resultSet.getBytes("Salt");
-			   		byte[] givenHash = hashPassword(password, storedSalt);
-			         
-			   		int i = 0;
-			   		for(; i < 16; i++) {
-			       		if(storedHash[i] != givenHash[i]) {
-							break;
-						}
-			   		}
-			   		if(i == 16) {
-			       		System.out.printf("Successfully logged in %s\n", username);
+		   		byte[] storedSalt = resultSet.getBytes("Salt");
+		   		byte[] givenHash = hashPassword(password, storedSalt);
+		         
+		   		int i = 0;
+		   		for(; i < 16; i++) {
+		       		if(storedHash[i] != givenHash[i]) {
+						break;
+					}
+		   		}
+		   		if(i == 16) {
+		       		System.out.printf("Successfully logged in %s\n", username);
 						HomeFrame hf = new HomeFrame(this.dbcs, permissions);
 						this.dispose();
-			   		} else {
+		   		} else {
 						JOptionPane warning = new JOptionPane();
 						JOptionPane.showMessageDialog(new LogInFrame(this.dbcs), "Incorrect Log-In Information");
 						warning.setVisible(true);
@@ -128,7 +128,6 @@ public class LogInFrame extends JFrame implements ActionListener {
 					}
 				}
 			} catch (Exception e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		} else if (e.getSource() == this.register) {
@@ -136,18 +135,17 @@ public class LogInFrame extends JFrame implements ActionListener {
 			try {
 				CallableStatement statement = this.dbcs.getConnection().prepareCall("{? = call get_Login(?, ?)}");
 				statement.registerOutParameter(1, Types.INTEGER);
-         		statement.setNull(2, Types.VARCHAR);
-         		statement.setInt(3, 7);
-         		ResultSet resultSet = statement.executeQuery();
-         		managerExists = !resultSet.isClosed() && resultSet.next();
+      		statement.setNull(2, Types.VARCHAR);
+      		statement.setInt(3, 7);
+      		ResultSet resultSet = statement.executeQuery();
+      		managerExists = !resultSet.isClosed() && resultSet.next();
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-            if(type == null) {
-                if(!managerExists) {
-                    isManager = null;
-                    while(isManager == null) {
+         if(type == null) {
+            if(!managerExists) {
+               isManager = null;
+               while(isManager == null) {
 						JOptionPane managerial = new JOptionPane();
 						int yn = JOptionPane.showOptionDialog(this, "Is This Acocunt A Manager?", "Manager Decision", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, 0);
 						managerial.setVisible(true);
@@ -156,8 +154,8 @@ public class LogInFrame extends JFrame implements ActionListener {
 						} else if(yn == JOptionPane.NO_OPTION) {
 							isManager = false;
 						}
-                    }
-            	}
+               }
+         	}
 				JOptionPane vsfSelection = new JOptionPane();
 				String[] options = {"Villager", "Shopkeeper", "Farmer"};
 				int selected = JOptionPane.showOptionDialog(this, "Villager, Shopkeeper, or Farmer?", "Villager, Shopkeeper, or Farmer?", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
@@ -170,67 +168,67 @@ public class LogInFrame extends JFrame implements ActionListener {
 					permissions = 1;
 				} else {
 					if(farmId == null) {
-						JOptionPane farmOptionPane = new JOptionPane();
-						String farmName = farmOptionPane.showInputDialog(this, "What farm do you work on?");
-						farmOptionPane.setVisible(true);
-						try {
-							CallableStatement statement = this.dbcs.getConnection().prepareCall("? = call get_Farm(?, ?)");
-							statement.registerOutParameter(1, Types.INTEGER);
-							statement.setNull(2, Types.INTEGER);
-							statement.setString(3, farmName);
-							ResultSet resultSet = statement.executeQuery();
-							if(resultSet.isClosed() || !resultSet.next()) {
-								System.out.println("That farm doesn't exist.");
-							} else {
-								farmId = resultSet.getInt("ID");
-								permissions = 2;
+						while(permissions == null) {
+							JOptionPane farmOptionPane = new JOptionPane();
+							String farmName = JOptionPane.showInputDialog(this, "What farm do you work on?");
+							farmOptionPane.setVisible(true);
+							try {
+								CallableStatement statement = this.dbcs.getConnection().prepareCall("{? = call get_Farm(?, ?)}");
+								statement.registerOutParameter(1, Types.INTEGER);
+								statement.setNull(2, Types.INTEGER);
+								statement.setString(3, farmName);
+								ResultSet resultSet = statement.executeQuery();
+								if(resultSet.isClosed() || !resultSet.next()) {
+									System.out.println("That farm doesn't exist.");
+								} else {
+									farmId = resultSet.getInt("ID");
+									permissions = 2;
+									type = 2;
+								}
+							} catch (SQLException e1) {
+								e1.printStackTrace();
 							}
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
 						}
 					}
 				}
-                }
-				int result = 1;
-				try {
-					byte[] salt = new byte[16];
-					random.nextBytes(salt);
-					byte[] hash = hashPassword(password, salt);
+         }
+			int result = 1;
+			try {
+				byte[] salt = new byte[16];
+				random.nextBytes(salt);
+				byte[] hash = hashPassword(password, salt);
+			
+				if(isManager) permissions = 7;
 				
-					if(isManager) permissions = 7;
-					
-					CallableStatement statement = this.dbcs.getConnection().prepareCall("{? = call insert_Login(?, ?, ?, ?)}");
-					statement.registerOutParameter(1, Types.INTEGER);
-					statement.setString(2, username);
-					statement.setBytes(3, hash);
-					statement.setBytes(4, salt);
-					statement.setInt(5, permissions);
-					statement.execute();
-					result = statement.getInt(1);
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-				if(result != 0) {
-				   System.out.printf("ERROR: Failed to register %s\n", username);
-				   permissions = null;
-				} else {
-				   System.out.printf("Successfully registered %s\n", username);
-				   try {
+				CallableStatement statement = this.dbcs.getConnection().prepareCall("{? = call insert_Login(?, ?, ?, ?)}");
+				statement.registerOutParameter(1, Types.INTEGER);
+				statement.setString(2, username);
+				statement.setBytes(3, hash);
+				statement.setBytes(4, salt);
+				statement.setInt(5, permissions);
+				statement.execute();
+				result = statement.getInt(1);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			
+			if(result != 0) {
+			   System.out.printf("ERROR: Failed to register %s\n", username);
+			   permissions = null;
+			} else {
+			   System.out.printf("Successfully registered %s\n", username);
+			   try {
 				   if(type == 0) insertVillager(this.dbcs.getConnection(), username);
 				   if(type == 1) insertShopkeeper(this.dbcs.getConnection(), username);
 				   if(type == 2) insertFarmer(this.dbcs.getConnection(), username, farmId);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					HomeFrame hf = new HomeFrame(this.dbcs, permissions);
-					this.dispose();
-        		}
-			}
-        }
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+				HomeFrame hf = new HomeFrame(this.dbcs, permissions);
+				this.dispose();
+     		}
+		}
+   }
 
 	public static byte[] hashPassword(String password, byte[] salt) throws Exception {
 		KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
@@ -244,11 +242,9 @@ public class LogInFrame extends JFrame implements ActionListener {
 		statement.registerOutParameter(1, Types.INTEGER);
 		statement.setString(2, name);
 		statement.setInt(3, farmid);
-		statement.registerOutParameter(5, Types.INTEGER);
 		statement.execute();
 		int result = statement.getInt(1);
-		int id = statement.getInt(5);
-  
+		
 		if (result == 0)
 		   System.out.printf("Successfully inserted Farmer with name %s, and farmId %d.\n", name, farmid);
 		else
@@ -263,8 +259,7 @@ public class LogInFrame extends JFrame implements ActionListener {
 		statement.registerOutParameter(3, Types.INTEGER);
 		statement.execute();
 		int result = statement.getInt(1);
-		int id = statement.getInt(3);
-  
+		
 		if (result == 0)
 		   System.out.printf("Successfully inserted Shopkeeper with name %s.\n", name);
 		else
@@ -279,7 +274,6 @@ public class LogInFrame extends JFrame implements ActionListener {
 		statement.registerOutParameter(3, Types.INTEGER);
 		statement.execute();
 		int result = statement.getInt(1);
-		int id = statement.getInt(3);
 		
 		if (result == 0)
 		   System.out.printf("Successfully inserted Villager with name %s.\n", name);
