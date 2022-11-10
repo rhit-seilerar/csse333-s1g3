@@ -55,7 +55,7 @@ public class LogInFrame extends JFrame implements ActionListener {
 		JLabel users = new JLabel("Username: ");
 		this.user = new JTextField(15);
 		JLabel pass = new JLabel("Password: ");
-		this.passw = new JPasswordField("Password", 15);
+		this.passw = new JPasswordField(15);
 		this.login = new JButton("Log In");
 		this.login.addActionListener(this);
 		this.register = new JButton("Register User");
