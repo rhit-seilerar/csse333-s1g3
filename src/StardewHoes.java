@@ -5,7 +5,6 @@ import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +55,12 @@ public class StardewHoes {
       Scanner scanner = new Scanner(System.in);
       
       DatabaseConnectionService dbcs = new DatabaseConnectionService(server, database);
-      dbcs.connect(appUsername, appPassword);
+      
+      if(!dbcs.connect(appUsername, appPassword)) {
+         System.out.println("ERROR: Could not connect to the database.");
+         return;
+      }
+      
       Connection connection = dbcs.getConnection();
 
       LogInFrame lif = new LogInFrame(dbcs);

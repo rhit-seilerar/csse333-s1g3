@@ -220,7 +220,7 @@ public class LogInFrame extends JFrame implements ActionListener {
 				   try {
 				   if(type == 0) insertVillager(this.dbcs.getConnection(), username);
 				   if(type == 1) insertShopkeeper(this.dbcs.getConnection(), username);
-				   if(type == 3) insertFarmer(this.dbcs.getConnection(), username, farmId);
+				   if(type == 2) insertFarmer(this.dbcs.getConnection(), username, farmId);
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();

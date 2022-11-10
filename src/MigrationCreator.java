@@ -5,6 +5,8 @@ import java.sql.Statement;
 import java.util.Properties;
 import java.util.Scanner;
 
+import services.DatabaseConnectionService;
+
 public class MigrationCreator {
    public static String databaseName;
    public static StringBuilder stringBuilder;
