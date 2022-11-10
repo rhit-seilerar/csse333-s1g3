@@ -90,7 +90,7 @@ public class LogInFrame extends JFrame implements ActionListener {
         Integer type = null;
         Integer farmId = null;
 		username = this.user.getText();
-		password = this.passw.getText();
+		password = new String(this.passw.getPassword());
 		if(e.getSource() == this.login) {
         	try {
 				CallableStatement statement = this.dbcs.getConnection().prepareCall("{? = call get_Login(?)}");
