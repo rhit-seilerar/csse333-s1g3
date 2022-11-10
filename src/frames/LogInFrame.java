@@ -22,6 +22,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import services.DatabaseConnectionService;
@@ -41,7 +42,7 @@ public class LogInFrame extends JFrame implements ActionListener {
 	//Components
 	private JPanel userInfo;
 	private JTextField user;
-	private JTextField passw;
+	private JPasswordField passw;
 	private JButton login;
 	private JButton register;
 	
@@ -54,7 +55,7 @@ public class LogInFrame extends JFrame implements ActionListener {
 		JLabel users = new JLabel("Username: ");
 		this.user = new JTextField(15);
 		JLabel pass = new JLabel("Password: ");
-		this.passw = new JTextField(15);
+		this.passw = new JPasswordField("Password", 15);
 		this.login = new JButton("Log In");
 		this.login.addActionListener(this);
 		this.register = new JButton("Register User");
