@@ -150,8 +150,8 @@ public class StardewHoes {
                      case 'v': type = 0; permissions = 0; break;
                      case 's': type = 1; permissions = 1; break;
                      case 'f': {
-                        type = 3;
-                        permissions = 3;
+                        type = 2;
+                        permissions = 2;
                         
                         while(farmId == null) {
                            System.out.print("Which farm do you work on?:\n> ");
@@ -198,7 +198,7 @@ public class StardewHoes {
                   
                   if(type == 0) insertVillager(connection, username);
                   if(type == 1) insertShopkeeper(connection, username);
-                  if(type == 3) insertFarmer(connection, username, farmId);
+                  if(type == 2) insertFarmer(connection, username, farmId);
                   
                   System.out.print("Would you like to login with this account? [Y/n]\n> ");
                   String response = scanner.nextLine();
