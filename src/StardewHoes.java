@@ -26,7 +26,7 @@ import services.DatabaseConnectionService;
 
 public class StardewHoes {
    // If false, the backup command-line UI will be used
-   public static boolean useGUI = false;
+   public static boolean useGUI = true;
    
    // Set this to '7' (or any non-null number really) to skip login.
    public static Integer permissions = null;
