@@ -18,7 +18,6 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -117,6 +116,8 @@ public class LogInFrame extends JFrame implements ActionListener {
 			   		}
 			   		if(i == 16) {
 			       		System.out.printf("Successfully logged in %s\n", username);
+						HomeFrame hf = new HomeFrame(this.dbcs, permissions);
+						this.dispose();
 			   		} else {
 						JOptionPane warning = new JOptionPane();
 						JOptionPane.showMessageDialog(new LogInFrame(this.dbcs), "Incorrect Log-In Information");
@@ -181,6 +182,7 @@ public class LogInFrame extends JFrame implements ActionListener {
 								System.out.println("That farm doesn't exist.");
 							} else {
 								farmId = resultSet.getInt("ID");
+								permissions = 2;
 							}
 						} catch (SQLException e1) {
 							// TODO Auto-generated catch block
@@ -196,8 +198,6 @@ public class LogInFrame extends JFrame implements ActionListener {
 					byte[] hash = hashPassword(password, salt);
 				
 					if(isManager) permissions = 7;
-				
-					
 					
 					CallableStatement statement = this.dbcs.getConnection().prepareCall("{? = call insert_Login(?, ?, ?, ?)}");
 					statement.registerOutParameter(1, Types.INTEGER);
@@ -225,6 +225,8 @@ public class LogInFrame extends JFrame implements ActionListener {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+					HomeFrame hf = new HomeFrame(this.dbcs, permissions);
+					this.dispose();
         		}
 			}
         }
