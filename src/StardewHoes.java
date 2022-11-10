@@ -575,7 +575,7 @@ public class StardewHoes {
                            String baseprice = nextLine(scanner);
                            
                            int basePrice = Integer.parseInt(baseprice);
-                           int qual = Integer.parseInt(quality);
+                           Integer qual = (quality.length() == 0) ? null : Integer.parseInt(quality);
                            
                            insertItem(connection, name, qual, basePrice);
                         } else if(item.equalsIgnoreCase("plantProduct")) {
