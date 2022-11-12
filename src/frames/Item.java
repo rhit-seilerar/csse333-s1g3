@@ -26,7 +26,7 @@ public class Item {
                 return this.getName();
             case "QUALITY":
                 return this.getQuality();
-            case "BASEPRICE":
+            case "BASE PRICE":
                 return this.getBasePrice();
         }
         throw new IllegalArgumentException("Name of " + name + " is not a valid argument.");

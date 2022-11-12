@@ -4,7 +4,6 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import frames.Item;
-import services.DatabaseConnectionService;
 
 public class SearchService {
 

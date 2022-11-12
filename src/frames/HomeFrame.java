@@ -25,11 +25,13 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import services.DatabaseConnectionService;
+import services.SearchService;
 
 public class HomeFrame extends JFrame implements ActionListener {
 
     //Connectivity Services
 	private DatabaseConnectionService dbcs;
+    private SearchService search;
 
     private int permissions;
 
@@ -37,6 +39,7 @@ public class HomeFrame extends JFrame implements ActionListener {
 
     //Everyone Permission Items
     private JButton viewItems;
+    private ItemSearchFrame itemSearchFrame;
     private JButton viewShopSells;
     private JButton viewShopBuys;
     private JButton editNeeds;
@@ -60,15 +63,27 @@ public class HomeFrame extends JFrame implements ActionListener {
     private JButton editVillagers;
     private JButton editLogins;
     private JButton editShops;
+
     
 
     public HomeFrame(DatabaseConnectionService dbcs, int permissions) {
         this.dbcs = dbcs;
         this.permissions = permissions;
-
+        this.search = new SearchService(this.dbcs);
         //Component Set Up
         this.homePanel = new JPanel();
         this.viewItems = new JButton("Search Items");
+        viewItems.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    itemSearchFrame = new ItemSearchFrame(search);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
         this.viewShopSells = new JButton("View Shop Goods For Sale");
         this.viewShopBuys = new JButton("View Goods Shops Are Buying");
         this.editNeeds = new JButton("Need Something?");
